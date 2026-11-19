@@ -4,6 +4,14 @@ Evidensbaserad träningsapp som anpassar passen efter din dagsform och räknar f
 
 Öppna `index.html` (behåll mappen `images/`).
 
+## Profil & personligt
+- **Startguide i 6 steg**: namn och färg, om dig, mål och ditt varför, träning, hälsa & kost – och ett färdigt program byggt från dina svar
+- **Profil** (cirkeln uppe till höger): om mig, kropp & mått (fettprocent, midja, hals, höft, bröst, arm, lår med historik), mål & motivation (målvikt, måldatum med tempo-kontroll), träning, hälsa & återhämtning, kost
+- Profilens fullständighet visas i procent med tips om vad som saknas
+- **Utseende**: mörkt, ljust eller följ telefonen, 7 accentfärger, större text
+- **Hemskärm**: välj vilka kort som visas och i vilken ordning
+- Kosthållning (allätare–vegan) styr måltidsförslag och inköpslista
+
 ## Hemskärm
 Hälsning, veckoring (pass klara/planerade), veckoremsa med dagens markering, snabb incheckning av dagsform (5 knappar), stort passkort med tid och muskler, rutor för kost, fasta, vikt och träningssvit samt "Dagens fakta" från kunskapsbanken.
 

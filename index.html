@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#080a0f;--sf:#12161e;--sf2:#1a202b;--sf3:#2a3140;--t:#f2f4f8;--t2:#b8c0d0;--m:#7d8799;--p:#5eead4;--a:#818cf8;--d:#f87171;--w:#fbbf24}
+:root{--bg:#080a0f;--sf:#12161e;--sf2:#1a202b;--sf3:#2a3140;--t:#f2f4f8;--t2:#b8c0d0;--m:#7d8799;--p:#5eead4;--p2:#2dd4bf;--onp:#06120f;--a:#818cf8;--d:#f87171;--w:#fbbf24;--line:rgba(255,255,255,.06);--hdrbg:rgba(8,10,15,.92);--navbg:rgba(10,12,17,.96)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;background:var(--bg);color:var(--t);min-height:100vh}
 #app{max-width:430px;margin:0 auto;min-height:100vh}
@@ -16,40 +16,40 @@ body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-s
 #splash.active{display:flex}
 @keyframes up{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .btn{border:none;border-radius:14px;padding:13px 16px;font-size:14px;font-weight:600;cursor:pointer}
-.btn.p{background:linear-gradient(135deg,#5eead4,#2dd4bf);color:#0b0d12;box-shadow:0 4px 16px rgba(94,234,212,.25)}
+.btn.p{background:linear-gradient(135deg,var(--p),var(--p2));color:var(--onp);box-shadow:0 4px 16px color-mix(in srgb,var(--p) 25%,transparent)}
 .btn.full{width:100%;margin-top:10px}
 .btn.g{background:transparent;color:var(--m)}
 .btn.o{background:var(--sf2);color:var(--t2);border:1px solid var(--sf3);padding:8px 11px;font-size:12px;border-radius:10px}
 .btn.sm{padding:6px 10px;font-size:11px;border-radius:9px}
-.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;position:sticky;top:0;z-index:20;background:rgba(8,10,15,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.04)}
-.brand{font-weight:800;letter-spacing:3px;font-size:14px;background:linear-gradient(135deg,#5eead4,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;position:sticky;top:0;z-index:20;background:var(--hdrbg);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{font-weight:800;letter-spacing:3px;font-size:14px;background:linear-gradient(135deg,var(--p),#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hb{font-size:11px;font-weight:600;color:var(--m);background:var(--sf);padding:5px 10px;border-radius:20px}
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:rgba(12,15,22,.97);border-top:1px solid rgba(255,255,255,.05);z-index:30;padding:6px 2px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:var(--navbg);border-top:1px solid var(--line);z-index:30;padding:6px 2px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
 .ni{flex:1;background:none;border:none;color:var(--m);padding:6px 2px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px}
 .ni.active{color:var(--p)}
 .pad{padding:12px 14px 20px}
-.card{background:var(--sf);border-radius:16px;padding:14px;margin-bottom:11px;border:1px solid rgba(255,255,255,.04)}
-.card.glow{border-color:rgba(94,234,212,.12);box-shadow:0 0 20px rgba(94,234,212,.06)}
+.card{background:var(--sf);border-radius:16px;padding:14px;margin-bottom:11px;border:1px solid var(--line)}
+.card.glow{border-color:color-mix(in srgb,var(--p) 12%,transparent);box-shadow:0 0 20px color-mix(in srgb,var(--p) 6%,transparent)}
 .card h3{font-size:15px;font-weight:650;margin-bottom:3px}
 .card h4{font-size:10.5px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .muted{color:var(--m);font-size:12.5px}
 .row{display:flex;gap:8px;align-items:center}
 .between{justify-content:space-between}
-.score{font-size:48px;font-weight:750;letter-spacing:-1px;line-height:1;background:linear-gradient(180deg,#5eead4,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.score{font-size:48px;font-weight:750;letter-spacing:-1px;line-height:1;background:linear-gradient(180deg,var(--p),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:650}
-.ok{background:rgba(94,234,212,.15);color:var(--p)}
+.ok{background:color-mix(in srgb,var(--p) 15%,transparent);color:var(--p)}
 .mid{background:rgba(251,191,36,.14);color:var(--w)}
 .low{background:rgba(248,113,113,.14);color:var(--d)}
-.ex{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
+.ex{padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
 .ex:last-child{border-bottom:none}
 .ex-name{font-weight:650;font-size:14px}
 .ex-meta{color:var(--m);font-size:12px;margin-top:2px}
 .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:7px;background:rgba(129,140,248,.14);color:var(--a)}
-.tag.hot{background:rgba(94,234,212,.18);color:var(--p)}
+.tag.hot{background:color-mix(in srgb,var(--p) 18%,transparent);color:var(--p)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{padding:7px 11px;border-radius:11px;font-size:12px;font-weight:500;background:var(--sf2);color:var(--t2);border:1.5px solid transparent;cursor:pointer}
-.chip.on{border-color:var(--p);background:rgba(94,234,212,.12);color:var(--p);font-weight:600}
+.chip.on{border-color:var(--p);background:color-mix(in srgb,var(--p) 12%,transparent);color:var(--p);font-weight:600}
 .stat{flex:1;text-align:center;background:var(--bg);border-radius:12px;padding:11px 4px}
 .stat .v{font-size:15px;font-weight:700;color:var(--p)}
 .stat .l{font-size:10px;color:var(--m);margin-top:2px}
@@ -68,7 +68,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .set-row input{text-align:center;padding:8px 3px;font-size:13px}
 .timer{font-size:26px;font-weight:700;color:var(--p);text-align:center;font-variant-numeric:tabular-nums}
 .spark{display:flex;align-items:flex-end;gap:3px;height:52px;margin-top:8px}
-.spark i{flex:1;background:linear-gradient(180deg,#5eead4,#2dd4bf);border-radius:3px 3px 0 0;min-height:3px}
+.spark i{flex:1;background:linear-gradient(180deg,var(--p),var(--p2));border-radius:3px 3px 0 0;min-height:3px}
 .spark.r i{background:linear-gradient(180deg,#818cf8,#6366f1)}
 .spark.v i{background:linear-gradient(180deg,#fbbf24,#f59e0b)}
 .empty{text-align:center;padding:22px 12px;color:var(--m);font-size:13px}
@@ -81,18 +81,18 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .body-svg{width:48%;max-width:150px}
 .body-svg svg{width:100%;height:auto}
 .muscle{fill:#2a3140;stroke:#3d4658;stroke-width:1;transition:fill .25s}
-.muscle.on{fill:#5eead4;filter:drop-shadow(0 0 5px rgba(94,234,212,.45))}
+.muscle.on{fill:var(--p);filter:drop-shadow(0 0 5px color-mix(in srgb,var(--p) 45%,transparent))}
 .muscle.sec{fill:#818cf8}
 .legend{display:flex;gap:6px;justify-content:center;margin-top:6px}
 .legend span{font-size:10px;padding:3px 8px;border-radius:8px;font-weight:600}
-.legend .p{background:rgba(94,234,212,.18);color:var(--p)}
+.legend .p{background:color-mix(in srgb,var(--p) 18%,transparent);color:var(--p)}
 .legend .s{background:rgba(129,140,248,.18);color:var(--a)}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:60;display:none;align-items:flex-end;justify-content:center}
 .modal.on{display:flex}
 .modal-c{background:var(--sf);border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;padding:16px 16px 28px}
 .fb{display:flex;gap:8px;margin-top:6px}
 .fb button{flex:1}
-.dec{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12.5px}
+.dec{padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px}
 .dec .t{color:var(--m);font-size:11px}
 
 .ex-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--sf2);flex-shrink:0}
@@ -101,18 +101,18 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .modal-img{width:100%;max-height:280px;object-fit:cover;border-radius:14px;margin:8px 0 12px;background:var(--sf2)}
 .steps{margin:10px 0}
 .step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
-.step .n{width:22px;height:22px;border-radius:50%;background:rgba(94,234,212,.2);color:var(--p);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step .n{width:22px;height:22px;border-radius:50%;background:color-mix(in srgb,var(--p) 20%,transparent);color:var(--p);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .step .t{font-size:13px;color:var(--t2);line-height:1.4}
 .vis-ph{height:160px;border-radius:14px;background:linear-gradient(145deg,var(--sf2),var(--sf3));display:flex;align-items:center;justify-content:center;color:var(--m);font-size:13px;margin:8px 0 12px}
 
 
 .acc{margin-bottom:11px}
-.acc>summary{list-style:none;cursor:pointer;background:var(--sf);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:12px 14px;font-size:13px;font-weight:650;color:var(--t2);display:flex;justify-content:space-between;align-items:center}
+.acc>summary{list-style:none;cursor:pointer;background:var(--sf);border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;font-weight:650;color:var(--t2);display:flex;justify-content:space-between;align-items:center}
 .acc>summary::-webkit-details-marker{display:none}
 .acc>summary::after{content:"▾";color:var(--m);font-size:12px}
 .acc[open]>summary{border-radius:16px 16px 0 0;border-bottom-color:transparent}
 .acc[open]>summary::after{content:"▴"}
-.acc .acc-body{background:var(--sf);border:1px solid rgba(255,255,255,.04);border-top:none;border-radius:0 0 16px 16px;padding:0 14px 14px}
+.acc .acc-body{background:var(--sf);border:1px solid var(--line);border-top:none;border-radius:0 0 16px 16px;padding:0 14px 14px}
 .ready-compact{display:flex;align-items:center;gap:14px;text-align:left}
 .ready-compact .score{font-size:40px;min-width:56px}
 .ready-compact .ready-meta{flex:1}
@@ -122,7 +122,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .swap{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;margin-top:6px;background:var(--sf2);border-radius:11px;font-size:13px;cursor:pointer}
 .swap.on{outline:1.5px solid var(--p)}
 .next-chip{font-size:11.5px;color:var(--m);margin-top:6px}
-.pr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.pr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
 .swapnote{font-size:11px;color:var(--w);margin-top:2px}
 .back{background:none;border:none;color:var(--p);font-size:14px;font-weight:600;padding:4px 6px 4px 0;cursor:pointer}
 .q{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;border:1px solid var(--sf3);background:var(--sf2);color:var(--m);font-size:10.5px;font-weight:700;cursor:pointer;vertical-align:middle;padding:0;margin-left:3px}
@@ -131,42 +131,46 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .acc.mini summary{font-size:12px;padding:6px 0}
 .hello{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
-.tile{background:var(--sf);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:10px;cursor:pointer}
+.tile{background:var(--sf);border:1px solid var(--line);border-radius:14px;padding:10px;cursor:pointer}
 .tile .tl{font-size:10.5px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .tile .tv{font-size:16px;font-weight:700;color:var(--p);margin-top:4px}
 .tile .ts{font-size:11px;color:var(--m);margin-top:1px}
-.seg{position:sticky;top:49px;z-index:15;display:flex;gap:4px;padding:8px 12px;background:rgba(8,10,15,.95);backdrop-filter:blur(12px);overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.04)}
+.seg{position:sticky;top:49px;z-index:15;display:flex;gap:4px;padding:8px 12px;background:var(--hdrbg);backdrop-filter:blur(12px);overflow-x:auto;border-bottom:1px solid var(--line)}
 .seg button{flex:1;white-space:nowrap;background:var(--sf);border:1px solid var(--sf3);color:var(--t2);border-radius:10px;padding:8px 10px;font-size:12.5px;font-weight:600;cursor:pointer}
-.seg button.on{background:rgba(94,234,212,.14);border-color:var(--p);color:var(--p)}
+.seg button.on{background:color-mix(in srgb,var(--p) 14%,transparent);border-color:var(--p);color:var(--p)}
 .sp{display:none}.sp.on{display:block;animation:up .2s ease}
 .set-head{display:grid;grid-template-columns:26px 1fr 1fr 1fr 32px;gap:5px;font-size:10.5px;color:var(--m);font-weight:600;text-align:center;margin:4px 0 -2px}
 .fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .fo{background:var(--sf2);border:1.5px solid transparent;border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer}
 .fo b{display:block;font-size:14px}.fo span{font-size:10.5px;color:var(--m)}
-.fo.on{border-color:var(--p);background:rgba(94,234,212,.1)}.fo.on b{color:var(--p)}
+.fo.on{border-color:var(--p);background:color-mix(in srgb,var(--p) 10%,transparent)}.fo.on b{color:var(--p)}
 .ev{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:7px;margin-right:4px}
-.ev.A{background:rgba(94,234,212,.18);color:var(--p)}.ev.B{background:rgba(129,140,248,.18);color:var(--a)}.ev.C{background:rgba(251,191,36,.16);color:var(--w)}.ev.D{background:rgba(248,113,113,.16);color:var(--d)}
+.ev.A{background:color-mix(in srgb,var(--p) 18%,transparent);color:var(--p)}.ev.B{background:rgba(129,140,248,.18);color:var(--a)}.ev.C{background:rgba(251,191,36,.16);color:var(--w)}.ev.D{background:rgba(248,113,113,.16);color:var(--d)}
 .winbar{position:relative;height:30px;background:var(--sf2);border-radius:9px;margin:12px 0 18px;overflow:visible}
-.winbar .eat{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#2dd4bf,#5eead4);border-radius:9px;opacity:.85}
+.winbar .eat{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,var(--p2),var(--p));border-radius:9px;opacity:.85}
 .winbar .now{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--t)}
 .winbar .trn{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--a);font-size:10px;display:flex;align-items:center;justify-content:center}
 .winbar .lbl{position:absolute;top:33px;font-size:9.5px;color:var(--m);transform:translateX(-50%)}
 .warnc{border-color:rgba(251,191,36,.18)}
 .src{color:var(--a);font-size:10.5px;font-weight:700;cursor:pointer;margin-left:2px;white-space:nowrap}
-.tip{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;line-height:1.5;color:var(--t2)}
+.tip{padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.5;color:var(--t2)}
 .tip:last-child{border-bottom:none}
-.mlist{background:var(--sf);border-radius:16px;border:1px solid rgba(255,255,255,.04);overflow:hidden}
-.mi{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
+.mlist{background:var(--sf);border-radius:16px;border:1px solid var(--line);overflow:hidden}
+.mi{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .mi:last-child{border-bottom:none}.mi>div{flex:1}.mi b{font-size:14px}.mi .muted{font-size:11.5px}
 .mic{font-size:20px;width:28px;text-align:center}.chev{color:var(--m);font-size:20px}
 .nic{font-size:17px;line-height:1;filter:grayscale(1);opacity:.75}.ni.active .nic{filter:none;opacity:1}
 .ph{display:flex;gap:3px;margin-top:4px}.ph div{flex:1;text-align:center;font-size:10px;padding:6px 2px;border-radius:8px;background:var(--sf2);color:var(--m)}
-.ph div.on{background:rgba(94,234,212,.16);color:var(--p);font-weight:700}
-.gstep{display:flex;gap:10px;margin-bottom:10px}.gstep .n{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(94,234,212,.15);color:var(--p);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
-.plan-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ph div.on{background:color-mix(in srgb,var(--p) 16%,transparent);color:var(--p);font-weight:700}
+.gstep{display:flex;gap:10px;margin-bottom:10px}.gstep .n{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:color-mix(in srgb,var(--p) 15%,transparent);color:var(--p);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.plan-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--line)}
 .plan-row:last-child{border-bottom:none}
 /* ===== v6: professionell layout ===== */
 :root{--bg:#07090d;--sf:#10141b;--sf2:#171c25;--sf3:#262d3a;--t:#eef1f6;--t2:#b3bccb;--m:#7a8496;--line:rgba(255,255,255,.06)}
+:root[data-theme=light]{--bg:#f3f5f9;--sf:#ffffff;--sf2:#eef1f6;--sf3:#d8dee8;--t:#0f172a;--t2:#334155;--m:#64748b;--line:rgba(15,23,42,.09);--hdrbg:rgba(243,245,249,.92);--navbg:rgba(255,255,255,.96);--d:#dc2626;--w:#d97706;--a:#6366f1}
+:root[data-theme=light] .card{box-shadow:0 1px 2px rgba(15,23,42,.04),0 4px 14px rgba(15,23,42,.04)}
+:root[data-theme=light] input,:root[data-theme=light] select,:root[data-theme=light] textarea{background:#fff}
+:root[data-font=large] #app{zoom:1.08}
 .ico{width:20px;height:20px;flex-shrink:0;display:block}
 .hdr{padding:10px 16px;min-height:58px;border-bottom:1px solid var(--line)}
 .hl,.hr{display:flex;align-items:center;gap:10px}
@@ -177,7 +181,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .iconbtn:active{transform:scale(.96)}
 .hb{cursor:pointer;font-size:11px}
 .seg{top:58px}
-.bnav{padding:6px 6px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(10,12,17,.96);backdrop-filter:blur(16px)}
+.bnav{padding:6px 6px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--navbg);backdrop-filter:blur(16px)}
 .ni{gap:3px;font-size:10.5px;font-weight:600;padding:5px 2px;border-radius:12px;position:relative}
 .ni .ico{width:22px;height:22px}
 .ni.active{color:var(--p)}
@@ -197,7 +201,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .searchbox input:focus{border:none}
 .acard{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .acard:last-child{border-bottom:none}
-.aic{width:38px;height:38px;border-radius:11px;background:rgba(94,234,212,.1);color:var(--p);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.aic{width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--p) 10%,transparent);color:var(--p);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .abody{flex:1;min-width:0}.at{font-size:14px;font-weight:600;line-height:1.3}.am{font-size:11.5px;color:var(--m);margin-top:3px;display:flex;align-items:center;gap:6px}
 .am .ev{margin:0;padding:1px 6px}
 .akicker{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--p);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
@@ -205,7 +209,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .ah{font-size:24px;font-weight:750;letter-spacing:-.025em;line-height:1.2;margin:8px 0 8px}
 .alead{font-size:15px;line-height:1.55;color:var(--t2);margin-bottom:12px}
 .evrow{display:flex;align-items:center;gap:6px;margin-bottom:14px}
-.keybox{background:linear-gradient(180deg,rgba(94,234,212,.08),rgba(94,234,212,.03));border:1px solid rgba(94,234,212,.18);border-radius:14px;padding:12px 14px;margin-bottom:16px}
+.keybox{background:linear-gradient(180deg,color-mix(in srgb,var(--p) 8%,transparent),color-mix(in srgb,var(--p) 3%,transparent));border:1px solid color-mix(in srgb,var(--p) 18%,transparent);border-radius:14px;padding:12px 14px;margin-bottom:16px}
 .kt{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--m);margin-bottom:8px}
 .keybox .kt{color:var(--p)}
 .kk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.45;margin:6px 0}
@@ -216,7 +220,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .btn.p{box-shadow:none}
 .dswitch{display:flex;gap:6px;margin:6px 0 4px}.dswitch:empty{display:none}
 .dswitch button{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--sf2);border:1px solid var(--line);color:var(--t2);border-radius:10px;padding:8px 6px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit}
-.dswitch button.on{border-color:var(--p);color:var(--p);background:rgba(94,234,212,.1)}.dswitch .ico{width:14px;height:14px}
+.dswitch button.on{border-color:var(--p);color:var(--p);background:color-mix(in srgb,var(--p) 10%,transparent)}.dswitch .ico{width:14px;height:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}.btn .ico{width:18px;height:18px}
 .pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
 .pstats div{background:var(--bg);border-radius:11px;padding:9px 4px;text-align:center}.pstats b{display:block;font-size:17px;color:var(--p)}.pstats span{font-size:10px;color:var(--m)}
@@ -227,7 +231,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .wday.today .wd{color:var(--p)}
 .wd{width:40px;font-size:12.5px;font-weight:700;padding-top:6px;flex-shrink:0}.wd span{display:block;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 .wsess{flex:1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px}
-.spill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;background:rgba(94,234,212,.1);color:var(--p);font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid rgba(94,234,212,.2)}
+.spill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;background:color-mix(in srgb,var(--p) 10%,transparent);color:var(--p);font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid color-mix(in srgb,var(--p) 20%,transparent)}
 .spill.cardio{background:rgba(129,140,248,.12);color:var(--a);border-color:rgba(129,140,248,.25)}.spill .ico{width:14px;height:14px}
 .addp{width:30px;height:30px;border-radius:9px;border:1px dashed var(--sf3);background:transparent;color:var(--m);font-size:18px;cursor:pointer;line-height:1}
 .edrow{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
@@ -245,14 +249,14 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .wsd .wl{font-size:10px;color:var(--m);font-weight:600}.wsd .wn{font-size:15px;font-weight:700}
 .wdots{display:flex;gap:3px;height:14px;align-items:center}.wdots i{width:6px;height:6px;border-radius:50%;background:var(--p)}.wdots i.c{background:var(--a)}.wdots i.r{background:var(--sf3)}
 .wdots .ico{width:14px;height:14px;color:var(--p)}
-.wsd.today{background:linear-gradient(180deg,rgba(94,234,212,.18),rgba(94,234,212,.05));border-color:rgba(94,234,212,.45)}
+.wsd.today{background:linear-gradient(180deg,color-mix(in srgb,var(--p) 18%,transparent),color-mix(in srgb,var(--p) 5%,transparent));border-color:color-mix(in srgb,var(--p) 45%,transparent)}
 .wsd.done .wn{color:var(--p)}.wsd.miss{opacity:.55}
 .checkin .ct{font-size:14px;font-weight:650}.score.sm{font-size:30px;width:auto;height:auto}
 .feel{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
 .feel button{background:var(--sf2);border:1.5px solid transparent;border-radius:12px;padding:8px 2px;color:var(--t2);cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:1px}
 .feel b{font-size:16px}.feel span{font-size:10.5px;color:var(--m)}
-.feel button.on{border-color:var(--p);background:rgba(94,234,212,.12);color:var(--p)}.feel button.on span{color:var(--p)}
-.hero{background:radial-gradient(ellipse 90% 60% at 100% 0%,rgba(129,140,248,.14),transparent 60%),radial-gradient(ellipse 80% 60% at 0% 0%,rgba(94,234,212,.12),transparent 60%),var(--sf);border-color:rgba(94,234,212,.18)}
+.feel button.on{border-color:var(--p);background:color-mix(in srgb,var(--p) 12%,transparent);color:var(--p)}.feel button.on span{color:var(--p)}
+.hero{background:radial-gradient(ellipse 90% 60% at 100% 0%,rgba(129,140,248,.14),transparent 60%),radial-gradient(ellipse 80% 60% at 0% 0%,color-mix(in srgb,var(--p) 12%,transparent),transparent 60%),var(--sf);border-color:color-mix(in srgb,var(--p) 18%,transparent)}
 .hero.cardioc{background:radial-gradient(ellipse 90% 70% at 100% 0%,rgba(129,140,248,.22),transparent 60%),var(--sf);border-color:rgba(129,140,248,.25)}
 .hero.rest{background:var(--sf)}
 .hname{font-size:24px;font-weight:800;letter-spacing:-.025em;margin:6px 0 4px;line-height:1.15}
@@ -268,17 +272,50 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .blk{margin-top:12px;padding:10px 12px;background:var(--bg);border-radius:12px}
 .wkbar{display:flex;gap:5px;overflow-x:auto;margin:10px 0 6px;padding-bottom:2px}
 .wkbar button{position:relative;flex-shrink:0;min-width:40px;padding:7px 8px;border-radius:10px;border:1px solid var(--line);background:var(--sf2);color:var(--t2);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-.wkbar button.on{border-color:var(--p);color:var(--p);background:rgba(94,234,212,.12)}.wkbar button.dl{border-style:dashed}
+.wkbar button.on{border-color:var(--p);color:var(--p);background:color-mix(in srgb,var(--p) 12%,transparent)}.wkbar button.dl{border-style:dashed}
 .wkbar button i{position:absolute;top:3px;right:4px;width:5px;height:5px;border-radius:50%;background:var(--p)}
 .wkbar button.add{color:var(--m);border-style:dashed}
 .wkmod{font-size:12px;color:var(--t2);line-height:1.45}
 .ptab{display:flex;flex-direction:column;gap:4px}.ptab div{display:grid;grid-template-columns:34px 70px 1fr;gap:6px;align-items:center;font-size:11.5px;padding:6px 8px;border-radius:9px;background:var(--bg)}
 .ptab b{color:var(--p)}.ptab span{font-weight:600}.ptab em{font-style:normal;color:var(--m)}.ptab div.dl{opacity:.75;border:1px dashed var(--sf3)}
+.av{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));color:var(--onp);font-weight:800;letter-spacing:-.02em;flex-shrink:0}
+.av.sm{width:30px;height:30px;font-size:12px}.av.lg{width:58px;height:58px;font-size:21px}.av.xl{width:76px;height:76px;font-size:28px}.av.xl .ico{width:34px;height:34px}
+.iconbtn.avbtn{border:none;background:transparent;padding:0}
+.phead .pn{font-size:20px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pring{position:relative;width:52px;height:52px;flex-shrink:0}.pring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px}
+.phead .pstats{margin-top:14px}
+.pmiss{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--w) 12%,transparent);color:var(--t);font-size:12.5px;cursor:pointer}
+.pmiss .ico{width:16px;height:16px;color:var(--w);flex-shrink:0}.pmiss span{flex:1}
+.pmiss.done{background:color-mix(in srgb,var(--p) 12%,transparent);cursor:default}.pmiss.done .ico{color:var(--p)}
+.fld{margin-bottom:4px}.fh{font-size:11.5px;color:var(--m);margin-top:5px;line-height:1.45}.fh .ico{width:13px;height:13px;display:inline-block;vertical-align:-2px}
+.inunit{position:relative}.inunit span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--m);pointer-events:none}.inunit input{padding-right:38px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.g2c{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.saved{position:fixed;top:66px;left:50%;transform:translate(-50%,-8px);background:var(--p);color:var(--onp);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;opacity:0;transition:.2s;z-index:60;pointer-events:none}
+.saved.on{opacity:1;transform:translate(-50%,0)}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sw{display:flex;flex-direction:column;align-items:center;gap:5px;background:var(--sf2);border:1.5px solid transparent;border-radius:12px;padding:10px 4px;cursor:pointer;color:var(--t2);font-family:inherit;font-size:11px}
+.sw i{width:26px;height:26px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,transparent)}
+.sw.on{border-color:var(--c);color:var(--t)}
+.tgl{width:42px;height:24px;border-radius:20px;border:none;background:var(--sf3);position:relative;cursor:pointer;padding:0;flex-shrink:0}
+.tgl i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.tgl.on{background:var(--p)}.tgl.on i{left:21px}
+.hrow{cursor:default}.btn[disabled]{opacity:.35}
+.whyc .kt{display:flex;align-items:center;gap:6px}.whyc .kt .ico{width:14px;height:14px}
+.whyq{font-size:15px;font-weight:600;line-height:1.45;margin-top:10px;padding-left:12px;border-left:3px solid var(--p)}
+.whyc .aic .ico{width:20px;height:20px}
+.warnbox{border-color:color-mix(in srgb,var(--w) 40%,transparent);background:color-mix(in srgb,var(--w) 10%,transparent)}
+.ob{padding-top:22px;padding-bottom:110px}
+.obbar{height:4px;background:var(--sf2);border-radius:4px;overflow:hidden}.obbar div{height:100%;background:linear-gradient(90deg,var(--p2),var(--p));transition:.3s}
+.obstep{font-size:11px;color:var(--m);margin:8px 0 6px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.obhero{text-align:center;padding:14px 0 6px}.obhero h1{font-size:25px;font-weight:800;letter-spacing:-.03em;margin:14px 0 6px}.obhero p{color:var(--t2);font-size:14px;line-height:1.5}
+.obt{font-size:24px;font-weight:800;letter-spacing:-.03em;margin-top:6px}.obp{color:var(--t2);font-size:13.5px;margin:4px 0 6px}
+.obnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-between;gap:10px;padding:12px 16px max(14px,env(safe-area-inset-bottom));background:var(--navbg);border-top:1px solid var(--line);backdrop-filter:blur(14px)}
+.obnav .btn{flex:1;margin:0;padding:14px}.obnav .btn.o{flex:.6;font-size:14px;padding:14px;border-radius:14px}
 </style>
 </head>
 <body>
 <div id="app">
-<section id="splash" class="screen active" style="align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(94,234,212,.12),transparent 60%),var(--bg)">
+<section id="splash" class="screen active" style="align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px;background:radial-gradient(ellipse 80% 50% at 50% -10%,color-mix(in srgb,var(--p) 12%,transparent),transparent 60%),var(--bg)">
   <div style="width:100%">
     <div class="brand" style="font-size:42px;letter-spacing:7px;margin-bottom:10px">AETHER</div>
     <p class="muted" style="margin-bottom:28px">Evidensbaserad träning, kost och fasta – anpassad efter dig</p>
@@ -288,59 +325,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 </section>
 
 <section id="onboard" class="screen">
-  <div class="pad" style="padding-top:28px">
-    <div class="sec">Välkommen</div>
-    <div class="coach" style="margin-bottom:12px"><strong>Coach:</strong> Svara på några frågor så bygger jag ditt träningsprogram och din kostplan. Allt kan ändras senare under Meny.</div>
-    <label class="f">Namn</label><input id="ob-name" value="Demo"/>
-    <label class="f">Mål</label>
-    <div class="chips" id="ob-goal">
-      <div class="chip" data-v="fat_loss" onclick="chip(this,'ob-goal')">Gå ner i fett</div>
-      <div class="chip on" data-v="hypertrophy" onclick="chip(this,'ob-goal')">Bygga muskler</div>
-      <div class="chip" data-v="recomp" onclick="chip(this,'ob-goal')">Båda samtidigt</div>
-      <div class="chip" data-v="strength" onclick="chip(this,'ob-goal')">Bli starkare</div>
-      <div class="chip" data-v="maintain" onclick="chip(this,'ob-goal')">Behålla</div>
-    </div>
-    <label class="f">Säsongsläge</label>
-    <div class="chips" id="ob-season">
-      <div class="chip on" data-v="normal" onclick="chip(this,'ob-season')">Normal</div>
-      <div class="chip" data-v="cut" onclick="chip(this,'ob-season')">Deff</div>
-      <div class="chip" data-v="bulk" onclick="chip(this,'ob-season')">Bulk</div>
-      <div class="chip" data-v="vacation" onclick="chip(this,'ob-season')">Semester</div>
-      <div class="chip" data-v="competition" onclick="chip(this,'ob-season')">Tävling</div>
-    </div>
-    <label class="f">Pass / vecka</label>
-    <div class="chips" id="ob-freq">
-      <div class="chip" data-v="3" onclick="chip(this,'ob-freq')">3</div>
-      <div class="chip on" data-v="4" onclick="chip(this,'ob-freq')">4</div>
-      <div class="chip" data-v="5" onclick="chip(this,'ob-freq')">5</div>
-      <div class="chip" data-v="6" onclick="chip(this,'ob-freq')">6</div>
-    </div>
-    <label class="f">Split</label>
-    <div class="chips" id="ob-split">
-      <div class="chip on" data-v="ul" onclick="chip(this,'ob-split')">Över/Under</div>
-      <div class="chip" data-v="ppl" onclick="chip(this,'ob-split')">Push/Pull/Ben</div>
-      <div class="chip" data-v="fb" onclick="chip(this,'ob-split')">Helkropp</div>
-    </div>
-    <label class="f">Kön</label>
-    <div class="chips" id="ob-sex">
-      <div class="chip on" data-v="m" onclick="chip(this,'ob-sex')">Man</div>
-      <div class="chip" data-v="f" onclick="chip(this,'ob-sex')">Kvinna</div>
-    </div>
-    <div class="row" style="gap:8px">
-      <div style="flex:1"><label class="f">Ålder</label><input type="number" id="ob-age" value="30" min="13" max="99"/></div>
-      <div style="flex:1"><label class="f">Längd (cm)</label><input type="number" id="ob-h" value="178" min="120" max="230"/></div>
-      <div style="flex:1"><label class="f">Vikt (kg)</label><input type="number" id="ob-bw" value="82"/></div>
-    </div>
-    <label class="f">Begränsningar</label>
-    <div class="chips" id="ob-lim">
-      <div class="chip" data-v="axel" onclick="this.classList.toggle('on')">Axel</div>
-      <div class="chip" data-v="knä" onclick="this.classList.toggle('on')">Knä</div>
-      <div class="chip" data-v="ländrygg" onclick="this.classList.toggle('on')">Ländrygg</div>
-      <div class="chip" data-v="armbåge" onclick="this.classList.toggle('on')">Armbåge</div>
-    </div>
-    <p class="muted" style="margin-top:6px;font-size:11.5px">Coachen byter automatiskt ut övningar som brukar belasta området.</p>
-    <button class="btn p full" onclick="finishOB()">Skapa program</button>
-  </div>
+  <div class="pad ob" id="obBox"></div>
 </section>
 
 <section id="main" class="screen">
@@ -351,7 +336,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
     </div>
     <div class="hr">
       <div class="hb" id="hdrB" onclick="help('fas')">—</div>
-      <button class="iconbtn" id="setBtn" onclick="tab('menu')" aria-label="Inställningar"></button>
+      <button class="iconbtn avbtn" id="setBtn" onclick="tab('menu')" aria-label="Profil"></button>
     </div>
   </header>
 
@@ -363,9 +348,9 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
         <div class="ring" id="weekRing" onclick="goSub('train','schema')"></div>
       </div>
 
-      <div class="wstrip" id="weekStrip"></div>
+      <div class="wstrip" id="weekStrip" data-hs="week"></div>
 
-      <div class="card checkin">
+      <div class="card checkin" data-hs="checkin">
         <div class="row between"><div><div class="ct">Hur känns kroppen idag? <button class="q" onclick="help('dagsform')">?</button></div><p class="muted" id="hint" style="font-size:12px;margin-top:2px"></p></div><div class="score sm" id="sc">7</div></div>
         <div class="feel" id="feelBtns"></div>
         <details class="acc mini">
@@ -382,7 +367,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
         </details>
       </div>
 
-      <div class="card hero" id="todayCard">
+      <div class="card hero" id="todayCard" data-hs="hero">
         <div class="row between"><div class="kt" style="margin:0" id="heroKick">Dagens pass</div><div class="row" style="gap:6px"><span class="badge ok" id="sRpe" onclick="help('rpe')">RPE ≤ 8</span><span class="badge ok" id="recMini" onclick="help('budget')">—</span></div></div>
         <h2 class="hname" id="sName">—</h2>
         <div class="hmeta" id="sessionMeta"></div>
@@ -397,15 +382,18 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
         <div class="next-chip" id="nextInfo"></div>
       </div>
 
-      <div class="tiles4">
+      <div class="card whyc" id="whyCard" data-hs="why"></div>
+
+      <div class="tiles4" data-hs="tiles">
         <div class="tile" onclick="goSub('kost','idag')"><div class="tl"><span data-ic="food"></span> Kost kvar</div><div class="tv" id="tileKcal">—</div><div class="ts" id="tileProt"></div></div>
         <div class="tile" onclick="goSub('kost','fasta')"><div class="tl"><span data-ic="clock"></span> Fasta</div><div class="tv" id="tileFast">—</div><div class="ts" id="tileFastSub"></div></div>
         <div class="tile" onclick="tab('hist')"><div class="tl"><span data-ic="scale"></span> Vikt</div><div class="tv" id="tileBw">—</div><div class="ts" id="tileBwSub"></div></div>
         <div class="tile" onclick="tab('hist')"><div class="tl"><span data-ic="flame"></span> Svit</div><div class="tv" id="tileStreak">—</div><div class="ts" id="tileStreakSub"></div></div>
       </div>
 
-      <div class="card tipcard" id="tipCard"></div>
+      <div class="card tipcard" id="tipCard" data-hs="tip"></div>
 
+      <div data-hs="adjust">
       <details class="acc">
         <summary>Justera dagens pass</summary>
         <div class="acc-body">
@@ -433,7 +421,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
         <div class="acc-body">
           <h4 style="margin-top:4px">Återhämtningsbudget <button class="q" onclick="help('budget')">?</button></h4>
           <div class="row between"><span id="recTxt" style="font-weight:700;color:var(--p)">—</span><span class="muted" id="recSub"></span></div>
-          <div class="bar" style="margin-top:8px"><div class="fill" id="recBar" style="width:50%;background:linear-gradient(90deg,#2dd4bf,#5eead4)"></div></div>
+          <div class="bar" style="margin-top:8px"><div class="fill" id="recBar" style="width:50%;background:linear-gradient(90deg,var(--p2),var(--p))"></div></div>
           <div class="coach" id="coachRec" style="margin-top:8px"></div>
 
           <h4 style="margin-top:14px">Muskler idag</h4>
@@ -453,10 +441,11 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           <h4 style="margin-top:12px">Träningsfas · <span id="seasonLabel"></span> <button class="q" onclick="help('fas')">?</button></h4>
           <div class="row between"><strong id="phNameT">—</strong><span class="badge ok" id="phWeekT">—</span></div>
           <p class="muted" id="phDescT" style="margin-top:6px"></p>
-          <div class="bar" style="margin-top:8px"><div class="fill" id="phBarT" style="width:40%;background:linear-gradient(90deg,#2dd4bf,#5eead4)"></div></div>
+          <div class="bar" style="margin-top:8px"><div class="fill" id="phBarT" style="width:40%;background:linear-gradient(90deg,var(--p2),var(--p))"></div></div>
           <div class="coach" id="coachPhase" style="margin-top:8px"></div>
         </div>
       </details>
+      </div>
     </div>
   </div>
 
@@ -580,7 +569,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           <div class="row between"><span style="font-size:26px;font-weight:700;color:var(--p)" id="kcal">0</span><span class="muted">kcal</span></div>
           <p class="muted" id="nReason" style="margin:4px 0 10px"></p>
           <div class="macro"><span>Protein</span><span id="pg">0 g</span></div>
-          <div class="bar"><div class="fill" id="pb" style="width:80%;background:#5eead4"></div></div>
+          <div class="bar"><div class="fill" id="pb" style="width:80%;background:var(--p)"></div></div>
           <div class="macro"><span>Kolhydrater</span><span id="cg">0 g</span></div>
           <div class="bar"><div class="fill" id="cb" style="width:70%;background:#818cf8"></div></div>
           <div class="macro"><span>Fett</span><span id="fg">0 g</span></div>
@@ -759,23 +748,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 
   <!-- ================= MENY ================= -->
   <div id="t-menu" class="tp" style="display:none">
-    <div class="pad">
-      <div class="mlist">
-        <div class="mi" onclick="tab('m-prof')"><span class="mic" data-ic="user"></span><div><b>Profil</b><div class="muted">Namn, ålder, kön, begränsningar</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="goSub('kost','kropp')"><span class="mic" data-ic="target"></span><div><b>Kropp & mål</b><div class="muted">Fettprocent, målvikt, takt</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="goSub('kost','fasta')"><span class="mic" data-ic="clock"></span><div><b>Fasta</b><div class="muted">Metod, ätfönster, lågkaloridagar</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="goSub('train','schema')"><span class="mic" data-ic="calendar"></span><div><b>Träningsschema</b><div class="muted">Upplägg och pass per vecka</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="goSub('train','ovn')"><span class="mic" data-ic="list"></span><div><b>Övningsbibliotek</b><div class="muted">Alla övningar med instruktioner</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="goSub('train','period')"><span class="mic" data-ic="refresh"></span><div><b>Säsong & faser</b><div class="muted">Deff, bulk, semester, deload</div></div><span class="chev" data-ic="chev"></span></div>
-      </div>
-      <div class="mlist" style="margin-top:12px">
-        <div class="mi" onclick="tab('m-guide')"><span class="mic" data-ic="compass"></span><div><b>Så funkar appen</b><div class="muted">Kom igång på 2 minuter</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="tab('m-ord')"><span class="mic" data-ic="chat"></span><div><b>Ordlista</b><div class="muted">RPE, e1RM, deload…</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="tab('m-src')"><span class="mic" data-ic="flask"></span><div><b>Evidens & källor</b><div class="muted">Studierna bakom råden</div></div><span class="chev" data-ic="chev"></span></div>
-        <div class="mi" onclick="tab('m-data')"><span class="mic" data-ic="database"></span><div><b>Data & backup</b><div class="muted">Exportera, importera, radera</div></div><span class="chev" data-ic="chev"></span></div>
-      </div>
-      <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Aether v6 · Informationen ersätter inte råd från vården</p>
-    </div>
+    <div class="pad"><div id="profHub"></div></div>
   </div>
 
   <div id="t-m-prof" class="tp" style="display:none">
@@ -931,13 +904,20 @@ const SCHEMAS={
   fb:[{d:'Mån',k:'full_a',n:'Full A'},{d:'Ons',k:'full_b',n:'Full B'},{d:'Fre',k:'full_a',n:'Full A'}]
 };
 const MEALS=[
-  {d:'Havre + ägg + bär + yoghurt',k:550,p:35,c:55,f:18,when:'frukost'},
-  {d:'Kyckling + ris + broccoli',k:650,p:45,c:65,f:12,when:'lunch'},
-  {d:'Lax + potatis + sallad',k:620,p:40,c:45,f:22,when:'middag'},
-  {d:'Grekisk yoghurt + nötter + honung',k:400,p:28,c:30,f:16,when:'mellanmål'},
-  {d:'Whey + banan + havre',k:380,p:32,c:45,f:6,when:'peri'},
-  {d:'Köttfärs + pasta + grönsaker',k:700,p:40,c:70,f:20,when:'middag'},
-  {d:'Tofu/bönor + ris + grönt',k:580,p:28,c:70,f:14,when:'lunch'}
+  {d:'Havre + ägg + bär + yoghurt',k:550,p:35,c:55,f:18,when:'frukost',t:['e','d']},
+  {d:'Kyckling + ris + broccoli',k:650,p:45,c:65,f:12,when:'lunch',t:['m']},
+  {d:'Lax + potatis + sallad',k:620,p:40,c:45,f:22,when:'middag',t:['f']},
+  {d:'Grekisk yoghurt + nötter + honung',k:400,p:28,c:30,f:16,when:'mellanmål',t:['d']},
+  {d:'Whey + banan + havre',k:380,p:32,c:45,f:6,when:'peri',t:['d']},
+  {d:'Köttfärs + pasta + grönsaker',k:700,p:40,c:70,f:20,when:'middag',t:['m']},
+  {d:'Tofu/bönor + ris + grönt',k:580,p:28,c:70,f:14,when:'lunch',t:[]},
+  {d:'Kvarg + havre + äpple + kanel',k:420,p:34,c:52,f:6,when:'frukost',t:['d']},
+  {d:'Linsgryta + quinoa + spenat',k:560,p:30,c:78,f:12,when:'middag',t:[]},
+  {d:'Sojayoghurt + müsli + pumpafrön',k:430,p:24,c:48,f:15,when:'mellanmål',t:[]},
+  {d:'Tempeh + nudlar + wokgrönsaker',k:620,p:36,c:66,f:20,when:'middag',t:[]},
+  {d:'Ärtproteinshake + banan',k:300,p:28,c:35,f:4,when:'peri',t:[]},
+  {d:'Torsk + bulgur + ugnsrotsaker',k:560,p:42,c:62,f:10,when:'middag',t:['f']},
+  {d:'Omelett (3 ägg) + keso + grönt',k:430,p:38,c:8,f:26,when:'frukost',t:['e','d']}
 ];
 const MUSCLE_MAP={'Quadriceps':'quads','Glutes':'glutes','Hamstrings':'hams','Chest':'chest','Upper Back':'upperback','Lats':'lats','Shoulders':'shoulders','Rear Delts':'reardelt','Triceps':'triceps','Biceps':'biceps','Core':'core','Calves':'calves','Lower Back':'lowerback','Back':'upperback'};
 
@@ -973,7 +953,7 @@ const EX_STEPS={
 };
 const SESSION_NAMES={lower_heavy:'Underkropp tung',upper_heavy:'Överkropp tung',lower_volume:'Underkropp volym',upper_volume:'Överkropp volym',full_a:'Helkropp A',full_b:'Helkropp B',ppl_push:'Push',ppl_pull:'Pull',ppl_legs:'Ben'};
 const ROTATIONS={ul:['lower_heavy','upper_heavy','lower_volume','upper_volume'],ppl:['ppl_push','ppl_pull','ppl_legs'],fb:['full_a','full_b']};
-const DAYS={3:['Mån','Ons','Fre'],4:['Mån','Tis','Tor','Fre'],5:['Mån','Tis','Ons','Fre','Lör'],6:['Mån','Tis','Ons','Tor','Fre','Lör']};
+const DAYS={2:['Mån','Tor'],7:['Mån','Tis','Ons','Tor','Fre','Lör','Sön'],3:['Mån','Ons','Fre'],4:['Mån','Tis','Tor','Fre'],5:['Mån','Tis','Ons','Fre','Lör'],6:['Mån','Tis','Ons','Tor','Fre','Lör']};
 // Begränsning → kandidater (första som inte redan finns i passet väljs)
 const LIMIT_SWAPS={
   'axel':{ohp:['landmine_press'],db_ohp:['landmine_press'],bench_press:['db_bench'],incline_bench:['db_bench','landmine_press'],pullup:['lat_pulldown','cable_row']},
@@ -984,11 +964,11 @@ const LIMIT_SWAPS={
 const LIMIT_LABEL={'axel':'axel','knä':'knä','ländrygg':'ländrygg','armbåge':'armbåge'};
 
 function defaults(){return{
-  name:'Demo',goal:'strength',freq:4,bw:82,sex:'m',age:30,height:178,act:1.55,limits:[],swaps:{},sIdx:0,
+  name:'',goal:'hypertrophy',freq:4,bw:82,sex:'m',age:30,height:178,act:1.55,limits:[],swaps:{},sIdx:0,
   week:2,readiness:7,rAvg:6.8,hrv:68,hrvBase:72,
   split:'ul',sessionKey:'lower_heavy',season:'normal',fast:'none',fastedTrain:'no',winStart:12,trainHour:17,fastDays:[],adfOff:0,bfMode:'none',bf:null,waist:null,neck:null,hip:null,exp:'beginner',rate:'std',goalW:null,timeBudget:'full',context:[],trainingDay:true,
   logs:[],meals:[],loggedKcal:0,mealDate:'',readinessLog:[],e1Log:[],decisions:[],feedback:[],bwLog:[],prs:{},e1View:'squat',
-  e1Hist:{squat:[],bench:[],rdl:[]},plan:null,customT:{},selSlot:0,override:null,done:null,weekStamp:null,
+  e1Hist:{squat:[],bench:[],rdl:[]},plan:null,customT:{},measLog:[],onboarded:false,prof:{diet:null,meals:null,len:60,equip:'gym',likes:[],sleep:null,stress:null,why:'',deadline:'',chest:null,arm:null,thigh:null},ui:{theme:'dark',accent:'teal',font:'normal',home:defaultHome()},selSlot:0,override:null,done:null,weekStamp:null,
   prev:{back_squat:{w:120,reps:5,rpe:8},bench_press:{w:90,reps:5,rpe:8},rdl:{w:100,reps:7,rpe:7.5}},
   e1:{squat:null,bench:null,rdl:null}
 };}
@@ -998,6 +978,9 @@ function migrate(o){
   m.prev={...(o.prev||d.prev)};m.e1={...d.e1,...(o.e1||{})};m.e1Hist={...d.e1Hist,...(o.e1Hist||{})};
   ['logs','meals','readinessLog','e1Log','decisions','feedback','bwLog','context','limits'].forEach(k=>{if(!Array.isArray(m[k]))m[k]=[];});
   if(!m.swaps||typeof m.swaps!=='object')m.swaps={};if(!m.customT||typeof m.customT!=='object')m.customT={};
+  m.prof={...d.prof,...(o.prof||{})};if(!Array.isArray(m.prof.likes))m.prof.likes=[];m.ui={...d.ui,...(o.ui||{})};
+  if(!m.ui.home||!Array.isArray(m.ui.home.order)){m.ui.home=defaultHome();}else{defaultHome().order.forEach(k=>{if(!m.ui.home.order.includes(k))m.ui.home.order.push(k);});m.ui.home.order=m.ui.home.order.filter(k=>HOME_SEC[k]);if(!Array.isArray(m.ui.home.hidden))m.ui.home.hidden=[];}
+  if(!Array.isArray(m.measLog))m.measLog=[];
   if(m.plan&&!Array.isArray(m.plan.weeks)){if(Array.isArray(m.plan.days)&&m.plan.days.length===7){m.plan={name:m.plan.name,goal:m.plan.goal,weeks:[{days:m.plan.days,mod:{label:'Vecka 1'}}],start:new Date().toISOString()};}else m.plan=null;}
   if(m.plan&&(!m.plan.weeks.length||m.plan.weeks.some(w=>!Array.isArray(w.days)||w.days.length!==7)))m.plan=null;
   if(m.plan&&!m.plan.start)m.plan.start=new Date().toISOString();if(!m.prs||typeof m.prs!=='object')m.prs={};
@@ -1175,7 +1158,7 @@ function logDecision(a,sessionKey){
   save();
 }
 
-function start(cont){splash.classList.remove('active');if(cont&&load()){main.classList.add('active');tab('today');toast('Data laddad');}else onboard.classList.add('active');}
+function start(cont){splash.classList.remove('active');if(cont&&load()){main.classList.add('active');tab('today');toast('Välkommen tillbaka');}else{OBS=0;onboard.classList.add('active');renderOB();}}
 function chip(el,g){document.querySelectorAll('#'+g+' .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
 function finishOB(){
   S.name=document.getElementById('ob-name').value||'Demo';S.goal=document.querySelector('#ob-goal .chip.on').dataset.v;
@@ -1189,8 +1172,8 @@ function finishOB(){
   onboard.classList.remove('active');main.classList.add('active');tab('today');toast('Program skapat');
 }
 const SUBS={train:'logga',kost:'idag'};
-const PAGE_TITLE={today:'Idag',train:'Träna',kost:'Kost',hist:'Framsteg',learn:'Kunskap',art:'Kunskap',menu:'Inställningar','m-prof':'Profil','m-data':'Data & backup','m-guide':'Så funkar appen','m-ord':'Ordlista','m-src':'Evidens & källor'};
-const PAGE_SUB={learn:'Forskningen bakom råden',menu:'Profil, mål och hjälp',train:'',kost:''};
+const PAGE_TITLE={today:'Idag',train:'Träna',kost:'Kost',hist:'Framsteg',learn:'Kunskap',art:'Kunskap',menu:'Profil','m-prof':'Profil','m-data':'Data & backup','m-guide':'Så funkar appen','m-ord':'Ordlista','m-src':'Evidens & källor'};
+const PAGE_SUB={learn:'Forskningen bakom råden',menu:'Om dig, mål och inställningar',train:'',kost:''};
 const NAV_OF={art:'learn',sheet:'train'};
 let curTab='today',backTo=null;
 function tab(t,fromBack){
@@ -1200,7 +1183,7 @@ function tab(t,fromBack){
   const isSub=t.startsWith('m-')||t==='art'||t==='sheet';
   if(!fromBack){backTo=isSub?((t==='art'||t==='sheet')?(curTab===t?backTo:curTab):'menu'):null;}
   curTab=t;
-  const navT=t.startsWith('m-')||t==='menu'?null:(NAV_OF[t]||t);
+  const navT=t.startsWith('m-')||t==='menu'?null:t==='sheet'?(backTo&&!backTo.startsWith('m-')&&backTo!=='menu'?(NAV_OF[backTo]||backTo):null):(NAV_OF[t]||t);
   const n=navT&&document.querySelector(`.ni[data-t="${navT}"]`);if(n)n.classList.add('active');
   backBtn.style.display=isSub?'flex':'none';setBtn.style.display=(t==='menu'||isSub)?'none':'flex';
   hdrB.style.display=t==='today'?'block':'none';
@@ -1208,7 +1191,7 @@ function tab(t,fromBack){
   window.scrollTo(0,0);
   if(t==='today')refresh();
   if(t==='train')sub('train',SUBS.train);if(t==='kost')sub('kost',SUBS.kost);
-  if(t==='hist')renderHist();if(t==='m-prof')renderProf();if(t==='learn')renderLearn();
+  if(t==='hist')renderHist();if(t==='menu')renderProfileHub();if(t==='m-prof')renderProf();if(t==='learn')renderLearn();
   if(t==='m-guide')renderGuide();if(t==='m-ord')renderOrd();if(t==='m-src')renderSrc();
   if(t==='m-data')wipeBox.style.display='none';
 }
@@ -1241,7 +1224,7 @@ function refresh(){
   hrvB.textContent=hs==='low'?'Låg':hs==='high'?'Hög':'Normal';hrvB.className='badge '+(hs==='low'?'low':'ok');
   hint.textContent=a.recText;
   const season=SEASON[S.season]||SEASON.normal;
-  hdrB.textContent=phase.planLabel!=null?('Vecka '+phase.weekInPhase+'/'+phase.totalWeeks+(phase.planLabel?' · '+phase.planLabel:'')):(PHASE_SV[phase.phase]+' · v'+phase.weekInPhase+'/'+phase.totalWeeks);
+  hdrB.textContent=phase.planLabel!=null?('Vecka '+phase.weekInPhase+'/'+phase.totalWeeks+(phase.planLabel&&!/^Vecka/.test(phase.planLabel)?' · '+phase.planLabel:'')):(PHASE_SV[phase.phase]+' · v'+phase.weekInPhase+'/'+phase.totalWeeks);
   hrvBaseTxt.textContent=S.hrvBase;
   try{const m=macros();tileKcal.textContent=Math.max(0,m.cal-S.loggedKcal*(S.mealDate===new Date().toLocaleDateString('sv-SE')?1:0))+'';tileProt.textContent='kcal kvar · '+m.protein+' g prot';
     const st=fastState();tileFast.textContent=(FAST[S.fast]||FAST.none).label;tileFastSub.textContent=st.txt;}catch(e){}
@@ -1294,7 +1277,7 @@ function refresh(){
 
   // Recovery
   recTxt.textContent=a.rec.left+' / '+a.rec.max;recSub.textContent='kvar denna vecka';
-  recBar.style.width=a.rec.pct+'%';recBar.style.background=a.rec.pct<20?'var(--d)':a.rec.pct<40?'var(--w)':'linear-gradient(90deg,#2dd4bf,#5eead4)';
+  recBar.style.width=a.rec.pct+'%';recBar.style.background=a.rec.pct<20?'var(--d)':a.rec.pct<40?'var(--w)':'linear-gradient(90deg,var(--p2),var(--p))';
   coachRec.innerHTML=`<strong>Coach:</strong> Budgeten minskar med tunga set. Under 15 → motorn skyddar dig automatiskt.`;
 
   const fatLabel={very_high:'Mycket hög',high:'Hög',moderate:'Måttlig',low:'Låg',very_low:'Mycket låg'}[fatigue.level];
@@ -1545,7 +1528,7 @@ const DAYN=['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
 const GOAL_TXT={fat_loss:'Gå ner i fett',hypertrophy:'Bygga muskler',recomp:'Båda samtidigt',strength:'Bli starkare',maintain:'Behålla'};
 const EXP_GAIN={beginner:[1,1.5],intermediate:[0.5,1],advanced:[0.25,0.5]}; // % kroppsvikt/månad (Helms/Aragon-pyramiden, Iraki 2019)
 const RATE_MUL={slow:0.7,std:1,fast:1.3};
-const SHOP=['Kyckling, färs, fisk','Ägg','Kvarg / grekisk yoghurt','Havregryn','Ris, potatis, pasta','Broccoli & frysta grönsaker','Bananer & bär','Bönor, linser','Whey/kasein (vid behov)','Olivolja, nötter','Kreatin monohydrat'];
+const SHOP=[['Kyckling, nötfärs',['m']],['Lax, torsk, tonfisk',['f']],['Ägg',['e']],['Kvarg / grekisk yoghurt',['d']],['Tofu, tempeh, sojayoghurt',[]],['Bönor, linser, kikärtor',[]],['Havregryn, quinoa, bulgur',[]],['Ris, potatis, pasta',[]],['Broccoli & frysta grönsaker',[]],['Bananer & bär',[]],['Whey eller ärtprotein (vid behov)',[]],['Olivolja, nötter, frön',[]],['Kreatin monohydrat',[]]];
 
 function srcTag(ids){return(ids||[]).map(id=>`<span class="src" onclick="showSrc('${id}')">[${Object.keys(SRC).indexOf(id)+1}]</span>`).join('');}
 function showSrc(id){const s=SRC[id];if(!s)return;hTitle.textContent='Källa ['+(Object.keys(SRC).indexOf(id)+1)+']';hBody.innerHTML=`<b>${s.t}</b><br>${s.d}<br><br><span class="muted">Alla källor finns under Meny → Evidens & källor.</span>`;helpModal.classList.add('on');}
@@ -1635,7 +1618,7 @@ function macros(){
   }
   const carbs=Math.max(low?20:80,Math.round((cal-protein*4-fat*9)/4));
   const fiber=Math.min(40,Math.max(25,Math.round(cal/1000*14)));
-  const mealsN=low?2:f.meals;
+  const pm=(S.prof||{}).meals;const mealsN=low?2:(f.type==='none'?(pm||f.meals):Math.min(f.meals,pm||f.meals));
   const proteinPerMeal=Math.round(protein/mealsN);
   return{cal,protein,carbs,fat,fiber,ep,bc,phase,load:+load.toFixed(0),pBasis,proteinPerMeal,mealsN,f,low,fatKg,dayMod};
 }
@@ -1645,7 +1628,7 @@ function nutritionCoach(m){
   T(`Protein ${m.protein} g/dag (${m.pBasis}).`,m.bc.ffm&&m.ep.delta<0?['helms','morton']:['morton','issn_prot']);
   if(m.proteinPerMeal/bw>0.55&&m.mealsN<=2)T(`Med ${m.mealsN} mål blir det ${m.proteinPerMeal} g protein per mål – det går, men 3–4 mål à ~${Math.round(bw*0.4)} g är mer optimalt för muskler.`,['sch_ar']);
   else T(`Fördela proteinet på ${m.mealsN} mål à ca ${m.proteinPerMeal} g.`,['sch_ar','issn_prot']);
-  if(S.goal==='fat_loss')T(`Sikta på ca ${m.ep.ratePct} % av kroppsvikten per vecka (≈${(m.ep.ratePct/100*bw).toFixed(1)} kg). Långsammare = mer muskler kvar.`,['helms_prep','garthe']);
+  if(S.goal==='fat_loss')T(`Sikta på ca ${String(m.ep.ratePct).replace('.',',')} % av kroppsvikten per vecka (≈${(m.ep.ratePct/100*bw).toFixed(1).replace('.',',')} kg). Långsammare = mer muskler kvar.`,['helms_prep','garthe']);
   if(S.goal==='hypertrophy'&&m.ep.gainRange)T(`Rimlig viktökning för din erfarenhet: ${m.ep.gainRange[0]}–${m.ep.gainRange[1]} % per månad (≈${(m.ep.gainRange[0]/100*bw).toFixed(1)}–${(m.ep.gainRange[1]/100*bw).toFixed(1)} kg). Går det fortare är det mest fett.`,['iraki']);
   if(S.goal==='recomp')T('Ät nära underhåll, högt protein och träna progressivt. Vågen står ofta still – följ midjemått och styrka istället.',['barakat']);
   m.ep.notes.forEach(n=>T(n,m.ep.srcs));
@@ -1741,7 +1724,7 @@ function renderKost(){
   if(S.mealDate!==today){S.meals=[];S.loggedKcal=0;S.mealDate=today;save();}
   const lp=S.meals.reduce((s,x)=>s+(x.p||0),0);
   loggedK.textContent=S.loggedKcal+' kcal · '+lp+' g protein';kb.style.width=Math.min(100,S.loggedKcal/m.cal*100)+'%';
-  mealEx.innerHTML=MEALS.map((x,i)=>`<div class="row between" style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;cursor:pointer" onclick="quickMeal(${i})">
+  mealEx.innerHTML=MEALS.map((x,i)=>!dietOk(x.t)?'':`<div class="row between" style="padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer" onclick="quickMeal(${i})">
     <span>${x.d}<br><span class="muted" style="font-size:11px">${x.when||''} · protein ${x.p} g</span></span><span class="muted">${x.k} kcal</span></div>`).join('');
   meals.innerHTML=S.meals.map((x,i)=>`<div class="row between" style="padding:6px 0;font-size:13px"><span>${x.d}</span><span>${x.k} kcal${x.p?' · '+x.p+' g':''} <button class="btn g sm" onclick="delMeal(${i})">✕</button></span></div>`).join('');
   // Fasta
@@ -1781,11 +1764,11 @@ function renderKost(){
   // Råd
   nAdvice.innerHTML=coach.tips.map(t=>`<div class="tip">${t.t} ${srcTag(t.s)}</div>`).join('');
   periBox.innerHTML=`<div class="coach">${coach.peri}</div>`+coach.supplements.map(s=>`<div class="tip">• ${s[0]} ${srcTag(s[1])}</div>`).join('');
-  shopList.innerHTML=SHOP.map(x=>'• '+x).join('<br>');
+  shopList.innerHTML=SHOP.filter(x=>dietOk(x[1])).map(x=>'• '+x[0]).join('<br>')+((S.prof||{}).diet==='vegan'?`<p class="fh" style="margin-top:8px">Vegan: tänk på B12 och kombinera proteinkällor (baljväxter + spannmål) för att nå proteinmålet.</p>`:'');
   fastLearn.innerHTML=artLinks('fasta',6);radLearn.innerHTML=`<div class="mlist">${['kost-protein','kost-takt','kost-kolhydrat','till-kreatin','till-d','myter'].map(id=>artCard(ARTS.find(a=>a.id===id))).join('')}</div>`;
   nutWhy.innerHTML=`<div class="tip">Underhållsbehov = vilometabolism × aktivitetsnivå (${S.act||1.55}). ${srcTag([m.ep.bmrSrc])}</div>
     <div class="tip">Mål-kalorier = underhåll ${m.ep.delta>=0?'+':''}${m.ep.delta} (mål) ${m.dayMod>=0?'+':''}${m.dayMod} (dagens träning)${m.low?' → lågdag 25 %':''}.</div>
-    <div class="tip">Fett minst ${m.fatKg} g/kg och 20–35 % av energin; resten blir kolhydrater (${(m.carbs/S.bw).toFixed(1)} g/kg).</div>
+    <div class="tip">Fett minst ${String(m.fatKg).replace('.',',')} g/kg och 20–35 % av energin; resten blir kolhydrater (${(m.carbs/S.bw).toFixed(1)} g/kg).</div>
     <div class="tip">Fibrer ≈ 14 g per 1000 kcal, minst 25 g. ${srcTag(['nnr'])}</div>`;
 }
 function quickMeal(i){const x=MEALS[i];S.meals.push({d:x.d,k:x.k,p:x.p});S.loggedKcal+=x.k;save();renderKost();refresh();toast('+'+x.k+' kcal');}
@@ -1859,7 +1842,9 @@ const ICONS={
  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
  scale:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8.5 9a5 5 0 0 1 7 0l-2.5 3"/>',
  flame:'<path d="M12 3c.5 3.5 5 5.5 5 10.5a5 5 0 0 1-10 0c0-2.8 1.6-4.4 2.5-6 .7 1.3 1.5 2.2 2.5 2.7C12.3 8 12 5.5 12 3z"/>',
- play:'<path d="M7 4.5v15l13-7.5z"/>'
+ play:'<path d="M7 4.5v15l13-7.5z"/>',
+ zap:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>'
 };
 function ic(n,c){return `<svg class="ico ${c||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`;}
 function paintIcons(root){(root||document).querySelectorAll('[data-ic]').forEach(el=>{if(!el.dataset.done){el.innerHTML=ic(el.dataset.ic)+el.innerHTML;el.dataset.done=1;}});}
@@ -2206,7 +2191,7 @@ function renderProgram(){
   const lowM=top.filter(([m,v])=>v<10).map(([m])=>m);
   progBox.innerHTML=`<div class="card glow">
     <div class="row between"><div><div class="kt" style="margin:0">Ditt program</div><div style="font-size:17px;font-weight:700;margin-top:2px">${S.plan.name||'Mitt schema'}</div></div><button class="iconbtn" onclick="openGen()" aria-label="Nytt program">${ic('refresh')}</button></div>
-    <div class="blk"><div class="row between" style="font-size:12px"><span><b>Vecka ${cw+1}</b> av ${nW}${blockRound()>1?' · varv '+blockRound():''}</span><span class="muted">${(S.plan.weeks[cw].mod||{}).label||''}</span></div><div class="bar" style="margin-top:6px"><div class="fill" style="width:${(cw+1)/nW*100}%;background:linear-gradient(90deg,#2dd4bf,#5eead4)"></div></div></div>
+    <div class="blk"><div class="row between" style="font-size:12px"><span><b>Vecka ${cw+1}</b> av ${nW}${blockRound()>1?' · varv '+blockRound():''}</span><span class="muted">${(S.plan.weeks[cw].mod||{}).label||''}</span></div><div class="bar" style="margin-top:6px"><div class="fill" style="width:${(cw+1)/nW*100}%;background:linear-gradient(90deg,var(--p2),var(--p))"></div></div></div>
     <div class="pstats"><div><b>${st.str}</b><span>styrkepass</span></div><div><b>${st.cmin}</b><span>min kondition</span></div><div><b>${st.dbl}</b><span>dubbelpass</span></div><div><b>${st.rest}</b><span>vilodagar</span></div></div>
     <div class="checks">
       <div class="chk ${st.sdays>=2?'good':'bad'}">${ic(st.sdays>=2?'check':'info')}<span>Styrka ${st.sdays} dagar/v · WHO: minst 2 ${srcTag(['who'])}</span></div>
@@ -2302,7 +2287,7 @@ function pickSheet(){
 const GOALS_T={hypertrophy:['Bygga muskler','dumbbell'],strength:['Bli starkare','zap'],fat_loss:['Gå ner i fett','flame'],endurance:['Bättre kondition','refresh'],health:['Hälsa & allround','target']};
 let GEN=null;
 function openGen(){
-  GEN={goal:{fat_loss:'fat_loss',hypertrophy:'hypertrophy',recomp:'hypertrophy',strength:'strength',maintain:'health'}[S.goal]||'hypertrophy',days:Math.min(7,Math.max(2,S.freq||4)),len:60,eq:'gym',exp:S.exp||'beginner',dbl:false,mod:'Valfri',weeks:8,light:'auto',prev:null};
+  GEN=genFromProfile();
   openSheet(genSheet);
 }
 function gset(k,v){GEN[k]=v;GEN.prev=null;renderSheet();}
@@ -2358,7 +2343,7 @@ function buildProgram(G){
   let s,cWant;
   if(G.goal==='hypertrophy'){s=Math.min(n,6);cWant=n>=7?1:0;}
   else if(G.goal==='strength'){s=Math.min(n,5);cWant=Math.max(0,n-5);}
-  else if(G.goal==='fat_loss'){s=Math.min(n,4);cWant=Math.max(2,n-4);}
+  else if(G.goal==='fat_loss'){s=n<=3?n:Math.min(4,n-1);cWant=Math.max(2,n-s);}
   else if(G.goal==='endurance'){s=n>=3?2:1;cWant=Math.max(2,n-s);}
   else{s=Math.min(n,3);cWant=Math.max(2,n-s);}
   if(beg&&s>4){s=4;}
@@ -2459,15 +2444,15 @@ function plannedThisWeek(){if(S.plan)return curDays().reduce((a,l)=>a+l.length,0
 function weekStreak(){let n=0;const now=mondayOf(new Date()).getTime();for(let w=0;w<52;w++){const a=now-w*7*864e5,b=a+7*864e5;const has=S.logs.some(l=>l.ts>=a&&l.ts<b);if(has)n++;else if(w>0)break;}return n;}
 function estMin(list){return Math.round(8+list.reduce((t,e)=>t+e.sets*(roleOf(e)==='m'?3:roleOf(e)==='s'?2.5:1.8),0)/5)*5;}
 function ringSvg(done,total){const r=26,c=2*Math.PI*r,pct=total?Math.min(1,done/total):0;
-  return `<svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--sf3)" stroke-width="6"/><circle cx="32" cy="32" r="${r}" fill="none" stroke="url(#rg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}" transform="rotate(-90 32 32)"/><defs><linearGradient id="rg"><stop offset="0" stop-color="#2dd4bf"/><stop offset="1" stop-color="#818cf8"/></linearGradient></defs></svg><div class="rv"><b>${done}/${total}</b><span>pass</span></div>`;}
+  return `<svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="${r}" fill="none" stroke="var(--sf3)" stroke-width="6"/><circle cx="32" cy="32" r="${r}" fill="none" stroke="url(#rg)" stroke-width="6" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}" transform="rotate(-90 32 32)"/><defs><linearGradient id="rg"><stop offset="0" style="stop-color:var(--p2)"/><stop offset="1" style="stop-color:var(--a)"/></linearGradient></defs></svg><div class="rv"><b>${done}/${total}</b><span>pass</span></div>`;}
 function renderHome(){
   const h=new Date().getHours();greetTxt.textContent=h<5?'God natt':h<10?'God morgon':h<17?'Hej':h<22?'God kväll':'God natt';
   helloTxt.textContent=S.name||'Välkommen';
-  homeSub.textContent=S.plan?(S.plan.name+' · vecka '+(curWi()+1)+'/'+S.plan.weeks.length+((curMod().label)?' · '+curMod().label:'')):'Standardupplägg · '+(S.freq||4)+' pass/vecka';
+  homeSub.textContent=S.plan?(S.plan.name+' · vecka '+(curWi()+1)+'/'+S.plan.weeks.length+((curMod().label&&!/^Vecka/.test(curMod().label))?' · '+curMod().label:'')):'Standardupplägg · '+(S.freq||4)+' pass/vecka';
   const lw=logsThisWeek(),pl=plannedThisWeek();weekRing.innerHTML=ringSvg(Math.min(lw.length,pl),pl);
   // veckoremsa
   const mon=mondayOf(new Date()),ti=todayIdx();
-  const stdDays=!S.plan?(DAYS[S.freq]||DAYS[4]):null;
+  const stdDays=!S.plan?(DAYS[S.freq]||DAYS[4]):null;applyHomeLayout();
   weekStrip.innerHTML=DAYN.map((d,i)=>{const dt=new Date(mon.getTime()+i*864e5),ds=dt.toLocaleDateString('sv-SE');
     const planned=S.plan?(curDays()[i]||[]):(stdDays.includes(d)?[{k:'std'}]:[]);
     const done=S.logs.filter(l=>l.date===ds).length;
@@ -2483,12 +2468,181 @@ function renderHome(){
   else if(card){sessionMeta.innerHTML=`<span>${ic('clock')}${cardioMin(S.sessionKey)} min</span><span>${ic('flame')}${(CARDIO[cT(S.sessionKey).cardio.proto]||CARDIO.z2).short}</span>`;exSum.textContent='Upplägg';}
   else{const t=currentSession(),mus=[...new Set(t.flatMap(e=>(EX[e.id]||{m:[]}).m))].slice(0,3);
     sessionMeta.innerHTML=`<span>${ic('list')}${t.length} övningar</span><span>${ic('clock')}ca ${estMin(t)} min</span>${mus.length?`<span>${ic('target')}${mus.join(', ')}</span>`:''}`;exSum.textContent='Övningar ('+t.length+')';}
+  renderWhy();
+  if((S.prof||{}).sleep&&S.prof.sleep<=6&&!isRestToday())coachToday.innerHTML+=` · Du sover ofta kort – sömnbrist bromsar muskeluppbyggnaden ${srcTag(['lamon'])}`;
   // svit
   const st=weekStreak();tileStreak.textContent=st+' v';tileStreakSub.textContent=st?'veckor i rad med träning':'Kör ett pass för att starta';
   // dagens fakta
   const doy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/864e5),a=ARTS[doy%ARTS.length],c=CATS[a.cat];
   tipCard.innerHTML=`<div class="row between"><div class="kt" style="margin:0">${ic('book')} Dagens fakta</div><span class="ev ${a.ev}">${a.ev}</span></div><div class="tt">${a.keys[0]}</div><div class="muted" style="font-size:12.5px;line-height:1.45">${a.lead}</div><button class="btn o sm" style="margin-top:10px" onclick="openArt('${a.id}')">Läs: ${a.t} ${ic('chev')}</button>`;
 }
+
+/* ===================== PROFIL, TEMA, STARTGUIDE, HEMSKÄRM ===================== */
+const ACCENTS={teal:['Turkos','#5eead4','#2dd4bf','#0d9488','#0f766e'],violet:['Lila','#c4b5fd','#a78bfa','#7c3aed','#6d28d9'],blue:['Blå','#93c5fd','#60a5fa','#2563eb','#1d4ed8'],rose:['Rosa','#fda4af','#fb7185','#e11d48','#be123c'],orange:['Orange','#fdba74','#fb923c','#ea580c','#c2410c'],lime:['Lime','#bef264','#a3e635','#65a30d','#4d7c0f'],gold:['Guld','#fcd34d','#fbbf24','#d97706','#b45309']};
+function themeMode(){const t=(S.ui||{}).theme||'dark';return t==='auto'?(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):t;}
+function applyTheme(){
+  const ui=S.ui||{},a=ACCENTS[ui.accent]||ACCENTS.teal,light=themeMode()==='light',r=document.documentElement;
+  r.dataset.theme=light?'light':'dark';r.dataset.font=ui.font==='large'?'large':'normal';
+  r.style.setProperty('--p',light?a[3]:a[1]);r.style.setProperty('--p2',light?a[4]:a[2]);r.style.setProperty('--onp',light?'#ffffff':'#06120f');
+  const m=document.querySelector('meta[name=theme-color]');if(m)m.content=light?'#f3f5f9':'#080a0f';
+  try{renderAvatar();}catch(e){}
+}
+function initials(){const n=(S.name||'').trim();if(!n)return'?';const p=n.split(/\s+/);return((p[0][0]||'')+(p.length>1?p[p.length-1][0]:'')).toUpperCase();}
+function renderAvatar(){if(window.setBtn)setBtn.innerHTML=`<span class="av sm">${initials()}</span>`;}
+
+/* ---------- bindningar för formulär ---------- */
+let RR=()=>renderSheet();
+function pget(path){return path.split('.').reduce((o,k)=>o==null?o:o[k],S);}
+function pset(path,v,rr){
+  const ks=path.split('.');let o=S;for(let i=0;i<ks.length-1;i++){if(o[ks[i]]==null||typeof o[ks[i]]!=='object')o[ks[i]]={};o=o[ks[i]];}
+  o[ks[ks.length-1]]=v;onPset(path,v);save();if(rr)RR();else flashSaved();
+}
+function onPset(path,v){
+  const today=todayStr();
+  if(path==='bw'&&v){S.bwLog=(S.bwLog||[]).filter(x=>x.date!==today);S.bwLog.push({ts:Date.now(),date:today,v});}
+  if(['waist','neck','hip','prof.chest','prof.arm','prof.thigh'].includes(path)){S.measLog=(S.measLog||[]);let e=S.measLog.find(x=>x.date===today);if(!e){e={date:today,ts:Date.now()};S.measLog.push(e);}e[path.replace('prof.','')]=v;S.measLog=S.measLog.slice(-60);}
+  if(path.startsWith('ui.'))applyTheme();
+  if(path==='name')renderAvatar();
+  if(path==='freq'&&!S.plan){S.sIdx=0;S.sessionKey=rotation()[0].k;}
+}
+let _fs;function flashSaved(){const el=document.getElementById('savedFlag');if(!el)return;el.classList.add('on');clearTimeout(_fs);_fs=setTimeout(()=>el.classList.remove('on'),1100);}
+const esc=v=>String(v==null?'':v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const F={
+  num:(l,p,o={})=>`<div class="fld"><label class="f">${l}</label><div class="inunit"><input type="number" inputmode="decimal" step="${o.step||1}" ${o.min!=null?`min="${o.min}"`:''} ${o.max!=null?`max="${o.max}"`:''} placeholder="${o.ph||''}" value="${pget(p)??''}" onchange="pset('${p}',this.value===''?null:+this.value${o.rr?',true':''})"/>${o.unit?`<span>${o.unit}</span>`:''}</div>${o.help?`<p class="fh">${o.help}</p>`:''}</div>`,
+  text:(l,p,o={})=>`<div class="fld"><label class="f">${l}</label>${o.area?`<textarea rows="3" placeholder="${o.ph||''}" onchange="pset('${p}',this.value)">${esc(pget(p))}</textarea>`:`<input type="${o.type||'text'}" placeholder="${o.ph||''}" value="${esc(pget(p))}" onchange="pset('${p}',this.value)"/>`}${o.help?`<p class="fh">${o.help}</p>`:''}</div>`,
+  chips:(l,p,opts,o={})=>{const cur=pget(p);return `<div class="fld"><label class="f">${l}</label><div class="chips">${opts.map(([v,t])=>{const on=o.multi?(cur||[]).includes(v):cur===v;return `<div class="chip ${on?'on':''}" onclick='${o.multi?`ptoggle("${p}",${JSON.stringify(v)})`:`pset("${p}",${JSON.stringify(v)},true)`}'>${t}</div>`;}).join('')}</div>${o.help?`<p class="fh">${o.help}</p>`:''}</div>`;},
+  cards:(l,p,opts)=>{const cur=pget(p);return `<div class="fld">${l?`<label class="f">${l}</label>`:''}<div class="fgrid g2">${opts.map(([v,t,i,sub])=>`<div class="fo ${cur===v?'on':''}" onclick='pset("${p}",${JSON.stringify(v)},true)'>${i?ic(i):''}<b>${t}</b>${sub?`<span>${sub}</span>`:''}</div>`).join('')}</div></div>`;}
+};
+function ptoggle(p,v){const a=(pget(p)||[]).slice();const i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.push(v);pset(p,a,true);}
+const SAVED='<div class="saved" id="savedFlag">'+'✓ Sparat'+'</div>';
+
+/* ---------- fullständighet ---------- */
+function profChecks(){const P=S.prof||{};return[
+  ['Namn',!!S.name&&S.name!=='Demo','about'],['Kön, ålder & längd',!!(S.sex&&S.age&&S.height),'about'],['Vikt',!!S.bw,'body'],['Fettprocent eller midjemått',!!(S.bf||S.waist),'body'],
+  ['Mål',!!S.goal,'goals'],['Målvikt',!!S.goalW,'goals'],['Ditt varför',!!(P.why&&P.why.trim()),'goals'],
+  ['Erfarenhet',!!S.exp,'train'],['Utrustning & tid',!!(P.equip&&P.len),'train'],['Sömn',!!P.sleep,'health'],['Kosthållning',!!P.diet,'diet']];}
+function profPct(){const c=profChecks();return Math.round(c.filter(x=>x[1]).length/c.length*100);}
+
+/* ---------- profilhubb ---------- */
+const GOAL_LBL={fat_loss:'Gå ner i fett',hypertrophy:'Bygga muskler',recomp:'Båda samtidigt',strength:'Bli starkare',maintain:'Behålla',endurance:'Bättre kondition'};
+function renderProfileHub(){
+  const P=S.prof||{},pct=profPct(),miss=profChecks().filter(x=>!x[1]),bc=bodyComp();
+  const r=22,c=2*Math.PI*r;
+  profHub.innerHTML=`<div class="card phead">
+    <div class="row" style="gap:14px"><div class="av lg">${initials()}</div><div style="flex:1;min-width:0"><div class="pn">${esc(S.name||'Din profil')}</div><div class="muted">${GOAL_LBL[S.goal]||'Inget mål valt'}${S.goalW?` · ${S.bw} → ${S.goalW} kg`:''}</div></div>
+    <div class="pring"><svg viewBox="0 0 52 52" width="52" height="52"><circle cx="26" cy="26" r="${r}" fill="none" stroke="var(--sf3)" stroke-width="5"/><circle cx="26" cy="26" r="${r}" fill="none" stroke="var(--p)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}" transform="rotate(-90 26 26)"/></svg><b>${pct}%</b></div></div>
+    <div class="pstats" style="margin-bottom:0">${[['Vikt',S.bw?S.bw+' kg':'—'],['Längd',S.height?S.height+' cm':'—'],['Ålder',S.age||'—'],['Fett',bc.bf!=null?bc.bf+' %':'—']].map(([l,v])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+    ${miss.length?`<div class="pmiss" onclick="openProf('${miss[0][2]}')">${ic('info')}<span>Fyll i <b>${miss[0][0].toLowerCase()}</b>${miss.length>1?` och ${miss.length-1} till`:''} för mer personliga råd</span>${ic('chev')}</div>`:`<div class="pmiss done">${ic('check')}<span>Profilen är komplett – råden är anpassade efter dig</span></div>`}
+  </div>
+  <div class="kt">Om dig</div>
+  <div class="mlist">${[['about','user','Om mig','Namn, kön, ålder, längd'],['body','scale','Kropp & mått','Vikt, fettprocent, kroppsmått'],['goals','target','Mål & motivation','Mål, målvikt, måldatum, ditt varför'],['train','dumbbell','Träning','Erfarenhet, dagar, tid, utrustning'],['health','moon','Hälsa & återhämtning','Begränsningar, sömn, stress, aktivitet'],['diet','food','Kost','Kosthållning och måltider']].map(([k,i,t,d])=>`<div class="mi" onclick="openProf('${k}')"><span class="mic">${ic(i)}</span><div><b>${t}</b><div class="muted">${d}</div></div><span class="chev">${ic('chev')}</span></div>`).join('')}</div>
+  <div class="kt" style="margin-top:16px">Anpassa appen</div>
+  <div class="mlist">${[['look','compass','Utseende','Ljust/mörkt tema, färg, textstorlek'],['home','home','Hemskärm','Välj och sortera korten']].map(([k,i,t,d])=>`<div class="mi" onclick="openProf('${k}')"><span class="mic">${ic(i)}</span><div><b>${t}</b><div class="muted">${d}</div></div><span class="chev">${ic('chev')}</span></div>`).join('')}</div>
+  <div class="kt" style="margin-top:16px">Hjälp & data</div>
+  <div class="mlist">${[['m-guide','compass','Så funkar appen'],['m-ord','chat','Ordlista'],['m-src','flask','Evidens & källor'],['m-data','database','Data & backup']].map(([k,i,t])=>`<div class="mi" onclick="tab('${k}')"><span class="mic">${ic(i)}</span><div><b>${t}</b></div><span class="chev">${ic('chev')}</span></div>`).join('')}</div>
+  <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Aether v9 · All data sparas bara på din enhet · Ersätter inte råd från vården</p>`;
+}
+function openProf(k){RR=()=>renderSheet();openSheet(PROF_SHEETS[k]);}
+const PROF_SHEETS={
+ about:()=>({t:'Om mig',s:'Grunduppgifter',h:SAVED+F.text('Namn','name',{ph:'Ditt namn'})+F.chips('Kön','sex',[['m','Man'],['f','Kvinna']],{help:'Används i formler för energibehov och fettprocent.'})+`<div class="g3">${F.num('Ålder','age',{unit:'år',min:13,max:99})}${F.num('Längd','height',{unit:'cm',min:120,max:230})}${F.num('Vikt','bw',{unit:'kg',step:.1,rr:true})}</div>`}),
+ body:()=>{const bc=bodyComp(),ml=(S.measLog||[]).slice(-4).reverse();return{t:'Kropp & mått',s:'Uppdateras i dina beräkningar direkt',h:SAVED+
+   `<div class="g2c">${F.num('Vikt idag','bw',{unit:'kg',step:.1,rr:true})}${F.num('Målvikt','goalW',{unit:'kg',step:.5,rr:true})}</div>`+
+   F.chips('Fettprocent','bfMode',[['none','Vet inte'],['tape','Mät med måttband'],['known','Jag vet min %']])+
+   (S.bfMode==='known'?F.num('Fettprocent','bf',{unit:'%',step:.5,rr:true,help:'Från DEXA, InBody eller kaliper.'}):'')+
+   `<div class="kt" style="margin-top:14px">Kroppsmått</div><div class="g3">${F.num('Midja','waist',{unit:'cm',step:.5,rr:true})}${F.num('Hals','neck',{unit:'cm',step:.5,rr:true})}${S.sex==='f'?F.num('Höft','hip',{unit:'cm',step:.5,rr:true}):''}</div>
+    <div class="g3">${F.num('Bröst','prof.chest',{unit:'cm',step:.5})}${F.num('Överarm','prof.arm',{unit:'cm',step:.5})}${F.num('Lår','prof.thigh',{unit:'cm',step:.5})}</div>
+    <p class="fh">Mät på morgonen, avslappnad. Midja ${S.sex==='f'?'vid smalaste stället':'i höjd med naveln'}, hals under struphuvudet.</p>`+
+   `<div class="card" style="margin-top:12px"><div class="row" style="gap:6px">${[['Fett',bc.bf!=null?bc.bf+' %':'—'],['Fettfri massa',bc.ffm?bc.ffm+' kg':'—'],['BMI',bc.bmi]].map(([l,v])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('')}</div>${bc.src==='tape'?`<p class="fh" style="margin-top:8px">Fettprocent uppskattad med måttband (US Navy-metoden), felmarginal ca ±3–4 procentenheter. ${srcTag(['navy'])}</p>`:''}</div>`+
+   (ml.length?`<div class="kt" style="margin-top:12px">Senaste mätningar</div><div class="card">${ml.map(e=>`<div class="plan-row"><span class="muted">${e.date}</span><span>${['waist','neck','hip','chest','arm','thigh'].filter(k=>e[k]).map(k=>({waist:'midja',neck:'hals',hip:'höft',chest:'bröst',arm:'arm',thigh:'lår'})[k]+' '+e[k]).join(' · ')}</span></div>`).join('')}</div>`:'')};},
+ goals:()=>{const P=S.prof||{};let pace='';
+   if(S.goalW&&P.deadline){const wk=Math.max(1,(new Date(P.deadline)-Date.now())/(7*864e5)),need=(S.goalW-S.bw)/wk,pct=need/S.bw*100;
+     if(need<0){const a=Math.abs(pct);pace=`<div class="coach ${a>1?'warnbox':''}" style="margin-top:8px">Det kräver ca <b>${Math.abs(need).toFixed(2).replace('.',',')} kg/vecka</b> (${a.toFixed(1).replace('.',',')} % av kroppsvikten) i ${Math.round(wk)} veckor. ${a>1?'Det är snabbare än rekommenderat (0,5–1 %/vecka) och ökar risken att tappa muskler – överväg ett senare datum.':a<0.5?'Lugnt tempo – bra för att behålla muskler.':'Inom rekommenderat tempo (0,5–1 %/vecka).'} ${srcTag(['helms_prep','garthe'])}</div>`;}
+     else if(need>0){pace=`<div class="coach" style="margin-top:8px">Det kräver ca <b>${need.toFixed(2).replace('.',',')} kg/vecka</b> (${(pct*4.3).toFixed(1).replace('.',',')} % per månad). Rimlig ökning beror på erfarenhet: ca 1–1,5 %/mån för nybörjare, 0,25–0,5 %/mån för vana. ${srcTag(['iraki'])}</div>`;}}
+   return{t:'Mål & motivation',s:'Styr kost, program och tips',h:SAVED+
+   F.cards('Vad vill du främst uppnå?','goal',[['fat_loss','Gå ner i fett','flame'],['hypertrophy','Bygga muskler','dumbbell'],['recomp','Båda samtidigt','refresh'],['strength','Bli starkare','zap'],['maintain','Behålla & må bra','target']])+
+   F.chips('Takt','rate',[['slow','Lugn'],['std','Rekommenderad'],['fast','Snabb']])+
+   `<div class="g2c">${F.num('Målvikt','goalW',{unit:'kg',step:.5,rr:true})}${F.text('Måldatum (valfritt)','prof.deadline',{type:'date'})}</div>`+pace+
+   F.text('Ditt varför','prof.why',{area:true,ph:'T.ex. orka leka med barnen, känna mig stark på jobbet, springa Göteborgsvarvet…',help:'Visas på hemskärmen som påminnelse när motivationen tryter.'})+
+   F.chips('Säsong just nu','season',[['normal','Normal'],['cut','Deff'],['bulk','Bulk'],['vacation','Semester'],['competition','Tävling']])};},
+ train:()=>({t:'Träning',s:'Används när ditt program byggs',h:SAVED+
+   F.chips('Erfarenhet av styrketräning','exp',[['beginner','Under 1 år'],['intermediate','1–3 år'],['advanced','Över 3 år']])+
+   F.chips('Träningsdagar per vecka','freq',[2,3,4,5,6,7].map(n=>[n,String(n)]))+
+   F.chips('Tid per pass','prof.len',[[30,'30 min'],[45,'45 min'],[60,'60 min'],[75,'75 min'],[90,'90 min']])+
+   F.chips('Utrustning','prof.equip',[['gym','Gym'],['db','Hantlar hemma'],['bw','Bara kroppsvikt']])+
+   F.chips('Vad gillar du att träna?','prof.likes',[['styrka','Styrka'],['löpning','Löpning'],['cykel','Cykel'],['simning','Simning'],['rodd','Rodd'],['promenad','Promenader'],['rörlighet','Yoga/rörlighet'],['grupp','Gruppträning'],['lagsport','Lagsport']],{multi:true})+
+   `<button class="btn p full" onclick="openGenFromProfile()">${ic('target')}<span>Skapa program från min profil</span></button>`}),
+ health:()=>({t:'Hälsa & återhämtning',s:'Anpassar passen och råden',h:SAVED+
+   F.chips('Begränsningar / känsliga områden','limits',[['axel','Axel'],['knä','Knä'],['ländrygg','Ländrygg'],['armbåge','Armbåge']],{multi:true,help:'Övningar som brukar belasta området byts ut automatiskt.'})+
+   F.chips('Sömn en vanlig natt','prof.sleep',[[5,'≤5 h'],[6,'6 h'],[7,'7 h'],[8,'8 h'],[9,'9+ h']])+
+   F.chips('Stressnivå i vardagen','prof.stress',[['low','Låg'],['mid','Medel'],['high','Hög']])+
+   F.chips('Aktivitet utanför träningen','act',[[1.4,'Stillasittande'],[1.55,'Måttligt aktiv'],[1.7,'Fysiskt jobb']],{help:'Påverkar ditt beräknade energibehov.'})+
+   `<p class="fh" style="margin-top:10px">${ic('info')} Har du en skada eller sjukdom – rådgör med vården innan du ändrar träning eller kost.</p>`}),
+ diet:()=>({t:'Kost',s:'Påverkar måltidsförslag och inköpslista',h:SAVED+
+   F.chips('Kosthållning','prof.diet',[['omni','Allätare'],['flex','Flexitarian'],['pesc','Pescetarian'],['veg','Vegetarian'],['vegan','Vegan']])+
+   F.chips('Måltider per dag','prof.meals',[[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6']],{help:'Används för att fördela proteinet. 3–4 mål är bra för muskeluppbyggnad.'})+
+   `<button class="btn o full" onclick="SH=[];goSub('kost','fasta')">Ställ in fasta</button><button class="btn o full" onclick="SH=[];goSub('kost','kropp')">Se din kostplan</button>`}),
+ look:()=>({t:'Utseende',s:'Gör appen till din',h:SAVED+
+   F.cards('Tema','ui.theme',[['dark','Mörkt','moon'],['light','Ljust','sun'],['auto','Följ telefonen','refresh']])+
+   `<div class="fld"><label class="f">Färg</label><div class="swatches">${Object.entries(ACCENTS).map(([k,a])=>`<button class="sw ${(S.ui.accent||'teal')===k?'on':''}" style="--c:${a[2]}" onclick="pset('ui.accent','${k}',true)"><i></i><span>${a[0]}</span></button>`).join('')}</div></div>`+
+   F.chips('Textstorlek','ui.font',[['normal','Normal'],['large','Större']])}),
+ home:()=>{const H=S.ui.home;return{t:'Hemskärm',s:'Välj vad som visas och i vilken ordning',h:
+   `<div class="mlist">${H.order.map((k,i)=>`<div class="mi hrow"><span class="mic">${ic(HOME_SEC[k][1])}</span><div><b>${HOME_SEC[k][0]}</b><div class="muted">${HOME_SEC[k][2]}</div></div>
+     <div class="row" style="gap:4px"><button class="btn o sm" onclick="homeMove(${i},-1)" ${i===0?'disabled':''}>↑</button><button class="btn o sm" onclick="homeMove(${i},1)" ${i===H.order.length-1?'disabled':''}>↓</button>
+     <button class="tgl ${H.hidden.includes(k)?'':'on'}" onclick="homeToggle('${k}')" aria-label="Visa"><i></i></button></div></div>`).join('')}</div>
+   <button class="btn o full" onclick="S.ui.home=defaultHome();save();RR();applyHomeLayout()">Återställ standard</button>`};}
+};
+/* ---------- hemskärmens kort ---------- */
+const HOME_SEC={week:['Veckoremsa','calendar','Veckans dagar och klara pass'],checkin:['Dagsform','zap','Snabb incheckning varje dag'],hero:['Dagens pass','dumbbell','Passkort med startknapp'],why:['Mål & varför','target','Din motivation och målvikt'],tiles:['Snabbrutor','list','Kost, fasta, vikt och svit'],tip:['Dagens fakta','book','Ny kunskap varje dag'],adjust:['Justera & förklaring','info','Anpassa passet och se varför']};
+function defaultHome(){return{order:['week','checkin','hero','why','tiles','tip','adjust'],hidden:[]};}
+function homeMove(i,d){const o=S.ui.home.order,j=i+d;if(j<0||j>=o.length)return;[o[i],o[j]]=[o[j],o[i]];save();RR();applyHomeLayout();}
+function homeToggle(k){const h=S.ui.home.hidden,i=h.indexOf(k);if(i>=0)h.splice(i,1);else{if(k==='hero'&&!confirmHeroHide())return;h.push(k);}save();RR();applyHomeLayout();}
+function confirmHeroHide(){toast('Dagens pass döljs – starta pass via Träna');return true;}
+function applyHomeLayout(){
+  const pad=document.querySelector('#t-today .pad');if(!pad)return;const H=S.ui.home;
+  H.order.forEach(k=>{const el=pad.querySelector(`[data-hs="${k}"]`);if(el){pad.appendChild(el);el.style.display=H.hidden.includes(k)?'none':'';}});
+}
+function renderWhy(){
+  const el=document.getElementById('whyCard');if(!el)return;const P=S.prof||{};
+  const start=(S.bwLog&&S.bwLog.length)?S.bwLog[0].v:S.bw;
+  let prog='';
+  if(S.goalW&&start&&start!==S.goalW){const tot=S.goalW-start,done=S.bw-start,pct=Math.max(0,Math.min(100,done/tot*100));
+    prog=`<div class="row between" style="font-size:12px;margin-top:10px"><span class="muted">Start ${start} kg</span><b>${S.bw} kg</b><span class="muted">Mål ${S.goalW} kg</span></div><div class="bar" style="margin-top:6px"><div class="fill" style="width:${pct}%;background:linear-gradient(90deg,var(--p2),var(--p))"></div></div>
+      <div class="muted" style="font-size:11.5px;margin-top:6px">${Math.round(pct)} % av vägen${P.deadline?` · ${Math.max(0,Math.ceil((new Date(P.deadline)-Date.now())/864e5))} dagar kvar till ${P.deadline}`:''}</div>`;}
+  if(!P.why&&!S.goalW){el.innerHTML=`<div class="row" style="gap:12px;cursor:pointer" onclick="openProf('goals')"><div class="aic">${ic('target')}</div><div style="flex:1"><b style="font-size:14px">Sätt ditt mål och ditt varför</b><div class="muted" style="font-size:12px">Ger tydligare riktning och bättre råd</div></div>${ic('chev')}</div>`;return;}
+  el.innerHTML=`<div class="row between"><div class="kt" style="margin:0">${ic('target')} ${GOAL_LBL[S.goal]||'Mitt mål'}</div><button class="btn o sm" onclick="openProf('goals')">Ändra</button></div>${P.why?`<div class="whyq">”${esc(P.why)}”</div>`:''}${prog}`;
+}
+/* ---------- startguide ---------- */
+let OBS=0;const OB_N=6;
+function renderOB(){
+  RR=renderOB;const P=S.prof;
+  const steps=[
+   ()=>`<div class="obhero"><div class="av xl">${initials()}</div><h1>Välkommen till Aether</h1><p>Din personliga coach för träning, kost och fasta – byggd på forskning. Det tar ca 2 minuter.</p></div>`+F.text('Vad heter du?','name',{ph:'Förnamn'})+
+     `<div class="fld"><label class="f">Välj din färg</label><div class="swatches">${Object.entries(ACCENTS).map(([k,a])=>`<button class="sw ${(S.ui.accent||'teal')===k?'on':''}" style="--c:${a[2]}" onclick="pset('ui.accent','${k}',true)"><i></i><span>${a[0]}</span></button>`).join('')}</div></div>`+F.chips('Tema','ui.theme',[['dark','Mörkt'],['light','Ljust'],['auto','Som telefonen']]),
+   ()=>`<h2 class="obt">Om dig</h2><p class="obp">Används för att räkna ut ditt energibehov.</p>`+F.chips('Kön','sex',[['m','Man'],['f','Kvinna']])+`<div class="g3">${F.num('Ålder','age',{unit:'år'})}${F.num('Längd','height',{unit:'cm'})}${F.num('Vikt','bw',{unit:'kg',step:.1})}</div>`+F.chips('Aktivitet utanför träningen','act',[[1.4,'Stillasittande'],[1.55,'Måttligt aktiv'],[1.7,'Fysiskt jobb']]),
+   ()=>`<h2 class="obt">Ditt mål</h2><p class="obp">Vad vill du främst uppnå?</p>`+F.cards('','goal',[['fat_loss','Gå ner i fett','flame'],['hypertrophy','Bygga muskler','dumbbell'],['recomp','Båda samtidigt','refresh'],['strength','Bli starkare','zap'],['maintain','Behålla & må bra','target']])+`<div class="g2c">${F.num('Målvikt (valfritt)','goalW',{unit:'kg',step:.5})}${F.text('Måldatum (valfritt)','prof.deadline',{type:'date'})}</div>`+F.text('Ditt varför (valfritt)','prof.why',{area:true,ph:'Varför är det här viktigt för dig?'}),
+   ()=>`<h2 class="obt">Träning</h2><p class="obp">Så bygger vi ett program som passar din vardag.</p>`+F.chips('Erfarenhet','exp',[['beginner','Under 1 år'],['intermediate','1–3 år'],['advanced','Över 3 år']])+F.chips('Dagar per vecka','freq',[2,3,4,5,6,7].map(n=>[n,String(n)]))+F.chips('Tid per pass','prof.len',[[30,'30 min'],[45,'45 min'],[60,'60 min'],[75,'75 min']])+F.chips('Utrustning','prof.equip',[['gym','Gym'],['db','Hantlar hemma'],['bw','Bara kroppsvikt']])+F.chips('Gillar du även…','prof.likes',[['löpning','Löpning'],['cykel','Cykel'],['simning','Simning'],['rodd','Rodd'],['promenad','Promenader']],{multi:true}),
+   ()=>`<h2 class="obt">Hälsa & kost</h2><p class="obp">Så anpassar vi övningar och måltider.</p>`+F.chips('Känsliga områden','limits',[['axel','Axel'],['knä','Knä'],['ländrygg','Ländrygg'],['armbåge','Armbåge']],{multi:true})+F.chips('Sömn en vanlig natt','prof.sleep',[[5,'≤5 h'],[6,'6 h'],[7,'7 h'],[8,'8 h'],[9,'9+ h']])+F.chips('Kosthållning','prof.diet',[['omni','Allätare'],['flex','Flexitarian'],['pesc','Pescetarian'],['veg','Vegetarian'],['vegan','Vegan']]),
+   ()=>{const G=genFromProfile();const Pg=buildProgram(G);return `<div class="obhero"><div class="av xl">${ic('check')}</div><h1>Klart, ${esc(S.name||'')}!</h1><p>Det här har vi byggt åt dig:</p></div>
+     <div class="card"><div class="plan-row"><span class="muted">Program</span><b>${Pg.name}</b></div><div class="plan-row"><span class="muted">Pass i veckan</span><b>${Pg.weeks[0].days.reduce((a,l)=>a+l.length,0)}</b></div><div class="plan-row"><span class="muted">Energibehov</span><b>${energyPlan().tdee} kcal/dag</b></div><div class="plan-row"><span class="muted">Protein</span><b>${macros().protein} g/dag</b></div></div>
+     <p class="fh">Allt kan ändras under din profil (cirkeln uppe till höger).</p>`;}
+  ];
+  obBox.innerHTML=`<div class="obbar"><div style="width:${(OBS+1)/OB_N*100}%"></div></div><div class="obstep">Steg ${OBS+1} av ${OB_N}</div>`+steps[OBS]()+
+   `<div class="obnav">${OBS>0?`<button class="btn o" onclick="OBS--;renderOB();scrollTo(0,0)">Tillbaka</button>`:'<span></span>'}${OBS<OB_N-1?`<button class="btn p" onclick="OBS++;renderOB();scrollTo(0,0)">Nästa</button>`:`<button class="btn p" onclick="obFinish(true)">Skapa mitt program</button>`}</div>`;
+}
+function genFromProfile(){const P=S.prof||{},likes=P.likes||[];
+  return{goal:{fat_loss:'fat_loss',hypertrophy:'hypertrophy',recomp:'hypertrophy',strength:'strength',maintain:'health'}[S.goal]||'hypertrophy',days:Math.min(7,Math.max(2,S.freq||4)),len:P.len||60,eq:P.equip||'gym',exp:S.exp||'beginner',dbl:false,
+    mod:likes.includes('löpning')?'Löpning':likes.includes('cykel')?'Cykel':likes.includes('rodd')?'Rodd':likes.includes('simning')?'Simning':likes.includes('promenad')?'Promenad':'Valfri',weeks:8,light:'auto',prev:null};}
+function openGenFromProfile(){openGen();}
+function obFinish(withPlan){
+  S.sIdx=0;if(S.bw&&!(S.bwLog||[]).length)S.bwLog=[{ts:Date.now(),date:todayStr(),v:S.bw}];
+  if(withPlan!==false){const G=genFromProfile(),P=buildProgram(G);S.customT=Object.fromEntries(Object.entries(S.customT||{}).filter(([k])=>!k.startsWith('g_')));Object.assign(S.customT,P.T);S.plan={name:P.name,goal:P.goal,weeks:P.weeks,start:mondayOf(new Date()).toISOString()};S.planView=0;S.selSlot=0;}
+  else{S.plan=null;}
+  S.sessionKey=rotation()[0].k;S.onboarded=true;save();RR=()=>renderSheet();
+  onboard.classList.remove('active');main.classList.add('active');tab('today');toast(withPlan!==false?'Ditt program är klart':'Välkommen');
+}
+/* ---------- kost efter kosthållning ---------- */
+const DIET_EX={omni:[],flex:[],pesc:['m'],veg:['m','f'],vegan:['m','f','d','e']};
+function dietOk(tags){const ex=DIET_EX[(S.prof||{}).diet]||[];return !(tags||[]).some(t=>ex.includes(t));}
 
 function renderProf(){pName.value=S.name;pBw.value=S.bw;pGoal.value=S.goal;pWeek.value=S.week;
   pSex.value=S.sex||'m';pAge.value=S.age||30;pH.value=S.height||178;pAct.value=String(S.act||1.55);
@@ -2505,7 +2659,8 @@ function exportData(){
   toast('JSON exporterad');
 }
 S=migrate(load());
-paintIcons();backBtn.innerHTML=ic('back');setBtn.innerHTML=ic('settings');
+applyTheme();paintIcons();backBtn.innerHTML=ic('back');renderAvatar();applyHomeLayout();
+try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(S.ui.theme==='auto')applyTheme();});}catch(e){}
 try{evLegend.innerHTML=Object.entries(EV_TXT).map(([k,v])=>`<span class="ev ${k}">${k}</span> ${v}`).join('<br>');}catch(e){}
 </script>
 </body>
