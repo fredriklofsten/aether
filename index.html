@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Aether</title>
+<style>
+:root{--bg:#080a0f;--sf:#12161e;--sf2:#1a202b;--sf3:#2a3140;--t:#f2f4f8;--t2:#b8c0d0;--m:#7d8799;--p:#5eead4;--a:#818cf8;--d:#f87171;--w:#fbbf24}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--t);min-height:100vh}
+#app{max-width:430px;margin:0 auto;min-height:100vh}
+.screen{display:none;min-height:100vh;padding-bottom:92px}
+.screen.active{display:block;animation:up .2s ease}
+#splash.active{display:flex}
+@keyframes up{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.btn{border:none;border-radius:14px;padding:13px 16px;font-size:14px;font-weight:600;cursor:pointer}
+.btn.p{background:linear-gradient(135deg,#5eead4,#2dd4bf);color:#0b0d12;box-shadow:0 4px 16px rgba(94,234,212,.25)}
+.btn.full{width:100%;margin-top:10px}
+.btn.g{background:transparent;color:var(--m)}
+.btn.o{background:var(--sf2);color:var(--t2);border:1px solid var(--sf3);padding:8px 11px;font-size:12px;border-radius:10px}
+.btn.sm{padding:6px 10px;font-size:11px;border-radius:9px}
+.hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;position:sticky;top:0;z-index:20;background:rgba(8,10,15,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.04)}
+.brand{font-weight:800;letter-spacing:3px;font-size:14px;background:linear-gradient(135deg,#5eead4,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hb{font-size:11px;font-weight:600;color:var(--m);background:var(--sf);padding:5px 10px;border-radius:20px}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:rgba(12,15,22,.97);border-top:1px solid rgba(255,255,255,.05);z-index:30;padding:6px 2px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.ni{flex:1;background:none;border:none;color:var(--m);padding:6px 2px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ni.active{color:var(--p)}
+.pad{padding:12px 14px 20px}
+.card{background:var(--sf);border-radius:16px;padding:14px;margin-bottom:11px;border:1px solid rgba(255,255,255,.04)}
+.card.glow{border-color:rgba(94,234,212,.12);box-shadow:0 0 20px rgba(94,234,212,.06)}
+.card h3{font-size:15px;font-weight:650;margin-bottom:3px}
+.card h4{font-size:10.5px;font-weight:600;color:var(--m);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.muted{color:var(--m);font-size:12.5px}
+.row{display:flex;gap:8px;align-items:center}
+.between{justify-content:space-between}
+.score{font-size:48px;font-weight:750;letter-spacing:-1px;line-height:1;background:linear-gradient(180deg,#5eead4,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:650}
+.ok{background:rgba(94,234,212,.15);color:var(--p)}
+.mid{background:rgba(251,191,36,.14);color:var(--w)}
+.low{background:rgba(248,113,113,.14);color:var(--d)}
+.ex{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
+.ex:last-child{border-bottom:none}
+.ex-name{font-weight:650;font-size:14px}
+.ex-meta{color:var(--m);font-size:12px;margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:7px;background:rgba(129,140,248,.14);color:var(--a)}
+.tag.hot{background:rgba(94,234,212,.18);color:var(--p)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:7px 11px;border-radius:11px;font-size:12px;font-weight:500;background:var(--sf2);color:var(--t2);border:1.5px solid transparent;cursor:pointer}
+.chip.on{border-color:var(--p);background:rgba(94,234,212,.12);color:var(--p);font-weight:600}
+.stat{flex:1;text-align:center;background:var(--bg);border-radius:12px;padding:11px 4px}
+.stat .v{font-size:15px;font-weight:700;color:var(--p)}
+.stat .l{font-size:10px;color:var(--m);margin-top:2px}
+input,select,textarea{width:100%;background:var(--bg);border:1.5px solid var(--sf3);color:var(--t);padding:10px 12px;border-radius:11px;font-size:14px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p)}
+label.f{display:block;font-size:11px;color:var(--m);font-weight:600;margin:10px 0 4px}
+input[type=range]{accent-color:var(--p);padding:0;border:none;background:transparent}
+.reason{font-size:12px;color:var(--t2);padding:5px 0 5px 11px;border-left:3px solid var(--p);margin:3px 0;line-height:1.4}
+.coach{font-size:12.5px;color:var(--t2);line-height:1.5;padding:10px 12px;background:rgba(129,140,248,.08);border-radius:12px;border:1px solid rgba(129,140,248,.14);margin-top:8px}
+.coach strong{color:var(--a)}
+.sec{font-size:17px;font-weight:700;margin-bottom:10px}
+.macro{display:flex;justify-content:space-between;font-size:12.5px;margin:3px 0}
+.bar{height:6px;background:var(--sf2);border-radius:4px;overflow:hidden;margin-bottom:7px}
+.fill{height:100%;border-radius:4px;transition:width .3s}
+.set-row{display:grid;grid-template-columns:26px 1fr 1fr 1fr 32px;gap:5px;margin-bottom:5px;align-items:center}
+.set-row input{text-align:center;padding:8px 3px;font-size:13px}
+.timer{font-size:26px;font-weight:700;color:var(--p);text-align:center;font-variant-numeric:tabular-nums}
+.spark{display:flex;align-items:flex-end;gap:3px;height:52px;margin-top:8px}
+.spark i{flex:1;background:linear-gradient(180deg,#5eead4,#2dd4bf);border-radius:3px 3px 0 0;min-height:3px}
+.spark.r i{background:linear-gradient(180deg,#818cf8,#6366f1)}
+.spark.v i{background:linear-gradient(180deg,#fbbf24,#f59e0b)}
+.empty{text-align:center;padding:22px 12px;color:var(--m);font-size:13px}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--sf2);border:1px solid var(--sf3);padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;z-index:80;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast.on{opacity:1}
+.sticky-timer{display:none}
+.sticky-timer.on{display:block}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.body-wrap{display:flex;gap:10px;justify-content:center;margin:8px 0}
+.body-svg{width:48%;max-width:150px}
+.body-svg svg{width:100%;height:auto}
+.muscle{fill:#2a3140;stroke:#3d4658;stroke-width:1;transition:fill .25s}
+.muscle.on{fill:#5eead4;filter:drop-shadow(0 0 5px rgba(94,234,212,.45))}
+.muscle.sec{fill:#818cf8}
+.legend{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.legend span{font-size:10px;padding:3px 8px;border-radius:8px;font-weight:600}
+.legend .p{background:rgba(94,234,212,.18);color:var(--p)}
+.legend .s{background:rgba(129,140,248,.18);color:var(--a)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.modal.on{display:flex}
+.modal-c{background:var(--sf);border-radius:20px 20px 0 0;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;padding:16px 16px 28px}
+.fb{display:flex;gap:8px;margin-top:6px}
+.fb button{flex:1}
+.dec{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12.5px}
+.dec .t{color:var(--m);font-size:11px}
+
+.ex-thumb{width:48px;height:48px;border-radius:10px;object-fit:cover;background:var(--sf2);flex-shrink:0}
+.ex-row{display:flex;gap:10px;align-items:flex-start}
+.ex-row .ex-body{flex:1;min-width:0}
+.modal-img{width:100%;max-height:280px;object-fit:cover;border-radius:14px;margin:8px 0 12px;background:var(--sf2)}
+.steps{margin:10px 0}
+.step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.step .n{width:22px;height:22px;border-radius:50%;background:rgba(94,234,212,.2);color:var(--p);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step .t{font-size:13px;color:var(--t2);line-height:1.4}
+.vis-ph{height:160px;border-radius:14px;background:linear-gradient(145deg,var(--sf2),var(--sf3));display:flex;align-items:center;justify-content:center;color:var(--m);font-size:13px;margin:8px 0 12px}
+
+
+.acc{margin-bottom:11px}
+.acc>summary{list-style:none;cursor:pointer;background:var(--sf);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:12px 14px;font-size:13px;font-weight:650;color:var(--t2);display:flex;justify-content:space-between;align-items:center}
+.acc>summary::-webkit-details-marker{display:none}
+.acc>summary::after{content:"▾";color:var(--m);font-size:12px}
+.acc[open]>summary{border-radius:16px 16px 0 0;border-bottom-color:transparent}
+.acc[open]>summary::after{content:"▴"}
+.acc .acc-body{background:var(--sf);border:1px solid rgba(255,255,255,.04);border-top:none;border-radius:0 0 16px 16px;padding:0 14px 14px}
+.ready-compact{display:flex;align-items:center;gap:14px;text-align:left}
+.ready-compact .score{font-size:40px;min-width:56px}
+.ready-compact .ready-meta{flex:1}
+.hero-cta{margin-top:12px}
+
+.spark.b i{background:linear-gradient(180deg,#f472b6,#db2777)}
+.swap{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;margin-top:6px;background:var(--sf2);border-radius:11px;font-size:13px;cursor:pointer}
+.swap.on{outline:1.5px solid var(--p)}
+.next-chip{font-size:11.5px;color:var(--m);margin-top:6px}
+.pr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.swapnote{font-size:11px;color:var(--w);margin-top:2px}
+.back{background:none;border:none;color:var(--p);font-size:14px;font-weight:600;padding:4px 6px 4px 0;cursor:pointer}
+.q{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;border:1px solid var(--sf3);background:var(--sf2);color:var(--m);font-size:10.5px;font-weight:700;cursor:pointer;vertical-align:middle;padding:0;margin-left:3px}
+.scale{display:flex;justify-content:space-between;font-size:10.5px;color:var(--m);margin-top:2px}
+.acc.mini{margin:8px 0 0;background:transparent;border:none}
+.acc.mini summary{font-size:12px;padding:6px 0}
+.hello{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px}
+.tile{background:var(--sf);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:10px;cursor:pointer}
+.tile .tl{font-size:10.5px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.tile .tv{font-size:16px;font-weight:700;color:var(--p);margin-top:4px}
+.tile .ts{font-size:11px;color:var(--m);margin-top:1px}
+.seg{position:sticky;top:49px;z-index:15;display:flex;gap:4px;padding:8px 12px;background:rgba(8,10,15,.95);backdrop-filter:blur(12px);overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.04)}
+.seg button{flex:1;white-space:nowrap;background:var(--sf);border:1px solid var(--sf3);color:var(--t2);border-radius:10px;padding:8px 10px;font-size:12.5px;font-weight:600;cursor:pointer}
+.seg button.on{background:rgba(94,234,212,.14);border-color:var(--p);color:var(--p)}
+.sp{display:none}.sp.on{display:block;animation:up .2s ease}
+.set-head{display:grid;grid-template-columns:26px 1fr 1fr 1fr 32px;gap:5px;font-size:10.5px;color:var(--m);font-weight:600;text-align:center;margin:4px 0 -2px}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.fo{background:var(--sf2);border:1.5px solid transparent;border-radius:12px;padding:9px 6px;text-align:center;cursor:pointer}
+.fo b{display:block;font-size:14px}.fo span{font-size:10.5px;color:var(--m)}
+.fo.on{border-color:var(--p);background:rgba(94,234,212,.1)}.fo.on b{color:var(--p)}
+.ev{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:7px;margin-right:4px}
+.ev.A{background:rgba(94,234,212,.18);color:var(--p)}.ev.B{background:rgba(129,140,248,.18);color:var(--a)}.ev.C{background:rgba(251,191,36,.16);color:var(--w)}.ev.D{background:rgba(248,113,113,.16);color:var(--d)}
+.winbar{position:relative;height:30px;background:var(--sf2);border-radius:9px;margin:12px 0 18px;overflow:visible}
+.winbar .eat{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,#2dd4bf,#5eead4);border-radius:9px;opacity:.85}
+.winbar .now{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--t)}
+.winbar .trn{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--a);font-size:10px;display:flex;align-items:center;justify-content:center}
+.winbar .lbl{position:absolute;top:33px;font-size:9.5px;color:var(--m);transform:translateX(-50%)}
+.warnc{border-color:rgba(251,191,36,.18)}
+.src{color:var(--a);font-size:10.5px;font-weight:700;cursor:pointer;margin-left:2px;white-space:nowrap}
+.tip{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;line-height:1.5;color:var(--t2)}
+.tip:last-child{border-bottom:none}
+.mlist{background:var(--sf);border-radius:16px;border:1px solid rgba(255,255,255,.04);overflow:hidden}
+.mi{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
+.mi:last-child{border-bottom:none}.mi>div{flex:1}.mi b{font-size:14px}.mi .muted{font-size:11.5px}
+.mic{font-size:20px;width:28px;text-align:center}.chev{color:var(--m);font-size:20px}
+.nic{font-size:17px;line-height:1;filter:grayscale(1);opacity:.75}.ni.active .nic{filter:none;opacity:1}
+.ph{display:flex;gap:3px;margin-top:4px}.ph div{flex:1;text-align:center;font-size:10px;padding:6px 2px;border-radius:8px;background:var(--sf2);color:var(--m)}
+.ph div.on{background:rgba(94,234,212,.16);color:var(--p);font-weight:700}
+.gstep{display:flex;gap:10px;margin-bottom:10px}.gstep .n{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(94,234,212,.15);color:var(--p);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+.plan-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.plan-row:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<div id="app">
+<section id="splash" class="screen active" style="align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(94,234,212,.12),transparent 60%),var(--bg)">
+  <div style="width:100%">
+    <div class="brand" style="font-size:42px;letter-spacing:7px;margin-bottom:10px">AETHER</div>
+    <p class="muted" style="margin-bottom:28px">Träning som anpassar sig – och förklarar varför</p>
+    <button class="btn p full" onclick="start(false)">Kom igång</button>
+    <button class="btn g full" onclick="start(true)">Fortsätt där jag var</button>
+  </div>
+</section>
+
+<section id="onboard" class="screen">
+  <div class="pad" style="padding-top:28px">
+    <div class="sec">Välkommen</div>
+    <div class="coach" style="margin-bottom:12px"><strong>Coach:</strong> Svara på några frågor så bygger jag ditt träningsprogram och din kostplan. Allt kan ändras senare under Meny.</div>
+    <label class="f">Namn</label><input id="ob-name" value="Demo"/>
+    <label class="f">Mål</label>
+    <div class="chips" id="ob-goal">
+      <div class="chip" data-v="fat_loss" onclick="chip(this,'ob-goal')">Gå ner i fett</div>
+      <div class="chip on" data-v="hypertrophy" onclick="chip(this,'ob-goal')">Bygga muskler</div>
+      <div class="chip" data-v="recomp" onclick="chip(this,'ob-goal')">Båda samtidigt</div>
+      <div class="chip" data-v="strength" onclick="chip(this,'ob-goal')">Bli starkare</div>
+      <div class="chip" data-v="maintain" onclick="chip(this,'ob-goal')">Behålla</div>
+    </div>
+    <label class="f">Säsongsläge</label>
+    <div class="chips" id="ob-season">
+      <div class="chip on" data-v="normal" onclick="chip(this,'ob-season')">Normal</div>
+      <div class="chip" data-v="cut" onclick="chip(this,'ob-season')">Deff</div>
+      <div class="chip" data-v="bulk" onclick="chip(this,'ob-season')">Bulk</div>
+      <div class="chip" data-v="vacation" onclick="chip(this,'ob-season')">Semester</div>
+      <div class="chip" data-v="competition" onclick="chip(this,'ob-season')">Tävling</div>
+    </div>
+    <label class="f">Pass / vecka</label>
+    <div class="chips" id="ob-freq">
+      <div class="chip" data-v="3" onclick="chip(this,'ob-freq')">3</div>
+      <div class="chip on" data-v="4" onclick="chip(this,'ob-freq')">4</div>
+      <div class="chip" data-v="5" onclick="chip(this,'ob-freq')">5</div>
+      <div class="chip" data-v="6" onclick="chip(this,'ob-freq')">6</div>
+    </div>
+    <label class="f">Split</label>
+    <div class="chips" id="ob-split">
+      <div class="chip on" data-v="ul" onclick="chip(this,'ob-split')">Över/Under</div>
+      <div class="chip" data-v="ppl" onclick="chip(this,'ob-split')">Push/Pull/Ben</div>
+      <div class="chip" data-v="fb" onclick="chip(this,'ob-split')">Helkropp</div>
+    </div>
+    <label class="f">Kön</label>
+    <div class="chips" id="ob-sex">
+      <div class="chip on" data-v="m" onclick="chip(this,'ob-sex')">Man</div>
+      <div class="chip" data-v="f" onclick="chip(this,'ob-sex')">Kvinna</div>
+    </div>
+    <div class="row" style="gap:8px">
+      <div style="flex:1"><label class="f">Ålder</label><input type="number" id="ob-age" value="30" min="13" max="99"/></div>
+      <div style="flex:1"><label class="f">Längd (cm)</label><input type="number" id="ob-h" value="178" min="120" max="230"/></div>
+      <div style="flex:1"><label class="f">Vikt (kg)</label><input type="number" id="ob-bw" value="82"/></div>
+    </div>
+    <label class="f">Begränsningar</label>
+    <div class="chips" id="ob-lim">
+      <div class="chip" data-v="axel" onclick="this.classList.toggle('on')">Axel</div>
+      <div class="chip" data-v="knä" onclick="this.classList.toggle('on')">Knä</div>
+      <div class="chip" data-v="ländrygg" onclick="this.classList.toggle('on')">Ländrygg</div>
+      <div class="chip" data-v="armbåge" onclick="this.classList.toggle('on')">Armbåge</div>
+    </div>
+    <p class="muted" style="margin-top:6px;font-size:11.5px">Coachen byter automatiskt ut övningar som brukar belasta området.</p>
+    <button class="btn p full" onclick="finishOB()">Skapa program</button>
+  </div>
+</section>
+
+<section id="main" class="screen">
+  <header class="hdr">
+    <button class="back" id="backBtn" onclick="tab('menu')" style="display:none">‹ Meny</button>
+    <div class="brand" id="brandTxt">AETHER</div>
+    <div class="hb" id="hdrB" onclick="help('fas')">—</div>
+  </header>
+
+  <!-- ================= IDAG ================= -->
+  <div id="t-today" class="tp">
+    <div class="pad">
+      <div class="hello"><div class="sec" style="margin:0" id="helloTxt">Hej!</div><div class="muted" id="dateTxt"></div></div>
+
+      <div class="card glow" style="background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(94,234,212,.1),transparent 70%),var(--sf)">
+        <div class="ready-compact">
+          <div class="score" id="sc">7</div>
+          <div class="ready-meta">
+            <div style="font-weight:650;font-size:14px;margin-bottom:2px">Dagsform <button class="q" onclick="help('dagsform')">?</button></div>
+            <div class="muted">Hur pigg känner du dig, 1–10? · snitt <span id="rAvgShow">6.8</span></div>
+            <p class="muted" id="hint" style="margin-top:4px;font-size:12px"></p>
+          </div>
+        </div>
+        <input type="range" min="1" max="10" value="7" id="rSl" oninput="setR(+this.value)" style="margin-top:10px"/>
+        <div class="scale"><span>1 · helt slut</span><span>10 · topp</span></div>
+        <details class="acc mini">
+          <summary>HRV från klocka (valfritt) <span class="badge ok" id="hrvB">Normal</span></summary>
+          <div class="acc-body">
+            <div class="row" style="gap:8px">
+              <input type="number" id="hrvIn" value="68" style="flex:1" onchange="setR(S.readiness)" placeholder="HRV"/>
+              <button class="btn o sm" onclick="S.rAvg=S.readiness;save();refresh();toast('Snitt uppdaterat')">Sätt som snitt</button>
+            </div>
+            <p class="muted" style="margin-top:6px;font-size:11.5px">HRV <b id="hrvS">68</b> · baslinje <span id="hrvBaseTxt">72</span>. <button class="q" onclick="help('hrv')">?</button></p>
+          </div>
+        </details>
+      </div>
+
+      <div class="coach" id="coachToday" style="margin-bottom:11px"></div>
+
+      <div class="card">
+        <h4>Dagens pass</h4>
+        <div class="row between"><h3 id="sName">—</h3><span class="badge ok" id="sRpe" onclick="help('rpe')">RPE ≤ 8</span></div>
+        <p class="muted" id="sNote" style="margin-bottom:6px"></p>
+        <div class="row between" style="margin-bottom:6px">
+          <span class="muted" style="font-size:12px" id="sessionMeta"></span>
+          <span class="badge ok" id="recMini" onclick="help('budget')">—</span>
+        </div>
+        <div id="exList"></div>
+        <button class="btn p full hero-cta" onclick="goSub('train','logga')">Starta & logga passet</button>
+        <div class="next-chip" id="nextInfo"></div>
+      </div>
+
+      <div class="tiles">
+        <div class="tile" onclick="goSub('kost','idag')"><div class="tl">Kost idag</div><div class="tv" id="tileKcal">—</div><div class="ts" id="tileProt"></div></div>
+        <div class="tile" onclick="goSub('kost','fasta')"><div class="tl">Fasta</div><div class="tv" id="tileFast">—</div><div class="ts" id="tileFastSub"></div></div>
+        <div class="tile" onclick="tab('hist')"><div class="tl">Vikt</div><div class="tv" id="tileBw">—</div><div class="ts" id="tileBwSub"></div></div>
+      </div>
+
+      <details class="acc">
+        <summary>Justera dagens pass</summary>
+        <div class="acc-body">
+          <h4 style="margin-top:4px">Hur är läget?</h4>
+          <div class="chips" id="ctxChips">
+            <div class="chip" data-v="travel" onclick="toggleCtx(this)">Resdag</div>
+            <div class="chip" data-v="poor_sleep" onclick="toggleCtx(this)">Dålig sömn</div>
+            <div class="chip" data-v="high_stress" onclick="toggleCtx(this)">Hög stress</div>
+            <div class="chip" data-v="sick" onclick="toggleCtx(this)">Sjuk/krasslig</div>
+            <div class="chip" data-v="time_crunch" onclick="toggleCtx(this)">Ont om tid</div>
+          </div>
+          <h4 style="margin-top:12px">Tid för passet</h4>
+          <div class="chips" id="timeChips">
+            <div class="chip on" data-v="full" onclick="setTime(this)">Fullt</div>
+            <div class="chip" data-v="45" onclick="setTime(this)">45 min</div>
+            <div class="chip" data-v="30" onclick="setTime(this)">30 min</div>
+            <div class="chip" data-v="20" onclick="setTime(this)">20 min · minimum</div>
+          </div>
+          <p class="muted" id="timeNote" style="margin-top:6px"></p>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Varför ser passet ut så här?</summary>
+        <div class="acc-body">
+          <h4 style="margin-top:4px">Återhämtningsbudget <button class="q" onclick="help('budget')">?</button></h4>
+          <div class="row between"><span id="recTxt" style="font-weight:700;color:var(--p)">—</span><span class="muted" id="recSub"></span></div>
+          <div class="bar" style="margin-top:8px"><div class="fill" id="recBar" style="width:50%;background:linear-gradient(90deg,#2dd4bf,#5eead4)"></div></div>
+          <div class="coach" id="coachRec" style="margin-top:8px"></div>
+
+          <h4 style="margin-top:14px">Muskler idag</h4>
+          <div class="body-wrap"><div class="body-svg" id="bodyFront"></div><div class="body-svg" id="bodyBack"></div></div>
+          <div class="legend"><span class="p">Primär</span><span class="s">Sekundär</span></div>
+          <div class="tags" style="justify-content:center;margin-top:6px" id="dayMus"></div>
+
+          <div id="whyBox" style="margin-top:12px"></div>
+
+          <h4 style="margin-top:12px">Coachens beslut</h4>
+          <div id="decLog"></div>
+          <div class="fb">
+            <button class="btn o sm" onclick="feedback(1)">Bra beslut 👍</button>
+            <button class="btn o sm" onclick="feedback(-1)">Fel beslut 👎</button>
+          </div>
+
+          <h4 style="margin-top:12px">Träningsfas · <span id="seasonLabel"></span> <button class="q" onclick="help('fas')">?</button></h4>
+          <div class="row between"><strong id="phNameT">—</strong><span class="badge ok" id="phWeekT">—</span></div>
+          <p class="muted" id="phDescT" style="margin-top:6px"></p>
+          <div class="bar" style="margin-top:8px"><div class="fill" id="phBarT" style="width:40%;background:linear-gradient(90deg,#2dd4bf,#5eead4)"></div></div>
+          <div class="coach" id="coachPhase" style="margin-top:8px"></div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ================= TRÄNA ================= -->
+  <div id="t-train" class="tp" style="display:none">
+    <div class="seg" data-g="train">
+      <button data-s="logga" onclick="sub('train','logga')">Logga</button>
+      <button data-s="schema" onclick="sub('train','schema')">Schema</button>
+      <button data-s="ovn" onclick="sub('train','ovn')">Övningar</button>
+      <button data-s="period" onclick="sub('train','period')">Period</button>
+    </div>
+    <div class="pad">
+      <div class="sp" data-g="train" data-s="logga">
+        <div class="row between"><div class="sec" style="margin:0" id="logTitle">Logga pass</div>
+          <button class="btn o sm" onclick="help('logga')">Hur loggar jag?</button>
+        </div>
+        <div class="card sticky-timer" id="timerCard">
+          <div class="timer" id="timerVal">01:30</div>
+          <div class="row" style="justify-content:center;gap:8px;margin-top:8px">
+            <button class="btn o sm" onclick="startTimer(60)">1:00</button>
+            <button class="btn o sm" onclick="startTimer(90)">1:30</button>
+            <button class="btn o sm" onclick="startTimer(180)">3:00</button>
+            <button class="btn o sm" onclick="stopTimer()">Stopp</button>
+          </div>
+        </div>
+        <div class="row" style="gap:6px;margin:8px 0">
+          <span class="muted" style="font-size:12px">Vilotimer:</span>
+          <button class="btn o sm" onclick="startTimer(90)">⏱ 1:30</button>
+          <button class="btn o sm" onclick="startTimer(120)">2:00</button>
+          <button class="btn o sm" onclick="startTimer(180)">3:00</button>
+        </div>
+        <div class="coach" id="coachLog" style="margin-bottom:8px"></div>
+        <div class="set-head"><span>Set</span><span>kg</span><span>Reps</span><span>RPE <button class="q" onclick="help('rpe')">?</button></span><span></span></div>
+        <div id="logArea"></div>
+        <label class="f">Anteckning</label>
+        <textarea id="logNote" rows="2" placeholder="Känsla, smärta, teknik…"></textarea>
+        <button class="btn p full" onclick="saveLog()">Spara pass</button>
+        <p class="muted" id="logMsg" style="text-align:center;margin-top:8px"></p>
+      </div>
+
+      <div class="sp" data-g="train" data-s="schema">
+        <div class="card">
+          <h4>Upplägg <button class="q" onclick="help('split')">?</button></h4>
+          <div class="chips">
+            <div class="chip" id="sp-ul" onclick="setSplit('ul')">Över/Under</div>
+            <div class="chip" id="sp-ppl" onclick="setSplit('ppl')">Push/Pull/Ben</div>
+            <div class="chip" id="sp-fb" onclick="setSplit('fb')">Helkropp</div>
+          </div>
+          <label class="f">Pass per vecka</label>
+          <div class="chips" id="freqChips">
+            <div class="chip" data-v="3" onclick="setFreq(3)">3</div>
+            <div class="chip" data-v="4" onclick="setFreq(4)">4</div>
+            <div class="chip" data-v="5" onclick="setFreq(5)">5</div>
+            <div class="chip" data-v="6" onclick="setFreq(6)">6</div>
+          </div>
+        </div>
+        <div class="card"><h4>Veckans pass</h4><div id="schema"></div></div>
+      </div>
+
+      <div class="sp" data-g="train" data-s="ovn">
+        <input id="libQ" placeholder="Sök övning eller muskel…" oninput="renderLib()"/>
+        <div class="chips" id="libMus" style="margin-top:8px"></div>
+        <div class="card" style="margin-top:10px"><div id="libList"></div></div>
+      </div>
+
+      <div class="sp" data-g="train" data-s="period">
+        <div class="card">
+          <h4>Säsong <button class="q" onclick="help('season')">?</button></h4>
+          <div class="chips" id="seasonChips">
+            <div class="chip" data-v="normal" onclick="setSeason(this)">Normal</div>
+            <div class="chip" data-v="cut" onclick="setSeason(this)">Deff</div>
+            <div class="chip" data-v="bulk" onclick="setSeason(this)">Bulk</div>
+            <div class="chip" data-v="vacation" onclick="setSeason(this)">Semester</div>
+            <div class="chip" data-v="competition" onclick="setSeason(this)">Tävling</div>
+          </div>
+          <div class="coach" id="coachSeason" style="margin-top:8px"></div>
+        </div>
+        <div class="card">
+          <h4>Träningsfas <button class="q" onclick="help('fas')">?</button></h4>
+          <div id="phaseTimeline"></div>
+          <p class="muted" id="advanceInfo" style="margin-top:8px"></p>
+          <button class="btn o full" onclick="advanceWeek()">Hoppa fram en vecka</button>
+        </div>
+        <div class="card">
+          <h4>Testa ett upplägg</h4>
+          <p class="muted" style="margin-bottom:8px">Hur hårt blir det att köra X pass/vecka i 4 veckor?</p>
+          <div class="row" style="gap:8px">
+            <select id="simFreq" style="flex:1"><option value="3">3 pass</option><option value="4" selected>4 pass</option><option value="5">5 pass</option><option value="6">6 pass</option></select>
+            <button class="btn o sm" onclick="runSim()">Räkna</button>
+          </div>
+          <div id="simOut" class="coach" style="margin-top:8px;display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= KOST ================= -->
+  <div id="t-kost" class="tp" style="display:none">
+    <div class="seg" data-g="kost">
+      <button data-s="idag" onclick="sub('kost','idag')">Idag</button>
+      <button data-s="fasta" onclick="sub('kost','fasta')">Fasta</button>
+      <button data-s="kropp" onclick="sub('kost','kropp')">Kropp & mål</button>
+      <button data-s="rad" onclick="sub('kost','rad')">Råd</button>
+    </div>
+    <div class="pad">
+      <!-- Idag -->
+      <div class="sp" data-g="kost" data-s="idag">
+        <div class="card">
+          <div class="row between" style="margin-bottom:8px">
+            <h4 style="margin:0">Dagens mål</h4>
+            <div class="chips" style="gap:4px">
+              <div class="chip" id="tdChip" onclick="setTrainDay(true)" style="padding:5px 10px;font-size:11px">Träningsdag</div>
+              <div class="chip" id="rdChip" onclick="setTrainDay(false)" style="padding:5px 10px;font-size:11px">Vilodag</div>
+            </div>
+          </div>
+          <div class="row between"><span style="font-size:26px;font-weight:700;color:var(--p)" id="kcal">0</span><span class="muted">kcal</span></div>
+          <p class="muted" id="nReason" style="margin:4px 0 10px"></p>
+          <div class="macro"><span>Protein</span><span id="pg">0 g</span></div>
+          <div class="bar"><div class="fill" id="pb" style="width:80%;background:#5eead4"></div></div>
+          <div class="macro"><span>Kolhydrater</span><span id="cg">0 g</span></div>
+          <div class="bar"><div class="fill" id="cb" style="width:70%;background:#818cf8"></div></div>
+          <div class="macro"><span>Fett</span><span id="fg">0 g</span></div>
+          <div class="bar"><div class="fill" id="fb" style="width:55%;background:#f472b6"></div></div>
+          <div class="macro"><span>Fibrer</span><span id="fibG">0 g</span></div>
+          <div class="macro"><span>Protein per måltid</span><span id="protMeal">—</span></div>
+          <div class="row between" style="margin-top:8px;font-size:13px"><span class="muted">Loggat idag</span><b id="loggedK">0 kcal</b></div>
+          <div class="bar"><div class="fill" id="kb" style="width:0;background:var(--w)"></div></div>
+          <div class="coach" id="coachKost" style="margin-top:8px"></div>
+        </div>
+        <div class="card">
+          <h4>Logga måltid</h4>
+          <input id="mealD" placeholder="Vad åt du?"/>
+          <div class="row" style="margin-top:8px;gap:8px">
+            <input type="number" id="mealK" placeholder="kcal" style="flex:1"/>
+            <input type="number" id="mealP" placeholder="protein g" style="flex:1"/>
+            <button class="btn p sm" onclick="addMeal()">Lägg till</button>
+          </div>
+          <div id="meals" style="margin-top:8px"></div>
+        </div>
+        <div class="card"><h4>Snabbval – tryck för att logga</h4><div id="mealEx"></div></div>
+      </div>
+
+      <!-- Fasta -->
+      <div class="sp" data-g="kost" data-s="fasta">
+        <div class="card glow" id="fastStatus"></div>
+        <div class="card">
+          <h4>Välj fastemetod <button class="q" onclick="help('fasta')">?</button></h4>
+          <div class="fgrid" id="fastGrid"></div>
+          <div id="fastInfo" style="margin-top:10px"></div>
+        </div>
+        <div class="card" id="winCard">
+          <h4>Ditt ätfönster</h4>
+          <div class="row" style="gap:8px">
+            <div style="flex:1"><label class="f" style="margin-top:0">Börjar äta kl</label><select id="winStart" onchange="setWin()"></select></div>
+            <div style="flex:1"><label class="f" style="margin-top:0">Brukar träna kl</label><select id="trainHour" onchange="setTrainHour()"></select></div>
+          </div>
+          <div class="winbar" id="winBar"></div>
+          <button class="btn o full" onclick="suggestWin()">Föreslå fönster utifrån träningstid</button>
+        </div>
+        <div class="card" id="daysCard" style="display:none">
+          <h4 id="daysTitle">Lågkaloridagar</h4>
+          <div class="chips" id="fastDayChips"></div>
+          <p class="muted" id="daysNote" style="margin-top:6px;font-size:12px"></p>
+        </div>
+        <div class="card">
+          <h4>Träna fastande?</h4>
+          <div class="chips" id="fastedChips">
+            <div class="chip" data-v="no" onclick="setFasted(this)">Nej · ät före</div>
+            <div class="chip" data-v="morning" onclick="setFasted(this)">Ja · morgon före frukost</div>
+            <div class="chip" data-v="late" onclick="setFasted(this)">Ja · sent i fastan</div>
+          </div>
+          <p class="muted" id="fastedNote" style="margin-top:8px;line-height:1.45"></p>
+        </div>
+        <div class="card warnc">
+          <h4>Viktigt</h4>
+          <p class="muted" style="line-height:1.5;font-size:12.5px">Fasta passar inte alla. Prata med vården först om du är gravid eller ammar, är under 18, har diabetes med insulin eller blodsockersänkande tabletter, eller har haft problem med ätande. Avbryt om du blir yr, skakig eller mår dåligt.</p>
+        </div>
+      </div>
+
+      <!-- Kropp & mål -->
+      <div class="sp" data-g="kost" data-s="kropp">
+        <div class="card">
+          <h4>Vad vill du uppnå?</h4>
+          <div class="chips" id="goalChips">
+            <div class="chip" data-v="fat_loss" onclick="setGoal(this)">Gå ner i fett</div>
+            <div class="chip" data-v="hypertrophy" onclick="setGoal(this)">Bygga muskler</div>
+            <div class="chip" data-v="recomp" onclick="setGoal(this)">Båda samtidigt</div>
+            <div class="chip" data-v="strength" onclick="setGoal(this)">Bli starkare</div>
+            <div class="chip" data-v="maintain" onclick="setGoal(this)">Behålla</div>
+          </div>
+          <label class="f">Takt</label>
+          <div class="chips" id="rateChips">
+            <div class="chip" data-v="slow" onclick="setRate(this)">Lugn</div>
+            <div class="chip" data-v="std" onclick="setRate(this)">Rekommenderad</div>
+            <div class="chip" data-v="fast" onclick="setRate(this)">Snabb</div>
+          </div>
+          <label class="f">Träningserfarenhet <button class="q" onclick="help('exp')">?</button></label>
+          <div class="chips" id="expChips">
+            <div class="chip" data-v="beginner" onclick="setExp(this)">Under 1 år</div>
+            <div class="chip" data-v="intermediate" onclick="setExp(this)">1–3 år</div>
+            <div class="chip" data-v="advanced" onclick="setExp(this)">Över 3 år</div>
+          </div>
+          <label class="f">Målvikt (kg, valfritt)</label>
+          <input type="number" id="goalW" step="0.5" placeholder="t.ex. 78" onchange="S.goalW=+this.value||null;save();renderBody()"/>
+        </div>
+
+        <div class="card">
+          <h4>Din kropp <button class="q" onclick="help('fettprocent')">?</button></h4>
+          <div class="row" style="gap:8px">
+            <div style="flex:1"><label class="f" style="margin-top:0">Vikt (kg)</label><input type="number" id="kBw" step="0.1" onchange="bodyIn()"/></div>
+            <div style="flex:1"><label class="f" style="margin-top:0">Längd (cm)</label><input type="number" id="kH" onchange="bodyIn()"/></div>
+          </div>
+          <label class="f">Fettprocent</label>
+          <div class="chips" id="bfModeChips">
+            <div class="chip" data-v="none" onclick="setBfMode(this)">Vet inte</div>
+            <div class="chip" data-v="tape" onclick="setBfMode(this)">Mät med måttband</div>
+            <div class="chip" data-v="known" onclick="setBfMode(this)">Jag vet min %</div>
+          </div>
+          <div id="bfKnown" style="display:none"><label class="f">Fett %</label><input type="number" id="bfIn" step="0.5" onchange="bodyIn()" placeholder="t.ex. 18"/>
+            <p class="muted" style="font-size:11.5px;margin-top:4px">Från DEXA, InBody eller kaliper. Våg-mätningar varierar mycket.</p></div>
+          <div id="bfTape" style="display:none">
+            <div class="row" style="gap:8px">
+              <div style="flex:1"><label class="f">Midja (cm)</label><input type="number" id="tWaist" step="0.5" onchange="bodyIn()"/></div>
+              <div style="flex:1"><label class="f">Hals (cm)</label><input type="number" id="tNeck" step="0.5" onchange="bodyIn()"/></div>
+              <div style="flex:1" id="hipWrap"><label class="f">Höft (cm)</label><input type="number" id="tHip" step="0.5" onchange="bodyIn()"/></div>
+            </div>
+            <p class="muted" style="font-size:11.5px;margin-top:4px" id="tapeHow"></p>
+          </div>
+        </div>
+
+        <div class="card glow">
+          <h4>Din plan</h4>
+          <div class="row" style="gap:6px;margin-bottom:8px">
+            <div class="stat"><div class="v" id="bBf">—</div><div class="l">Fett %</div></div>
+            <div class="stat"><div class="v" id="bFfm">—</div><div class="l">Fettfri massa</div></div>
+            <div class="stat"><div class="v" id="bTdee">—</div><div class="l">Underhåll kcal</div></div>
+          </div>
+          <div id="planOut"></div>
+        </div>
+      </div>
+
+      <!-- Råd -->
+      <div class="sp" data-g="kost" data-s="rad">
+        <div class="card">
+          <h4>Kostcoachens råd</h4>
+          <div id="nAdvice"></div>
+        </div>
+        <div class="card">
+          <h4>Runt passet & tillskott</h4>
+          <div id="periBox"></div>
+        </div>
+        <div class="card"><h4>Inköpslista (vecka)</h4><div id="shopList" class="muted"></div></div>
+        <div class="card"><h4>Så räknas dina siffror</h4><div id="nutWhy"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FRAMSTEG ================= -->
+  <div id="t-hist" class="tp" style="display:none">
+    <div class="pad">
+      <div class="sec">Framsteg</div>
+      <div class="card">
+        <h4>Kroppsvikt</h4>
+        <div class="row" style="gap:8px">
+          <input type="number" id="bwIn" step="0.1" placeholder="kg idag" style="flex:1"/>
+          <button class="btn p sm" onclick="logBw()">Logga</button>
+        </div>
+        <div class="spark b" id="sparkBw"></div>
+        <p class="muted" id="bwNote" style="margin-top:6px"></p>
+      </div>
+      <div class="card" id="prCard" style="display:none"><h4>Personliga rekord 🏆</h4><div id="prList"></div></div>
+      <div class="card">
+        <h4>Beräknad max (1 rep) <button class="q" onclick="help('e1rm')">?</button></h4>
+        <div class="row">
+          <div class="stat"><div class="v" id="e1s">—</div><div class="l">Knäböj</div></div>
+          <div class="stat"><div class="v" id="e1b">—</div><div class="l">Bänk</div></div>
+          <div class="stat"><div class="v" id="e1d">—</div><div class="l">RDL/Mark</div></div>
+        </div>
+        <div class="chips" id="e1Pick" style="margin:10px 0 4px">
+          <div class="chip on" data-v="squat" onclick="pickE1(this)">Knäböj</div>
+          <div class="chip" data-v="bench" onclick="pickE1(this)">Bänk</div>
+          <div class="chip" data-v="rdl" onclick="pickE1(this)">RDL/Mark</div>
+        </div>
+        <div class="spark" id="sparkE1"></div><p class="muted" id="e1Note" style="margin-top:6px"></p>
+        <div class="coach" id="coachProgress" style="margin-top:8px"></div>
+      </div>
+      <div class="card"><h4>Set per pass</h4><div class="spark v" id="sparkVol"></div><p class="muted" id="volNote" style="margin-top:6px"></p></div>
+      <div class="card"><h4>Dagsform</h4><div class="spark r" id="sparkReady"></div><p class="muted" id="readyNote" style="margin-top:6px"></p></div>
+      <div class="card"><h4>Passlogg</h4><div id="histList"></div></div>
+      <div class="card"><h4>Din feedback på coachen</h4><div id="fbStats" class="muted"></div></div>
+    </div>
+  </div>
+
+  <!-- ================= MENY ================= -->
+  <div id="t-menu" class="tp" style="display:none">
+    <div class="pad">
+      <div class="sec">Meny</div>
+      <div class="mlist">
+        <div class="mi" onclick="tab('m-prof')"><span class="mic">👤</span><div><b>Profil</b><div class="muted">Namn, ålder, kön, begränsningar</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="goSub('kost','kropp')"><span class="mic">🎯</span><div><b>Kropp & mål</b><div class="muted">Fettprocent, målvikt, takt</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="goSub('kost','fasta')"><span class="mic">⏳</span><div><b>Fasta</b><div class="muted">Metod, ätfönster, lågkaloridagar</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="goSub('train','schema')"><span class="mic">📅</span><div><b>Träningsschema</b><div class="muted">Upplägg och pass per vecka</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="goSub('train','ovn')"><span class="mic">📖</span><div><b>Övningsbibliotek</b><div class="muted">Alla övningar med instruktioner</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="goSub('train','period')"><span class="mic">🔄</span><div><b>Säsong & faser</b><div class="muted">Deff, bulk, semester, deload</div></div><span class="chev">›</span></div>
+      </div>
+      <div class="mlist" style="margin-top:12px">
+        <div class="mi" onclick="tab('m-guide')"><span class="mic">🧭</span><div><b>Så funkar appen</b><div class="muted">Kom igång på 2 minuter</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="tab('m-ord')"><span class="mic">💬</span><div><b>Ordlista</b><div class="muted">RPE, e1RM, deload…</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="tab('m-src')"><span class="mic">🔬</span><div><b>Evidens & källor</b><div class="muted">Studierna bakom råden</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="tab('m-data')"><span class="mic">💾</span><div><b>Data & backup</b><div class="muted">Exportera, importera, radera</div></div><span class="chev">›</span></div>
+      </div>
+      <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Aether v5 · ersätter inte råd från vården</p>
+    </div>
+  </div>
+
+  <div id="t-m-prof" class="tp" style="display:none">
+    <div class="pad">
+      <div class="sec">Profil</div>
+      <div class="card">
+        <label class="f" style="margin-top:0">Namn</label><input id="pName"/>
+        <label class="f">Kön</label>
+        <select id="pSex"><option value="m">Man</option><option value="f">Kvinna</option></select>
+        <div class="row" style="gap:8px">
+          <div style="flex:1"><label class="f">Ålder</label><input type="number" id="pAge"/></div>
+          <div style="flex:1"><label class="f">Längd (cm)</label><input type="number" id="pH"/></div>
+          <div style="flex:1"><label class="f">Vikt (kg)</label><input type="number" id="pBw"/></div>
+        </div>
+        <label class="f">Aktivitet utanför gymmet</label>
+        <select id="pAct"><option value="1.4">Stillasittande jobb</option><option value="1.55">Måttligt aktiv</option><option value="1.7">Fysiskt jobb (t.ex. bygg)</option></select>
+        <label class="f">Mål</label>
+        <select id="pGoal"><option value="fat_loss">Gå ner i fett</option><option value="hypertrophy">Bygga muskler</option><option value="recomp">Båda samtidigt</option><option value="strength">Bli starkare</option><option value="maintain">Behålla</option></select>
+        <label class="f">Vecka i träningscykeln (0–11)</label><input type="number" id="pWeek" min="0" max="11"/>
+        <label class="f">Begränsningar</label>
+        <div class="chips" id="pLim">
+          <div class="chip" data-v="axel" onclick="this.classList.toggle('on')">Axel</div>
+          <div class="chip" data-v="knä" onclick="this.classList.toggle('on')">Knä</div>
+          <div class="chip" data-v="ländrygg" onclick="this.classList.toggle('on')">Ländrygg</div>
+          <div class="chip" data-v="armbåge" onclick="this.classList.toggle('on')">Armbåge</div>
+        </div>
+        <p class="muted" id="limNote" style="margin-top:6px;font-size:11.5px"></p>
+        <button class="btn p full" onclick="saveProf()">Spara</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="t-m-data" class="tp" style="display:none">
+    <div class="pad">
+      <div class="sec">Data & backup</div>
+      <div class="card">
+        <p class="muted" style="margin-bottom:6px">All data sparas bara i den här webbläsaren. Exportera regelbundet om du vill ha en backup.</p>
+        <button class="btn o full" onclick="exportData()">Exportera (JSON-fil)</button>
+        <button class="btn o full" onclick="document.getElementById('impFile').click()">Importera JSON-fil</button>
+        <input type="file" id="impFile" accept="application/json,.json" style="display:none" onchange="importData(this)"/>
+        <button class="btn o full" style="color:var(--d)" onclick="wipeAsk()">Radera all data</button>
+        <div id="wipeBox" style="display:none;margin-top:8px" class="coach">Säker? Allt försvinner. <button class="btn o sm" style="color:var(--d)" onclick="localStorage.removeItem('aether_v3');location.reload()">Ja, radera</button> <button class="btn o sm" onclick="wipeBox.style.display='none'">Avbryt</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="t-m-guide" class="tp" style="display:none"><div class="pad"><div class="sec">Så funkar appen</div><div id="guideBox"></div></div></div>
+  <div id="t-m-ord" class="tp" style="display:none"><div class="pad"><div class="sec">Ordlista</div><div class="card" id="ordBox"></div></div></div>
+  <div id="t-m-src" class="tp" style="display:none"><div class="pad"><div class="sec">Evidens & källor</div><div class="card" id="srcBox"></div></div></div>
+
+  <nav class="bnav">
+    <button class="ni active" data-t="today" onclick="tab('today')"><span class="nic">◉</span>Idag</button>
+    <button class="ni" data-t="train" onclick="tab('train')"><span class="nic">🏋</span>Träna</button>
+    <button class="ni" data-t="kost" onclick="tab('kost')"><span class="nic">🥗</span>Kost</button>
+    <button class="ni" data-t="hist" onclick="tab('hist')"><span class="nic">📈</span>Framsteg</button>
+    <button class="ni" data-t="menu" onclick="tab('menu')"><span class="nic">☰</span>Meny</button>
+  </nav>
+</section>
+</div>
+
+<div class="modal" id="exModal" onclick="if(event.target===this)closeM()">
+  <div class="modal-c">
+    <h3 id="mTitle"></h3>
+    <p class="muted" id="mMeta" style="margin:4px 0 8px"></p>
+    <div class="tags" id="mTags" style="margin-bottom:4px"></div>
+    <img id="mImg" class="modal-img" alt="Övningsdemo" style="display:none"/>
+    <div id="mPh" class="vis-ph" style="display:none">Ingen demo-bild</div>
+    <h4 style="font-size:10.5px;color:var(--m);text-transform:uppercase;margin-bottom:4px">Så gör du</h4>
+    <div class="steps" id="mSteps"></div>
+    <h4 style="font-size:10.5px;color:var(--m);text-transform:uppercase;margin:8px 0 4px">Muskler</h4>
+    <div id="mBody"></div>
+    <p id="mCue" style="display:none"></p>
+    <div id="mSwapWrap">
+      <h4 style="font-size:10.5px;color:var(--m);text-transform:uppercase;margin:10px 0 2px">Byt övning</h4>
+      <div id="mSwap"></div>
+    </div>
+    <div class="coach" id="mCoach"></div>
+    <button class="btn p full" onclick="closeM()">Stäng</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal" id="helpModal" onclick="if(event.target===this)this.classList.remove('on')">
+  <div class="modal-c"><h3 id="hTitle"></h3><div id="hBody" style="margin-top:8px;font-size:13.5px;line-height:1.55;color:var(--t2)"></div>
+  <button class="btn p full" onclick="helpModal.classList.remove('on')">Okej</button></div>
+</div>
+
+<script>
+const BLOCKS=[{phase:'accumulation',weeks:5,rpe:[6.5,8]},{phase:'transmutation',weeks:4,rpe:[7.5,8.5]},{phase:'realization',weeks:2,rpe:[8,9.5]},{phase:'deload',weeks:1,rpe:[5,7]}];
+const PDESC={accumulation:'Fler set med måttlig vikt – bygger muskler och arbetskapacitet.',transmutation:'Färre set, tyngre vikter – omvandlar muskler till styrka.',realization:'Tungt och lite – du blir som starkast.',deload:'Lätt vecka – kroppen hinner återhämta sig och bli starkare.'};
+const PHASE_SV={accumulation:'Uppbyggnad',transmutation:'Styrka',realization:'Topp',deload:'Återhämtning'};
+const PHASE_COACH={accumulation:'Samla kvalitetsssets. Teknik före maxvikter.',transmutation:'Färre set, tyngre last. Vila mellan tunga set.',realization:'Kom fräsch. Undvik onödig volym.',deload:'Medvetet lätt – absorption, inte PR.'};
+const SEASON={
+  normal:{label:'Normal',vol:1,cal:0,note:'Balanserad progression.'},
+  cut:{label:'Deff',vol:0.9,cal:-350,note:'Något lägre volym, högt protein, prioritera recovery.'},
+  bulk:{label:'Bulk',vol:1.08,cal:350,note:'Mer utrymme för volym och surplus.'},
+  vacation:{label:'Semester',vol:0.7,cal:0,note:'Underhåll. Korta pass, behåll vanan.'},
+  competition:{label:'Tävling',vol:0.75,cal:0,note:'Specificitet och fräschhet före träningsvolym.'}
+};
+const VOLUME_LANDMARKS={Quadriceps:[8,16,22],Glutes:[6,14,20],Hamstrings:[6,12,18],Chest:[8,14,20],'Upper Back':[8,16,22],Lats:[8,14,20],Shoulders:[6,12,18],Triceps:[4,10,16],Biceps:[4,10,16],Calves:[6,14,20]};
+const EX={
+  back_squat:{name:'Back Squat',m:['Quadriceps','Glutes'],sec:['Core'],cue:'Bröst upp, djup till parallellt, pressa genom foten.',coach:'Bålspänning hela vägen.',priority:1},
+  front_squat:{name:'Front Squat',m:['Quadriceps','Core'],sec:['Glutes'],cue:'Armbågar högt, bål spänd.',coach:'Mer framsida lår och core.',priority:2},
+  rdl:{name:'Romanian Deadlift',m:['Hamstrings','Glutes'],sec:['Lower Back'],cue:'Höft bak, stång nära, neutral rygg.',coach:'Stoppa innan ryggen rundas.',priority:1},
+  hip_thrust:{name:'Hip Thrust',m:['Glutes'],sec:['Hamstrings'],cue:'Full extension, kläm glutes.',coach:'Pausa i toppen.',priority:2},
+  deadlift:{name:'Deadlift',m:['Hamstrings','Back'],sec:['Glutes'],cue:'Stång över mittfot, pressa golvet.',coach:'Teknik före ego.',priority:1},
+  bench_press:{name:'Bench Press',m:['Chest'],sec:['Triceps'],cue:'Skulderblad ihop, stång till nedre bröst.',coach:'Kontrollera nerstället.',priority:1},
+  incline_bench:{name:'Incline Bench',m:['Chest'],sec:['Triceps'],cue:'30–45° lutning.',coach:'Övre bröst-fokus.',priority:2},
+  barbell_row:{name:'Barbell Row',m:['Upper Back','Lats'],sec:['Biceps'],cue:'Hinge, dra till nedre bröst.',coach:'Dra med armbågarna.',priority:1},
+  cable_row:{name:'Cable Row',m:['Upper Back','Lats'],sec:['Biceps'],cue:'Dra mot magen, kläm skulderblad.',coach:'Stabil bål.',priority:2},
+  ohp:{name:'Overhead Press',m:['Shoulders'],sec:['Triceps'],cue:'Press rakt upp, bål spänd.',coach:'Undvik svank.',priority:1},
+  db_ohp:{name:'DB Shoulder Press',m:['Shoulders'],sec:['Triceps'],cue:'Från axelhöjd upp.',coach:'Bra om stång känns fel.',priority:2},
+  pullup:{name:'Pull-up',m:['Lats'],sec:['Biceps'],cue:'Full häng, armbågar mot höft.',coach:'Band om behövs.',priority:1},
+  lat_pulldown:{name:'Lat Pulldown',m:['Lats'],sec:['Biceps'],cue:'Dra till övre bröst.',coach:'Tänk armbågar i fickorna.',priority:2},
+  walking_lunge:{name:'Walking Lunge',m:['Quadriceps','Glutes'],sec:['Hamstrings'],cue:'Långt steg, 90°.',coach:'Längre steg = mer glute.',priority:2},
+  leg_curl:{name:'Leg Curl',m:['Hamstrings'],sec:[],cue:'Kontrollerad, full kontraktion.',coach:'Fyll på hamstring-volym.',priority:3},
+  calf_raise:{name:'Calf Raise',m:['Calves'],sec:[],cue:'Full stretch, paus i topp.',coach:'Högre reps fungerar ofta.',priority:3},
+  face_pull:{name:'Face Pull',m:['Rear Delts','Upper Back'],sec:[],cue:'Dra mot ansikte, armbågar högt.',coach:'Axelhälsa.',priority:3},
+  tricep_pushdown:{name:'Tricep Pushdown',m:['Triceps'],sec:[],cue:'Armbågar stilla.',coach:'Isolera triceps.',priority:3},
+  barbell_curl:{name:'Barbell Curl',m:['Biceps'],sec:[],cue:'Kontrollerad curl.',coach:'Långsam excentrisk.',priority:3},
+  db_bench:{name:'DB Bench Press',m:['Chest'],sec:['Triceps'],cue:'Hantlar, fri handledsvinkel.',coach:'Snällare mot axlarna än stång.',priority:1},
+  landmine_press:{name:'Landmine Press',m:['Shoulders','Chest'],sec:['Triceps'],cue:'Pressa snett uppåt, bål spänd.',coach:'Axelvänligt alternativ till press över huvudet.',priority:1},
+  chest_supported_row:{name:'Chest-Supported Row',m:['Upper Back','Lats'],sec:['Biceps'],cue:'Bröst mot bänk, dra armbågar bakåt.',coach:'Avlastar ländryggen helt.',priority:1},
+  leg_press:{name:'Leg Press',m:['Quadriceps','Glutes'],sec:[],cue:'Fötter mitt på plattan, kontrollerat djup.',coach:'Stabilt och ryggvänligt.',priority:1},
+  box_squat:{name:'Box Squat',m:['Quadriceps','Glutes'],sec:['Core'],cue:'Sitt bakåt till lådan, pressa upp.',coach:'Lådan styr djupet – snällare mot knät.',priority:1},
+  hammer_curl:{name:'Hammer Curl',m:['Biceps'],sec:[],cue:'Neutralt grepp, armbågar stilla.',coach:'Mindre påfrestning på armbågen.',priority:3},
+  back_extension:{name:'Back Extension',m:['Glutes','Hamstrings'],sec:['Lower Back'],cue:'Böj i höften, inte i ryggen.',coach:'Lätt och kontrollerat.',priority:2}
+};
+const TEMPLATES={
+  lower_heavy:[{id:'back_squat',sets:4,reps:[4,6],rpe:8},{id:'rdl',sets:3,reps:[6,8],rpe:7.5},{id:'walking_lunge',sets:3,reps:[8,10],rpe:7.5},{id:'leg_curl',sets:3,reps:[10,12],rpe:7.5},{id:'calf_raise',sets:3,reps:[12,15],rpe:7.5}],
+  upper_heavy:[{id:'bench_press',sets:4,reps:[4,6],rpe:8},{id:'barbell_row',sets:4,reps:[6,8],rpe:7.5},{id:'ohp',sets:3,reps:[6,8],rpe:7.5},{id:'pullup',sets:3,reps:[6,10],rpe:7.5},{id:'face_pull',sets:3,reps:[12,15],rpe:7}],
+  lower_volume:[{id:'front_squat',sets:4,reps:[8,10],rpe:7.5},{id:'hip_thrust',sets:3,reps:[8,12],rpe:7.5},{id:'walking_lunge',sets:3,reps:[10,12],rpe:7},{id:'leg_curl',sets:3,reps:[12,15],rpe:7.5},{id:'calf_raise',sets:4,reps:[12,15],rpe:7.5}],
+  upper_volume:[{id:'incline_bench',sets:4,reps:[8,10],rpe:7.5},{id:'cable_row',sets:4,reps:[8,12],rpe:7.5},{id:'db_ohp',sets:3,reps:[8,12],rpe:7},{id:'lat_pulldown',sets:3,reps:[8,12],rpe:7.5},{id:'face_pull',sets:3,reps:[12,15],rpe:7}],
+  full_a:[{id:'back_squat',sets:3,reps:[5,8],rpe:7.5},{id:'bench_press',sets:3,reps:[5,8],rpe:7.5},{id:'barbell_row',sets:3,reps:[6,10],rpe:7.5},{id:'rdl',sets:2,reps:[8,10],rpe:7.5},{id:'ohp',sets:2,reps:[8,10],rpe:7}],
+  full_b:[{id:'deadlift',sets:3,reps:[4,6],rpe:8},{id:'pullup',sets:3,reps:[6,10],rpe:7.5},{id:'incline_bench',sets:3,reps:[8,10],rpe:7.5},{id:'walking_lunge',sets:2,reps:[8,10],rpe:7.5},{id:'face_pull',sets:3,reps:[12,15],rpe:7}],
+  ppl_push:[{id:'bench_press',sets:4,reps:[5,8],rpe:8},{id:'ohp',sets:3,reps:[6,10],rpe:7.5},{id:'incline_bench',sets:3,reps:[8,12],rpe:7.5},{id:'tricep_pushdown',sets:3,reps:[10,15],rpe:7.5}],
+  ppl_pull:[{id:'pullup',sets:4,reps:[5,10],rpe:8},{id:'barbell_row',sets:4,reps:[6,10],rpe:7.5},{id:'face_pull',sets:3,reps:[12,15],rpe:7},{id:'barbell_curl',sets:3,reps:[8,12],rpe:7.5}],
+  ppl_legs:[{id:'back_squat',sets:4,reps:[5,8],rpe:8},{id:'rdl',sets:3,reps:[6,10],rpe:7.5},{id:'walking_lunge',sets:3,reps:[8,12],rpe:7.5},{id:'leg_curl',sets:3,reps:[10,15],rpe:7.5},{id:'calf_raise',sets:3,reps:[12,15],rpe:7.5}]
+};
+const SCHEMAS={
+  ul:[{d:'Mån',k:'lower_heavy',n:'Lower Heavy'},{d:'Tis',k:'upper_heavy',n:'Upper Heavy'},{d:'Tor',k:'lower_volume',n:'Lower Volume'},{d:'Fre',k:'upper_volume',n:'Upper Volume'}],
+  ppl:[{d:'Mån',k:'ppl_push',n:'Push'},{d:'Tis',k:'ppl_pull',n:'Pull'},{d:'Ons',k:'ppl_legs',n:'Legs'},{d:'Fre',k:'ppl_push',n:'Push'},{d:'Lör',k:'ppl_pull',n:'Pull'}],
+  fb:[{d:'Mån',k:'full_a',n:'Full A'},{d:'Ons',k:'full_b',n:'Full B'},{d:'Fre',k:'full_a',n:'Full A'}]
+};
+const MEALS=[
+  {d:'Havre + ägg + bär + yoghurt',k:550,p:35,c:55,f:18,when:'frukost'},
+  {d:'Kyckling + ris + broccoli',k:650,p:45,c:65,f:12,when:'lunch'},
+  {d:'Lax + potatis + sallad',k:620,p:40,c:45,f:22,when:'middag'},
+  {d:'Grekisk yoghurt + nötter + honung',k:400,p:28,c:30,f:16,when:'mellanmål'},
+  {d:'Whey + banan + havre',k:380,p:32,c:45,f:6,when:'peri'},
+  {d:'Köttfärs + pasta + grönsaker',k:700,p:40,c:70,f:20,when:'middag'},
+  {d:'Tofu/bönor + ris + grönt',k:580,p:28,c:70,f:14,when:'lunch'}
+];
+const MUSCLE_MAP={'Quadriceps':'quads','Glutes':'glutes','Hamstrings':'hams','Chest':'chest','Upper Back':'upperback','Lats':'lats','Shoulders':'shoulders','Rear Delts':'reardelt','Triceps':'triceps','Biceps':'biceps','Core':'core','Calves':'calves','Lower Back':'lowerback','Back':'upperback'};
+
+
+const EX_IMG={back_squat:'images/back_squat.jpg',rdl:'images/rdl.jpg',bench_press:'images/bench_press.jpg',pullup:'images/pullup.jpg',ohp:'images/ohp.jpg',incline_bench:'images/bench_press.jpg',deadlift:'images/rdl.jpg',front_squat:'images/back_squat.jpg',db_ohp:'images/ohp.jpg'};
+const EX_STEPS={
+  back_squat:['Stång på övre trapezius, fötter ca axelbrett','Andas in, böj höft och knä till minst parallellt','Knän följer tårna, bröst upp','Pressa genom hela foten tillbaka upp'],
+  front_squat:['Stång på framsida axlar, armbågar högt','Håll bålen hård, sjunk djupt','Pressa upp utan att tappa armbågarna'],
+  rdl:['Lätt böj i knäna, stång mot låren','Skjut höften bakåt, rygg neutral','Känn stretch i hamstrings','Återgå genom att sträcka höften'],
+  deadlift:['Stång över mittfot, grepp utanför ben','Spänn rygg och bål innan lyftet','Pressa golvet, stång nära kroppen','Lås höft och knä i toppen'],
+  hip_thrust:['Skulderblad mot bänk, stång över höft','Fötter i golvet, knä ca 90° i topp','Pressa höften till full extension','Pausa och sänk kontrollerat'],
+  bench_press:['Skulderblad ihop, fötter i golvet','Sänk stången till nedre bröst','Armbågar ca 45–70° från kroppen','Pressa upp stabilt till raka armar'],
+  incline_bench:['Bänk 30–45°, stabil bas','Sänk till övre bröst','Pressa upp utan att tappa spänning i axlar'],
+  barbell_row:['Hinge framåt, rygg plan','Dra stång till nedre bröst/övre mage','Kläm skulderblad, sänk kontrollerat'],
+  cable_row:['Rak rygg, lätt böjda knän','Dra handtag mot magen','Kläm ihop skulderbladen'],
+  ohp:['Stång i axelhöjd, grepp utanför axlar','Spänn glutes och bål','Pressa rakt upp, huvudet fram när stång passerar','Lås ut och sänk kontrollerat'],
+  db_ohp:['Hantlar i axelhöjd','Pressa upp utan överdriven svank','Sänk långsamt till start'],
+  pullup:['Full häng, grepp något bredare än axlar','Dra armbågar mot höfterna','Haka över stången','Sänk till full häng'],
+  lat_pulldown:['Dra stång till övre bröst','Tänk armbågar i fickorna','Kontrollera återgången'],
+  walking_lunge:['Kliv långt fram, sänk bakre knä','Främre knä stabilt över fot','Tryck genom främre häl och kliv vidare'],
+  leg_curl:['Anklar under dynan, höft stabil','Böj knä fullt, kläm hamstrings','Sänk långsamt'],
+  calf_raise:['Full stretch i botten','Pressa upp på tå, paus i topp','Sänk kontrollerat'],
+  face_pull:['Drag mot ansiktet, armbågar högt','Rotera lätt utåt i slutläget','Kontrollera tillbaka'],
+  tricep_pushdown:['Armbågar intill kroppen','Sträck ut armbågarna fullt','Undvik att gunga bålen'],
+  barbell_curl:['Armbågar stilla vid sidorna','Curl upp utan gungning','Sänk långsamt (excentrisk)'],
+  db_bench:['Ligg med hantlar i bröstnivå, skulderblad ihop','Pressa upp och lätt inåt','Sänk kontrollerat till stretch i bröstet'],
+  landmine_press:['Stångänden i axelhöjd, stå i lätt utfallsställning','Pressa snett uppåt-framåt','Sänk kontrollerat tillbaka till axeln'],
+  chest_supported_row:['Ligg med bröstet mot lutande bänk','Dra hantlarna mot höften','Kläm skulderbladen, sänk långsamt'],
+  leg_press:['Rygg och bäcken mot dynan','Sänk tills knän ca 90° utan att bäckenet lyfter','Pressa genom hela foten'],
+  box_squat:['Låda bakom dig i lagom höjd','Sitt bakåt kontrollerat, rör lådan lätt','Pressa upp genom foten'],
+  hammer_curl:['Neutralt grepp (tummar upp)','Curl utan att gunga','Sänk långsamt'],
+  back_extension:['Höften vid dynans kant','Sänk överkroppen genom att böja i höften','Res dig med glutes till rak linje – inte längre']
+};
+const SESSION_NAMES={lower_heavy:'Underkropp tung',upper_heavy:'Överkropp tung',lower_volume:'Underkropp volym',upper_volume:'Överkropp volym',full_a:'Helkropp A',full_b:'Helkropp B',ppl_push:'Push',ppl_pull:'Pull',ppl_legs:'Ben'};
+const ROTATIONS={ul:['lower_heavy','upper_heavy','lower_volume','upper_volume'],ppl:['ppl_push','ppl_pull','ppl_legs'],fb:['full_a','full_b']};
+const DAYS={3:['Mån','Ons','Fre'],4:['Mån','Tis','Tor','Fre'],5:['Mån','Tis','Ons','Fre','Lör'],6:['Mån','Tis','Ons','Tor','Fre','Lör']};
+// Begränsning → kandidater (första som inte redan finns i passet väljs)
+const LIMIT_SWAPS={
+  'axel':{ohp:['landmine_press'],db_ohp:['landmine_press'],bench_press:['db_bench'],incline_bench:['db_bench','landmine_press'],pullup:['lat_pulldown','cable_row']},
+  'knä':{back_squat:['box_squat','hip_thrust'],front_squat:['box_squat','hip_thrust'],walking_lunge:['hip_thrust','back_extension'],box_squat:['hip_thrust']},
+  'ländrygg':{back_squat:['leg_press'],front_squat:['leg_press'],box_squat:['leg_press'],deadlift:['hip_thrust','leg_press'],rdl:['back_extension','hip_thrust'],barbell_row:['chest_supported_row','cable_row'],ohp:['db_ohp']},
+  'armbåge':{barbell_curl:['hammer_curl'],pullup:['lat_pulldown'],tricep_pushdown:['db_bench']}
+};
+const LIMIT_LABEL={'axel':'axel','knä':'knä','ländrygg':'ländrygg','armbåge':'armbåge'};
+
+function defaults(){return{
+  name:'Demo',goal:'strength',freq:4,bw:82,sex:'m',age:30,height:178,act:1.55,limits:[],swaps:{},sIdx:0,
+  week:2,readiness:7,rAvg:6.8,hrv:68,hrvBase:72,
+  split:'ul',sessionKey:'lower_heavy',season:'normal',fast:'none',fastedTrain:'no',winStart:12,trainHour:17,fastDays:[],adfOff:0,bfMode:'none',bf:null,waist:null,neck:null,hip:null,exp:'beginner',rate:'std',goalW:null,timeBudget:'full',context:[],trainingDay:true,
+  logs:[],meals:[],loggedKcal:0,mealDate:'',readinessLog:[],e1Log:[],decisions:[],feedback:[],bwLog:[],prs:{},e1View:'squat',
+  e1Hist:{squat:[],bench:[],rdl:[]},
+  prev:{back_squat:{w:120,reps:5,rpe:8},bench_press:{w:90,reps:5,rpe:8},rdl:{w:100,reps:7,rpe:7.5}},
+  e1:{squat:null,bench:null,rdl:null}
+};}
+function migrate(o){
+  const d=defaults();if(!o||typeof o!=='object')return d;
+  const m={...d,...o};
+  m.prev={...(o.prev||d.prev)};m.e1={...d.e1,...(o.e1||{})};m.e1Hist={...d.e1Hist,...(o.e1Hist||{})};
+  ['logs','meals','readinessLog','e1Log','decisions','feedback','bwLog','context','limits'].forEach(k=>{if(!Array.isArray(m[k]))m[k]=[];});
+  if(!m.swaps||typeof m.swaps!=='object')m.swaps={};if(!m.prs||typeof m.prs!=='object')m.prs={};
+  // gammalt fritextfält "lim" → begränsnings-chips
+  if(typeof o.lim==='string'&&o.lim&&!(o.limits||[]).length){const t=o.lim.toLowerCase();
+    m.limits=Object.keys(LIMIT_SWAPS).filter(k=>t.includes(k)||(k==='ländrygg'&&t.includes('rygg')));}
+  delete m.lim;
+  // gammal e1Log (bara knäböj) → e1Hist.squat
+  if(!m.e1Hist.squat.length&&m.e1Log.length)m.e1Hist.squat=m.e1Log.slice(-30);
+  if(!ROTATIONS[m.split])m.split='ul';
+  if(o.tre&&!o.fast)m.fast=FAST[o.tre]?o.tre:'none';delete m.tre;
+  if(!FAST[m.fast])m.fast='none';
+  if(typeof o.fastedTrain==='boolean')m.fastedTrain=o.fastedTrain?'morning':'no';
+  if(!Array.isArray(m.fastDays))m.fastDays=[];
+  if(o.sIdx==null){const ks=ROTATIONS[m.split],days=DAYS[m.freq]||DAYS[4];const i=days.findIndex((d,n)=>ks[n%ks.length]===m.sessionKey);m.sIdx=i<0?0:i;}
+  return m;
+}
+let S; // initieras sist i skriptet (efter att alla konstanter finns)
+let timerInt=null,tLeft=0,lastDecision=null;
+
+function load(){try{return JSON.parse(localStorage.getItem('aether_v3'));}catch(e){return null;}}
+function save(){localStorage.setItem('aether_v3',JSON.stringify(S));}
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),1600);}
+function getPhase(w){let c=0;for(const b of BLOCKS){c+=b.weeks;if(w<c){const wi=w-(c-b.weeks)+1;return{...b,weekInPhase:wi,totalWeeks:b.weeks};}}return{...BLOCKS[3],weekInPhase:1,totalWeeks:1};}
+function hrvSt(c,b){if(!c||!b)return'normal';const r=c/b;if(r<.9)return'low';if(r>1.1)return'high';return'normal';}
+function daysAgo(ts){return(Date.now()-ts)/(86400000);}
+function e1rm(w,r){if(!w||!r)return null;return r===1?w:Math.round(w*(1+r/30)*10)/10;}
+
+function calcFatigue(logs){
+  let score=0,hardDays=0;
+  (logs||[]).forEach(log=>{
+    const ts=log.ts||Date.now();const d=daysAgo(ts);if(d>7)return;
+    const decay=Math.max(0,1-d/7);let sessionLoad=0,n=0,rpeSum=0;
+    (log.lifts||[]).forEach(l=>{sessionLoad+=(l.p||7.5);n++;rpeSum+=(l.p||7.5);});
+    if(!n&&log.sets){sessionLoad=log.sets*7.5;n=log.sets;}
+    score+=sessionLoad*decay;
+    if(n&&rpeSum/n>=7.5&&d<=3)hardDays++;
+  });
+  let level='low',mod=1;
+  if(score>=90){level='very_high';mod=0.72;}else if(score>=65){level='high';mod=0.85;}
+  else if(score>=35){level='moderate';mod=1;}else if(score>=15){level='low';mod=1.03;}
+  else{level='very_low';mod=1.05;}
+  return{score:+score.toFixed(1),level,mod,hardDays};
+}
+function calcMuscleVolume(logs){
+  const vol={};
+  (logs||[]).forEach(log=>{
+    if(daysAgo(log.ts||Date.now())>7)return;
+    (log.lifts||[]).forEach(l=>{
+      const ex=EX[l.id];if(!ex||(l.p||7.5)<6.5)return;
+      (ex.m||[]).forEach(m=>vol[m]=(vol[m]||0)+1);
+      (ex.sec||[]).forEach(m=>vol[m]=(vol[m]||0)+0.5);
+    });
+  });
+  const status={};
+  Object.keys(VOLUME_LANDMARKS).forEach(m=>{
+    const v=vol[m]||0,lm=VOLUME_LANDMARKS[m];
+    let st='under';if(v>=lm[2])st='over';else if(v>=lm[1])st='high';else if(v>=lm[0])st='optimal';
+    status[m]={sets:+v.toFixed(1),mev:lm[0],mav:lm[1],mrv:lm[2],status:st};
+  });
+  return{vol,status};
+}
+function calcRecoveryBudget(logs,freq){
+  // Weekly budget: base 100, each hard set costs ~2, sleep/context refund simplified
+  const max=100;
+  let used=0;
+  (logs||[]).forEach(log=>{
+    if(daysAgo(log.ts||Date.now())>7)return;
+    used+=(log.sets||(log.lifts||[]).length)*2.2;
+  });
+  const season=SEASON[S.season]||SEASON.normal;
+  used*=(season.vol<1?0.9:1);
+  const left=Math.max(0,Math.round(max-used));
+  return{max,used:+used.toFixed(0),left,pct:Math.max(0,Math.min(100,left))};
+}
+function liftHist(logs,id,n=6){
+  const h=[];(logs||[]).forEach(log=>{(log.lifts||[]).forEach(l=>{if(l.id===id&&l.w&&l.r)h.push({w:l.w,reps:l.r,rpe:l.p,ts:log.ts});});});
+  return h.sort((a,b)=>(a.ts||0)-(b.ts||0)).slice(-n);
+}
+function sugW(pw,pr,pR,tr,tR,hist){
+  if(!pw||pR==null)return{weight:null,action:'hold',detail:'Ingen historik'};
+  let stuck=false;
+  if(hist&&hist.length>=3){
+    const l=hist.slice(-3);
+    stuck=l.every(h=>Math.abs(h.w-pw)<0.1)&&l.every(h=>h.reps<=pr)&&l.every(h=>(h.rpe||8)>=tR);
+  }
+  if(stuck)return{weight:Math.round(pw*0.9/2.5)*2.5,action:'reset',detail:'Stagnerat 3+ pass → 10% reset'};
+  let p=0,action='hold',detail='Håll vikt, jaga reps';
+  if(pr>=tr&&pR<=tR-1){p=.03;action='up';detail='Reps i topp + låg RPE → öka';}
+  else if(pr>=tr&&pR<=tR-0.5){p=.025;action='up';detail='Bra set → liten ökning';}
+  else if(pr>=tr&&pR<=tR){p=.015;action='up';detail='Nådde reps → öka försiktigt';}
+  else if(pr<tr&&pR>=tR+1){p=-.025;action='down';detail='Missade reps + hög RPE → sänk';}
+  else if(pr<tr){p=-.015;action='down';detail='Under rep-mål → sänk något';}
+  else if(pR>=tR+1.5){p=-.02;action='down';detail='RPE för hög → sänk';}
+  return{weight:Math.round(pw*(1+p)/2.5)*2.5,action,detail};
+}
+function applyTimeBudget(exercises,budget){
+  if(budget==='full')return exercises;
+  const sorted=[...exercises].sort((a,b)=>(EX[a.id]?.priority||3)-(EX[b.id]?.priority||3));
+  if(budget==='45')return sorted.slice(0,Math.max(3,sorted.length-1)).map(e=>({...e,sets:Math.max(2,e.sets- (e.sets>3?1:0))}));
+  if(budget==='30')return sorted.filter(e=>(EX[e.id]?.priority||3)<=2).slice(0,3).map(e=>({...e,sets:Math.max(2,e.sets-1)}));
+  // 20 min MED
+  return sorted.filter(e=>(EX[e.id]?.priority||3)===1).slice(0,2).map(e=>({...e,sets:Math.max(2,Math.min(3,e.sets))}));
+}
+function plannedLoad(tmpl,volMod){
+  return tmpl.reduce((s,e)=>s+Math.max(1,Math.round(e.sets*volMod))*(e.rpe||7.5),0);
+}
+function adj(r,rAvg,hs,phase,fatigue){
+  let vol=1,rpeCap=phase.rpe[1];const reasons=[];const decisions=[];const eff=r*.6+rAvg*.4;
+  if(eff>=9){vol=1.06;reasons.push('Bra dagsform → lite mer volym idag');decisions.push({k:'readiness',v:'high'});}
+  else if(eff>=7){reasons.push('Normal dagsform → kör passet som planerat');decisions.push({k:'readiness',v:'ok'});}
+  else if(eff>=5.5){vol=.88;rpeCap=Math.min(rpeCap,8);reasons.push('Lite sämre dagsform → något färre set');decisions.push({k:'readiness',v:'low_mod'});}
+  else if(eff>=4){vol=.7;rpeCap=Math.min(rpeCap,7.5);reasons.push('Låg dagsform → tydligt lättare pass');decisions.push({k:'readiness',v:'low'});}
+  else{vol=.45;rpeCap=6.5;reasons.push('Mycket låg dagsform → minipass eller vila');decisions.push({k:'readiness',v:'critical'});}
+  if(hs==='low'){vol*=.9;reasons.push('HRV under din baslinje');decisions.push({k:'hrv',v:'low'});}
+  if(fatigue){vol*=fatigue.mod;if(fatigue.level==='high'||fatigue.level==='very_high'){reasons.push('Mycket träning senaste veckan → färre set');decisions.push({k:'fatigue',v:fatigue.level});}
+    if(fatigue.hardDays>=4){vol*=.92;reasons.push(fatigue.hardDays+' tunga dagar nyligen → lite lättare');}}
+  // Context tags
+  (S.context||[]).forEach(c=>{
+    if(c==='sick'){vol*=.5;rpeCap=Math.min(rpeCap,6.5);reasons.push('Sjuk/krasslig → mycket lätt pass');decisions.push({k:'context',v:'sick'});}
+    if(c==='poor_sleep'){vol*=.9;reasons.push('Dålig sömn → något lättare');decisions.push({k:'context',v:'poor_sleep'});}
+    if(c==='high_stress'){vol*=.92;reasons.push('Hög stress → något lättare');decisions.push({k:'context',v:'stress'});}
+    if(c==='travel'){vol*=.85;reasons.push('Resdag → enklare pass');decisions.push({k:'context',v:'travel'});}
+    if(c==='time_crunch'&&S.timeBudget==='full'){reasons.push('Ont om tid → 30-minuterspass');}
+  });
+  const season=SEASON[S.season]||SEASON.normal;
+  vol*=season.vol;
+  if(season.vol!==1){reasons.push('Säsong '+season.label+' → '+Math.round(season.vol*100)+' % av normal volym');decisions.push({k:'season',v:S.season});}
+  if(phase.phase==='deload'){vol=Math.min(vol,.55);rpeCap=Math.min(rpeCap,7);reasons.push('Återhämtningsvecka (deload)');decisions.push({k:'phase',v:'deload'});}
+  // Recovery budget hard cap
+  const rec=calcRecoveryBudget(S.logs,S.freq);
+  if(rec.left<15){vol=Math.min(vol,.7);reasons.push('Återhämtningsbudgeten är låg ('+rec.left+') → skyddar dig');decisions.push({k:'recovery',v:rec.left});}
+  return{volumeMod:+vol.toFixed(2),rpeCap:+rpeCap.toFixed(1),reasons,decisions,rec,
+    recText:eff<=4.5?'Lättare pass eller vila idag.':vol>1.02?'Du kan ta i lite extra idag.':'Kör enligt plan.',
+    counterfactual:eff<7?`Om readiness varit 8+ hade volymmod varit närmare ×${(vol/(eff>=5.5?0.88:0.7)*1.0).toFixed(2)}.`:`Med lägre readiness (≤5) hade passet kapats kraftigt.`};
+}
+
+function rotation(){const keys=ROTATIONS[S.split]||ROTATIONS.ul;const days=DAYS[S.freq]||DAYS[4];return days.map((d,i)=>({d,k:keys[i%keys.length]}));}
+function sessName(k){return SESSION_NAMES[k]||String(k).replace(/_/g,' ');}
+function effBudget(){return((S.context||[]).includes('time_crunch')&&S.timeBudget==='full')?'30':S.timeBudget;}
+function pickSession(i){const rot=rotation();S.sIdx=i;S.sessionKey=rot[i].k;save();refresh();tab('today');toast(sessName(S.sessionKey));}
+function limitSwap(id,taken){
+  let cur=id,why=[];
+  for(const lim of (S.limits||[])){const c=(LIMIT_SWAPS[lim]||{})[cur];if(!c)continue;
+    const pick=c.find(x=>!taken.has(x));if(pick){cur=pick;why.push(LIMIT_LABEL[lim]);}}
+  return{id:cur,why};
+}
+function resolveSession(key){
+  const base=TEMPLATES[key]||TEMPLATES.lower_heavy;const taken=new Set(base.map(e=>e.id));
+  return base.map(e=>{
+    const man=(S.swaps||{})[e.id];
+    if(man&&EX[man]&&man!==e.id){taken.add(man);return{...e,id:man,orig:e.id,swapReason:'Ditt val (ersätter '+EX[e.id].name+')'};}
+    const r=limitSwap(e.id,taken);
+    if(r.id!==e.id){taken.add(r.id);return{...e,id:r.id,orig:e.id,swapReason:'Pga '+r.why.join(' + ')+' (ersätter '+EX[e.id].name+')'};}
+    return{...e,orig:e.id};
+  });
+}
+function currentSession(){return applyTimeBudget(resolveSession(S.sessionKey),effBudget());}
+function limitSwapList(){
+  const seen=new Set(),out=[];
+  Object.keys(TEMPLATES).forEach(k=>resolveSession(k).forEach(e=>{if(e.swapReason&&e.swapReason.startsWith('Pga')){const t=EX[e.orig].name+' → '+EX[e.id].name;if(!seen.has(t)){seen.add(t);out.push(t);}}}));
+  return out;
+}
+function alternatives(orig){
+  const o=EX[orig];if(!o)return[];
+  return Object.keys(EX).filter(k=>k!==orig&&EX[k].m.some(m=>o.m.includes(m))).sort((a,b)=>(EX[a].m[0]===o.m[0]?0:1)-(EX[b].m[0]===o.m[0]?0:1)||EX[a].priority-EX[b].priority).slice(0,6);
+}
+function setSwap(orig,id){S.swaps=S.swaps||{};if(!id||id===orig)delete S.swaps[orig];else S.swaps[orig]=id;save();closeM();refresh();toast(id&&id!==orig?'Bytt till '+EX[id].name:'Återställd');}
+function logDecision(a,sessionKey){
+  const sig=[sessionKey,a.volumeMod,a.rpeCap,a.reasons.join('|')].join('#');
+  const top=(S.decisions||[])[0];
+  if(top&&top.sig===sig&&Date.now()-top.ts<12*3600e3){top.ts=Date.now();lastDecision=top;save();return;}
+  lastDecision={ts:Date.now(),sig,session:sessionKey,volumeMod:a.volumeMod,rpeCap:a.rpeCap,reasons:a.reasons.slice(),decisions:a.decisions.slice(),feedback:0};
+  S.decisions=[lastDecision,...(S.decisions||[])].slice(0,30);
+  save();
+}
+
+function start(cont){splash.classList.remove('active');if(cont&&load()){main.classList.add('active');tab('today');toast('Data laddad');}else onboard.classList.add('active');}
+function chip(el,g){document.querySelectorAll('#'+g+' .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+function finishOB(){
+  S.name=document.getElementById('ob-name').value||'Demo';S.goal=document.querySelector('#ob-goal .chip.on').dataset.v;
+  S.season=document.querySelector('#ob-season .chip.on').dataset.v;
+  S.freq=+document.querySelector('#ob-freq .chip.on').dataset.v;
+  S.split=document.querySelector('#ob-split .chip.on').dataset.v;
+  S.bw=+document.getElementById('ob-bw').value||82;
+  S.sex=document.querySelector('#ob-sex .chip.on').dataset.v;S.age=+document.getElementById('ob-age').value||30;S.height=+document.getElementById('ob-h').value||178;
+  S.limits=[...document.querySelectorAll('#ob-lim .chip.on')].map(c=>c.dataset.v);
+  S.sIdx=0;S.sessionKey=rotation()[0].k;if(S.bw)S.bwLog=[{ts:Date.now(),date:new Date().toLocaleDateString('sv-SE'),v:S.bw}];save();
+  onboard.classList.remove('active');main.classList.add('active');tab('today');toast('Program skapat');
+}
+const SUBS={train:'logga',kost:'idag'};
+const PAGE_TITLE={'m-prof':'Profil','m-data':'Data','m-guide':'Guide','m-ord':'Ordlista','m-src':'Källor'};
+function tab(t){
+  document.querySelectorAll('.tp').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const el=document.getElementById('t-'+t);if(!el)return;el.style.display='block';
+  const isSub=t.startsWith('m-');
+  const n=document.querySelector(`.ni[data-t="${isSub?'menu':t}"]`);if(n)n.classList.add('active');
+  backBtn.style.display=isSub?'inline-block':'none';brandTxt.style.display=isSub?'none':'block';
+  window.scrollTo(0,0);
+  if(t==='today')refresh();
+  if(t==='train')sub('train',SUBS.train);if(t==='kost')sub('kost',SUBS.kost);
+  if(t==='hist')renderHist();if(t==='m-prof')renderProf();
+  if(t==='m-guide')renderGuide();if(t==='m-ord')renderOrd();if(t==='m-src')renderSrc();
+  if(t==='m-data')wipeBox.style.display='none';
+}
+function sub(g,s){
+  SUBS[g]=s;
+  document.querySelectorAll(`.seg[data-g="${g}"] button`).forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  document.querySelectorAll(`.sp[data-g="${g}"]`).forEach(p=>p.classList.toggle('on',p.dataset.s===s));
+  if(g==='train'){if(s==='logga')renderLog();if(s==='schema'||s==='period')renderTrain();if(s==='ovn')renderLib();}
+  if(g==='kost')renderKost();
+}
+function goSub(g,s){SUBS[g]=s;tab(g);}
+function wipeAsk(){wipeBox.style.display='block';}
+function setR(v){S.readiness=v;S.hrv=+(hrvIn.value)||S.hrv;save();refresh();}
+function toggleCtx(el){const v=el.dataset.v;el.classList.toggle('on');S.context=S.context||[];if(el.classList.contains('on')){if(!S.context.includes(v))S.context.push(v);}else S.context=S.context.filter(x=>x!==v);save();refresh();}
+function setTime(el){document.querySelectorAll('#timeChips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');S.timeBudget=el.dataset.v;save();refresh();}
+function setSeason(el){document.querySelectorAll('#seasonChips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');S.season=el.dataset.v;save();renderTrain();refresh();}
+
+function svgFront(p,s){const on=id=>`class="muscle ${p.has(id)?'on':s.has(id)?'sec':''}"`;return `<svg viewBox="0 0 120 280"><ellipse cx="60" cy="22" rx="16" ry="18" fill="#3d4658"/><rect x="48" y="38" width="24" height="10" rx="3" fill="#3d4658"/><path ${on('shoulders')} d="M28 52 L48 48 L48 70 L32 78 Z"/><path ${on('shoulders')} d="M92 52 L72 48 L72 70 L88 78 Z"/><path ${on('chest')} d="M48 50 L72 50 L74 78 L46 78 Z"/><path ${on('core')} d="M48 78 L72 78 L70 120 L50 120 Z"/><path ${on('biceps')} d="M22 78 L32 78 L34 115 L20 112 Z"/><path ${on('biceps')} d="M98 78 L88 78 L86 115 L100 112 Z"/><path ${on('quads')} d="M48 120 L58 120 L60 195 L46 195 Z"/><path ${on('quads')} d="M62 120 L72 120 L74 195 L60 195 Z"/><path ${on('calves')} d="M46 195 L58 195 L57 250 L48 250 Z"/><path ${on('calves')} d="M62 195 L74 195 L72 250 L63 250 Z"/></svg>`;}
+function svgBack(p,s){const on=id=>`class="muscle ${p.has(id)?'on':s.has(id)?'sec':''}"`;return `<svg viewBox="0 0 120 280"><ellipse cx="60" cy="22" rx="16" ry="18" fill="#3d4658"/><rect x="48" y="38" width="24" height="10" rx="3" fill="#3d4658"/><path ${on('shoulders')} d="M28 52 L48 48 L48 70 L32 78 Z"/><path ${on('shoulders')} d="M92 52 L72 48 L72 70 L88 78 Z"/><path ${on('upperback')} d="M46 50 L74 50 L72 85 L48 85 Z"/><path ${on('lats')} d="M40 70 L48 68 L50 115 L36 100 Z"/><path ${on('lats')} d="M80 70 L72 68 L70 115 L84 100 Z"/><path ${on('glutes')} d="M46 122 L74 122 L72 155 L48 155 Z"/><path ${on('hams')} d="M48 155 L58 155 L58 200 L46 200 Z"/><path ${on('hams')} d="M62 155 L72 155 L74 200 L62 200 Z"/><path ${on('calves')} d="M46 200 L58 200 L57 250 L48 250 Z"/><path ${on('calves')} d="M62 200 L74 200 L72 250 L63 250 Z"/></svg>`;}
+
+function refresh(){
+  const phase=getPhase(S.week),hs=hrvSt(S.hrv,S.hrvBase),fatigue=calcFatigue(S.logs),muscleVol=calcMuscleVolume(S.logs);
+  const a=adj(S.readiness,S.rAvg,hs,phase,fatigue);
+  logDecision(a,S.sessionKey);
+  let tmpl=currentSession();
+  sc.textContent=S.readiness;rAvgShow.textContent=S.rAvg;hrvS.textContent=S.hrv;
+  hrvB.textContent=hs==='low'?'Låg':hs==='high'?'Hög':'Normal';hrvB.className='badge '+(hs==='low'?'low':'ok');
+  hint.textContent=a.recText;
+  const season=SEASON[S.season]||SEASON.normal;
+  hdrB.textContent=PHASE_SV[phase.phase]+' · v'+phase.weekInPhase+'/'+phase.totalWeeks;
+  helloTxt.textContent='Hej '+(S.name||'')+'!';dateTxt.textContent=new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'short'});
+  hrvBaseTxt.textContent=S.hrvBase;
+  try{const m=macros();tileKcal.textContent=Math.max(0,m.cal-S.loggedKcal*(S.mealDate===new Date().toLocaleDateString('sv-SE')?1:0))+'';tileProt.textContent='kcal kvar · '+m.protein+' g prot';
+    const st=fastState();tileFast.textContent=(FAST[S.fast]||FAST.none).label;tileFastSub.textContent=st.txt;}catch(e){}
+  const bl=S.bwLog||[];tileBw.textContent=(bl.length?bl[bl.length-1].v:S.bw)+' kg';tileBwSub.textContent=bl.length>1?((bl[bl.length-1].v-bl[0].v>=0?'+':'')+(bl[bl.length-1].v-bl[0].v).toFixed(1)+' kg totalt'):'Logga vikt';
+  const eb=effBudget();sName.textContent=sessName(S.sessionKey)+(eb!=='full'?' · '+eb+' min':'');
+  const rot=rotation();nextInfo.textContent='Pass '+((S.sIdx||0)%rot.length+1)+' av '+rot.length+' i veckan · Nästa: '+sessName(rot[((S.sIdx||0)+1)%rot.length].k);
+  sRpe.textContent='RPE ≤ '+a.rpeCap;sNote.textContent=a.reasons[0]||'';
+  timeNote.textContent=S.timeBudget==='20'?'Minimum: bara de viktigaste lyften, 2–3 set.':S.timeBudget==='full'?'Fullt pass enligt schemat.':'Kortare pass – småövningar tas bort först.';
+  coachToday.innerHTML=`<strong>Coach:</strong> ${a.reasons[0]||'Kör enligt plan.'}${S.fastedTrain&&S.fastedTrain!=='no'&&S.trainingDay?' · Fastande pass – ät protein efteråt.':''}${isLowDay()?' · Lågdag i fastan – kör hellre lätt eller vila.':''}`;
+  const sm=document.getElementById('sessionMeta');
+  if(sm){
+    const bits=[];
+    if(S.timeBudget&&S.timeBudget!=='full') bits.push(S.timeBudget+' min');
+    if((S.context||[]).length) bits.push(S.context.length+' context');
+    sm.textContent=bits.join(' · ')||'Enligt plan';
+  }
+  const rm=document.getElementById('recMini');
+  if(rm){rm.textContent='Rec '+a.rec.left;rm.className='badge '+(a.rec.left<20?'mid':'ok');}
+
+  // sync chips
+  document.querySelectorAll('#ctxChips .chip').forEach(c=>c.classList.toggle('on',(S.context||[]).includes(c.dataset.v)));
+  document.querySelectorAll('#timeChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.timeBudget));
+
+  const muscles=new Set();const prim=new Set(),sec=new Set();
+  exList.innerHTML=tmpl.map(e=>{
+    const sets=Math.max(1,Math.round(e.sets*a.volumeMod));const rpe=Math.min(e.rpe,a.rpeCap);
+    const ex=EX[e.id]||{name:e.id,m:[]};(ex.m||[]).forEach(m=>{muscles.add(m);const k=MUSCLE_MAP[m];if(k)prim.add(k);});
+    (ex.sec||[]).forEach(m=>{const k=MUSCLE_MAP[m];if(k&&!prim.has(k))sec.add(k);});
+    const prev=S.prev[e.id];let sug='';
+    if(prev){const prog=sugW(prev.w,prev.reps,prev.rpe,e.reps[1],rpe,liftHist(S.logs,e.id));const e1=e1rm(prev.w,prev.reps);
+      sug=`<div class="ex-meta">Föreslagen <b>${prog.weight??'—'} kg</b> · e1RM ≈ ${e1}${prog.action==='reset'?' · <span class="badge mid">reset</span>':prog.action==='up'?' · ↑':''}</div><div class="ex-meta">${prog.detail}</div>`;}
+    const thumb=EX_IMG[e.id]?`<img class="ex-thumb" src="${EX_IMG[e.id]}" alt=""/>`:`<div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;font-size:18px">🏋️</div>`;
+    const sw=e.swapReason?`<div class="swapnote">↻ ${e.swapReason}</div>`:'';
+    return `<div class="ex" onclick="openEx('${e.id}',${sets},'${e.reps[0]}-${e.reps[1]}',${rpe},'${e.orig||e.id}')"><div class="ex-row">${thumb}<div class="ex-body"><div class="ex-name">${ex.name}</div>${sw}
+      <div class="ex-meta">${sets} × ${e.reps[0]}-${e.reps[1]} @ RPE ${rpe}</div>${sug}
+      <div class="tags">${(ex.m||[]).map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;
+  }).join('');
+  dayMus.innerHTML=[...muscles].map(m=>`<span class="tag hot">${m}</span>`).join('');
+  bodyFront.innerHTML=svgFront(prim,sec);bodyBack.innerHTML=svgBack(prim,sec);
+
+  // Recovery
+  recTxt.textContent=a.rec.left+' / '+a.rec.max;recSub.textContent='kvar denna vecka';
+  recBar.style.width=a.rec.pct+'%';recBar.style.background=a.rec.pct<20?'var(--d)':a.rec.pct<40?'var(--w)':'linear-gradient(90deg,#2dd4bf,#5eead4)';
+  coachRec.innerHTML=`<strong>Coach:</strong> Budgeten minskar med tunga set. Under 15 → motorn skyddar dig automatiskt.`;
+
+  const fatLabel={very_high:'Mycket hög',high:'Hög',moderate:'Måttlig',low:'Låg',very_low:'Mycket låg'}[fatigue.level];
+  const volLines=Object.entries(muscleVol.status).filter(([,s])=>s.sets>0).sort((a,b)=>b[1].sets-a[1].sets).slice(0,5)
+    .map(([m,s])=>`<div class="ex-meta">${m}: <b>${s.sets}</b> · ${s.status}</div>`).join('')||'<div class="ex-meta">Inga set loggade 7d.</div>';
+  whyBox.innerHTML=`<h4>Varför?</h4>${a.reasons.map(r=>`<div class="reason">${r}</div>`).join('')}
+    <div style="margin-top:8px"><h4>Fatigue</h4><span class="badge ${fatigue.level.includes('high')?'mid':'ok'}">${fatLabel}</span> <span class="muted">score ${fatigue.score}</span></div>
+    <div style="margin-top:8px"><h4>Volym 7d</h4>${volLines}</div>
+    <div class="coach" style="margin-top:8px"><strong>Counterfactual:</strong> ${a.counterfactual}</div>`;
+
+  decLog.innerHTML=(S.decisions||[]).slice(0,5).map(d=>`<div class="dec"><div>${sessName(d.session)} · vol ×${d.volumeMod} · RPE≤${d.rpeCap}
+    ${d.feedback===1?' 👍':d.feedback===-1?' 👎':''}</div><div class="t">${(d.reasons||[]).slice(0,2).join(' · ')}</div></div>`).join('')||'<div class="muted">Inga beslut ännu.</div>';
+
+  seasonLabel.textContent=season.label;
+  phNameT.textContent=PHASE_SV[phase.phase];phWeekT.textContent=`v${phase.weekInPhase}/${phase.totalWeeks}`;
+  phDescT.textContent=PDESC[phase.phase];phBarT.style.width=(phase.weekInPhase/phase.totalWeeks*100)+'%';
+  coachPhase.innerHTML=`<strong>Coach:</strong> ${PHASE_COACH[phase.phase]} ${season.note}`;
+}
+
+function feedback(v){
+  if(!S.decisions||!S.decisions.length){toast('Inget beslut att betygsätta');return;}
+  S.decisions[0].feedback=v;S.feedback=S.feedback||[];S.feedback.push({ts:Date.now(),v});save();refresh();toast(v===1?'Tack – sparat':'Tack – vi tar lärdom');
+}
+
+function openEx(id,sets,reps,rpe,orig){
+  orig=orig||id;
+  const ex=EX[id]||{name:id,m:[],cue:'',coach:''};
+  mTitle.textContent=ex.name;mMeta.textContent=`${sets} × ${reps} @ RPE ${rpe}`;
+  mTags.innerHTML=(ex.m||[]).map(m=>`<span class="tag hot">${m}</span>`).join('')+(ex.sec||[]).map(m=>`<span class="tag">${m}</span>`).join('');
+  const img=EX_IMG[id];
+  const imgEl=document.getElementById('mImg');
+  if(img){imgEl.src=img;imgEl.style.display='block';document.getElementById('mPh').style.display='none';}
+  else{imgEl.style.display='none';document.getElementById('mPh').style.display='flex';document.getElementById('mPh').textContent='Ingen demo-bild · följ stegen';}
+  const steps=EX_STEPS[id]||(ex.cue?[ex.cue]:['Kontrollerad teknik genom hela rörelsen']);
+  document.getElementById('mSteps').innerHTML=steps.map((t,i)=>`<div class="step"><div class="n">${i+1}</div><div class="t">${t}</div></div>`).join('');
+  mCue.textContent='';mCoach.innerHTML=`<strong>Coach:</strong> ${ex.coach||'Kvalitet före kvantitet.'}`;
+  // mini muscle highlight for this exercise only
+  const prim=new Set(),sec=new Set();
+  (ex.m||[]).forEach(m=>{const k=MUSCLE_MAP[m];if(k)prim.add(k);});
+  (ex.sec||[]).forEach(m=>{const k=MUSCLE_MAP[m];if(k&&!prim.has(k))sec.add(k);});
+  document.getElementById('mBody').innerHTML='<div class="body-wrap" style="margin:0"><div class="body-svg">'+svgFront(prim,sec)+'</div><div class="body-svg">'+svgBack(prim,sec)+'</div></div>';
+  document.getElementById('mSwapWrap').style.display='block';
+  const alts=alternatives(orig);
+  document.getElementById('mSwap').innerHTML=`<div class="swap ${id===orig?'on':''}" onclick="setSwap('${orig}',null)"><span>${EX[orig]?EX[orig].name:orig} <span class="muted">(original)</span></span><span class="muted">${id===orig?'✓':''}</span></div>`+
+    alts.map(k=>`<div class="swap ${k===id?'on':''}" onclick="setSwap('${orig}','${k}')"><span>${EX[k].name}</span><span class="muted">${k===id?'✓':EX[k].m.join(', ')}</span></div>`).join('');
+  exModal.classList.add('on');
+}
+function closeM(){exModal.classList.remove('on');}
+
+function renderLog(){
+  const phase=getPhase(S.week);const a=adj(S.readiness,S.rAvg,hrvSt(S.hrv,S.hrvBase),phase,calcFatigue(S.logs));
+  const tmpl=currentSession();
+  logTitle.textContent=sessName(S.sessionKey);
+  coachLog.innerHTML='<strong>Coach:</strong> Max RPE idag: '+a.rpeCap+'. Vikterna är förifyllda från förra gången. ↓ kopierar setet nedåt.';
+  logArea.innerHTML=tmpl.map((e,i)=>{
+    const sets=Math.max(1,Math.round(e.sets*a.volumeMod));const ex=EX[e.id]||{name:e.id};const prev=S.prev[e.id];const defW=prev?prev.w:'';
+    let rows='';for(let s=1;s<=sets;s++)rows+=`<div class="set-row"><span class="muted">${s}</span>
+      <input type="number" id="w${i}_${s}" value="${defW}"/><input type="number" id="r${i}_${s}" value="${e.reps[0]}"/>
+      <input type="number" id="p${i}_${s}" value="${Math.min(e.rpe,a.rpeCap)}" step=".5"/>
+      <button class="btn o sm" style="padding:6px" onclick="copySet(${i},${s},${sets})">↓</button></div>`;
+    return `<div class="card"><div class="ex-name">${ex.name}</div><div class="ex-meta">${sets} set</div>
+      <div class="quick"><button class="btn o sm" onclick="bump(${i},1,2.5)">+2.5</button>
+      <button class="btn o sm" onclick="bump(${i},1,-2.5)">−2.5</button>
+      <button class="btn o sm" onclick="startTimer(90)">⏱</button></div>${rows}</div>`;
+  }).join('');logMsg.textContent='';logNote.value='';
+}
+function copySet(i,s,max){if(s>=max)return;['w','r','p'].forEach(k=>document.getElementById(k+i+'_'+(s+1)).value=document.getElementById(k+i+'_'+s).value);toast('Kopierat');}
+function bump(i,s,d){const el=document.getElementById('w'+i+'_'+s);if(el)el.value=(+(el.value||0)+d)||'';}
+function e1Cat(id){if(['back_squat','front_squat','box_squat'].includes(id))return'squat';if(id==='bench_press'||id==='db_bench'||id==='incline_bench')return'bench';if(id==='rdl'||id==='deadlift')return'rdl';return null;}
+function saveLog(){
+  const phase=getPhase(S.week);const a=adj(S.readiness,S.rAvg,hrvSt(S.hrv,S.hrvBase),phase,calcFatigue(S.logs));
+  const tmpl=currentSession();
+  const entry={date:new Date().toLocaleDateString('sv-SE'),ts:Date.now(),session:S.sessionKey,lifts:[],sets:0,note:logNote.value||'',readiness:S.readiness,context:[...(S.context||[])]};
+  const best={},catBest={};
+  tmpl.forEach((e,i)=>{const sets=Math.max(1,Math.round(e.sets*a.volumeMod));
+    for(let s=1;s<=sets;s++){const w=+document.getElementById('w'+i+'_'+s)?.value,r=+document.getElementById('r'+i+'_'+s)?.value,p=+document.getElementById('p'+i+'_'+s)?.value;
+      if(w&&r){entry.lifts.push({id:e.id,w,r,p});entry.sets++;S.prev[e.id]={w,reps:r,rpe:p||e.rpe};
+        const e1=e1rm(w,r);if(!best[e.id]||e1>best[e.id].e1)best[e.id]={e1,w,r};
+        const c=e1Cat(e.id);if(c&&(!catBest[c]||e1>catBest[c]))catBest[c]=e1;}}});
+  if(!entry.sets){logMsg.textContent='Fyll i minst ett set (vikt + reps).';logMsg.style.color='var(--w)';return;}
+  const newPRs=[];
+  Object.entries(best).forEach(([id,b])=>{const old=S.prs[id];if(!old||b.e1>old.e1){if(old)newPRs.push(EX[id].name+' '+b.e1);S.prs[id]={e1:b.e1,w:b.w,r:b.r,date:entry.date};}});
+  Object.entries(catBest).forEach(([c,v])=>{S.e1[c]=v;S.e1Hist[c]=[...(S.e1Hist[c]||[]),{ts:Date.now(),v}].slice(-30);});
+  if(catBest.squat)S.e1Log=[...S.e1Log,{ts:Date.now(),v:catBest.squat}].slice(-30);
+  S.logs.unshift(entry);S.readinessLog.push({ts:Date.now(),v:S.readiness});
+  if(S.readinessLog.length>30)S.readinessLog=S.readinessLog.slice(-30);
+  // gå vidare till nästa pass i veckan
+  const rot=rotation();S.sIdx=((S.sIdx||0)+1)%rot.length;S.sessionKey=rot[S.sIdx].k;
+  if(S.sIdx===0){S.week=(S.week+1)%12;}
+  save();logMsg.textContent='Sparat ✓';logMsg.style.color='var(--p)';
+  toast(newPRs.length?'🏆 Nytt PR: '+newPRs[0]+' kg e1RM':'Pass sparat · nästa: '+sessName(S.sessionKey));
+  setTimeout(()=>{tab('today');refresh();},newPRs.length?1400:600);
+}
+function startTimer(sec){stopTimer();tLeft=sec;timerCard.classList.add('on');tick();timerInt=setInterval(tick,1000);}
+function tick(){if(tLeft<=0){stopTimer();toast('Vila klar');return;}timerVal.textContent=String(Math.floor(tLeft/60)).padStart(2,'0')+':'+String(tLeft%60).padStart(2,'0');tLeft--;}
+function stopTimer(){if(timerInt)clearInterval(timerInt);timerInt=null;timerCard.classList.remove('on');}
+
+function setFreq(f){S.freq=f;S.sIdx=0;S.sessionKey=rotation()[0].k;save();renderTrain();refresh();toast(f+' pass/vecka');}
+function setSplit(s){S.split=s;S.sIdx=0;S.sessionKey=rotation()[0].k;save();renderTrain();refresh();}
+function renderTrain(){
+  ['ul','ppl','fb'].forEach(x=>{const el=document.getElementById('sp-'+x);if(el)el.classList.toggle('on',x===S.split);});
+  document.querySelectorAll('#seasonChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.season));
+  const rot=rotation(),cur=(S.sIdx||0)%rot.length;
+  schema.innerHTML=rot.map((x,i)=>`<div class="ex" onclick="pickSession(${i})"><div class="row between"><div class="ex-name">${x.d} · ${sessName(x.k)}</div>${i===cur?'<span class="badge ok">Nästa</span>':''}</div><div class="ex-meta">${resolveSession(x.k).map(e=>(EX[e.id]||{name:e.id}).name).slice(0,3).join(' · ')}…</div></div>`).join('')
+    +`<p class="muted" style="margin-top:8px;font-size:11.5px">${S.freq} pass/vecka. Efter sparat pass går appen automatiskt vidare till nästa.</p>`;
+  const season=SEASON[S.season]||SEASON.normal;
+  coachSeason.innerHTML=`<strong>Coach:</strong> ${season.note}`;
+  const phase=getPhase(S.week);
+  advanceInfo.textContent=`Du är i ${PHASE_SV[phase.phase].toLowerCase()}, vecka ${phase.weekInPhase} av ${phase.totalWeeks}. ${PDESC[phase.phase]} Appen går fram en vecka automatiskt när du kört alla veckans pass.`;
+  let c=0;phaseTimeline.innerHTML='<div class="ph">'+BLOCKS.map(b=>{const on=S.week>=c&&S.week<c+b.weeks;c+=b.weeks;return `<div class="${on?'on':''}" style="flex:${b.weeks}">${PHASE_SV[b.phase]}<br>${b.weeks} v</div>`;}).join('')+'</div>';
+  document.querySelectorAll('#freqChips .chip').forEach(x=>x.classList.toggle('on',+x.dataset.v===S.freq));
+}
+function advanceWeek(){S.week=(S.week+1)%12;save();renderTrain();refresh();toast('Vecka '+S.week);}
+function runSim(){
+  const f=+simFreq.value;const weeks=4;const setsPerSession=12;const rpe=7.8;
+  const weekly=f*setsPerSession*rpe;const total=weekly*weeks*0.7; // decay approx
+  let verdict='Hållbart för de flesta.';
+  if(f>=6&&S.season==='cut')verdict='Hög risk för under-recovery under cut.';
+  else if(total>400)verdict='Hög kumulativ fatigue – planera deload efter 3–4 veckor.';
+  else if(f<=3)verdict='Låg frekvens – bra för recovery, långsammare volymackumulation.';
+  simOut.style.display='block';
+  simOut.innerHTML=`<strong>Simulering ${f} pass/v × ${weeks} v:</strong> Uppskattad belastning ~${Math.round(total)}. ${verdict} Säsong: ${SEASON[S.season].label}.`;
+}
+
+function spark(el,values,rel){if(!values||!values.length){el.innerHTML='';return;}const mx=Math.max(...values,1);
+  let mn=0;if(rel){const lo=Math.min(...values);mn=lo-Math.max(1,(mx-lo)*0.6);}
+  el.innerHTML=values.map(v=>`<i title="${v}" style="height:${Math.max(4,((v-mn)/(mx-mn||1))*52)}px"></i>`).join('');}
+function pickE1(el){S.e1View=el.dataset.v;save();renderHist();}
+function logBw(){
+  const v=+bwIn.value;if(!v||v<30||v>300){toast('Ange vikt i kg');return;}
+  const date=new Date().toLocaleDateString('sv-SE');S.bwLog=(S.bwLog||[]).filter(x=>x.date!==date);
+  S.bwLog.push({ts:Date.now(),date,v});S.bwLog=S.bwLog.slice(-60);S.bw=v;bwIn.value='';save();renderHist();toast('Vikt '+v+' kg sparad');
+}
+function renderBw(){
+  const L=(S.bwLog||[]);spark(sparkBw,L.slice(-14).map(x=>x.v),true);
+  if(L.length<2){bwNote.textContent=L.length?'Startvikt '+L[0].v+' kg. Logga igen om några dagar för trend.':'Logga din vikt 1–3 ggr/vecka, samma tid på dagen.';return;}
+  const last=L[L.length-1],ref=[...L].reverse().find(x=>last.ts-x.ts>=6*86400e3)||L[0];
+  const days=Math.max(1,(last.ts-ref.ts)/86400e3),perW=(last.v-ref.v)/days*7,pct=perW/last.v*100;
+  let tip;
+  if(S.goal==='fat_loss'||S.season==='cut')tip=pct<-1?'Snabbt tempo – risk att tappa muskler, ät lite mer.':pct<=-0.4?'Bra tempo för fettförlust (0,5–1 %/v).':'Långsamt – minska ca 150–200 kcal om det står still 2 veckor.';
+  else if(S.goal==='hypertrophy'||S.season==='bulk')tip=pct>0.6?'Ökar snabbt – mer fett än muskel, dra ner lite.':pct>=0.15?'Bra tempo för muskeluppbyggnad.':'Står still – öka ca 150 kcal.';
+  else tip=Math.abs(pct)<0.3?'Stabilt – passar ditt mål.':'Vikten rör sig – kolla kalorierna.';
+  bwNote.textContent=`${last.v} kg · ${perW>=0?'+':''}${perW.toFixed(2)} kg/vecka (${pct>=0?'+':''}${pct.toFixed(1)} %). ${tip}`;
+}
+function importData(inp){
+  const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||typeof o!=='object'||!('logs' in o))throw 0;
+      S=migrate(o);save();toast('Data importerad');renderProf();refresh();}
+    catch(e){toast('Ogiltig fil');}inp.value='';};
+  r.readAsText(f);
+}
+function renderHist(){
+  e1s.textContent=S.e1.squat||'—';e1b.textContent=S.e1.bench||'—';e1d.textContent=S.e1.rdl||'—';
+  renderBw();
+  const prs=Object.entries(S.prs||{}).filter(([id])=>EX[id]).sort((a,b)=>b[1].e1-a[1].e1);
+  prCard.style.display=prs.length?'block':'none';
+  prList.innerHTML=prs.slice(0,8).map(([id,p])=>`<div class="pr"><span>${EX[id].name}</span><span><b>${p.w} kg × ${p.r}</b> <span class="muted">· e1RM ${p.e1} · ${p.date}</span></span></div>`).join('');
+  document.querySelectorAll('#e1Pick .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===(S.e1View||'squat')));
+  const vols=S.logs.slice(0,10).map(l=>l.sets||l.lifts.length).reverse();spark(sparkVol,vols);volNote.textContent=vols.length?`Senaste ${vols.length} pass`:'Logga pass.';
+  const rdy=(S.readinessLog||[]).slice(-10).map(x=>x.v);spark(sparkReady,rdy);readyNote.textContent=rdy.length?`${rdy.length} dagar`:'—';
+  const e1h=((S.e1Hist||{})[S.e1View||'squat']||[]).slice(-12),e1a=e1h.map(x=>x.v);spark(sparkE1,e1a,true);
+  e1Note.textContent=e1a.length>1?`${e1a.length} pass · ${e1a[e1a.length-1]>=e1a[0]?'+':''}${(e1a[e1a.length-1]-e1a[0]).toFixed(1)} kg sedan första`:e1a.length?'1 pass – logga fler för trend':'Inga pass loggade för lyftet ännu.';
+  const fat=calcFatigue(S.logs);const mv=calcMuscleVolume(S.logs);
+  const over=Object.entries(mv.status).filter(([,s])=>s.status==='over').map(([m])=>m);
+  coachProgress.innerHTML=`<strong>Coach:</strong> Fatigue ${fat.level} (${fat.score}). ${over.length?'Över landmärke: '+over.join(', ')+'.':'Volym inom rimliga ramar.'}`;
+  histList.innerHTML=S.logs.length?S.logs.slice(0,15).map(l=>`<div class="ex"><div class="ex-name">${sessName(l.session)}</div><div class="ex-meta">${l.date} · ${l.lifts.length} set · R${l.readiness}${l.context?.length?' · '+l.context.join(','):''}</div></div>`).join(''):'<div class="empty">Inga pass ännu.</div>';
+  const fb=S.feedback||[];const up=fb.filter(x=>x.v===1).length,dn=fb.filter(x=>x.v===-1).length;
+  fbStats.textContent=fb.length?`👍 ${up} · 👎 ${dn} (${fb.length} totalt)`:'Ingen feedback ännu – använd knapparna under Idag.';
+}
+
+/* ===================== KOST- & FASTEMOTOR (evidensbaserad) ===================== */
+const SRC={
+  mifflin:{t:'Mifflin MD m.fl. 1990, Am J Clin Nutr',d:'Formel för vilometabolism (BMR) från vikt, längd, ålder och kön. Används när fettprocent saknas.'},
+  katch:{t:'Katch–McArdle-formeln (McArdle, Katch & Katch, Exercise Physiology)',d:'BMR från fettfri massa (370 + 21,6 × FFM). Mer träffsäker när fettprocenten är känd.'},
+  navy:{t:'Hodgdon & Beckett 1984, Naval Health Research Center',d:'Uppskattar fettprocent från midja, hals (och höft för kvinnor) och längd. Felmarginal ca ±3–4 procentenheter.'},
+  morton:{t:'Morton RW m.fl. 2018, Br J Sports Med (meta-analys)',d:'Protein över ca 1,6 g/kg/dag gav ingen ytterligare muskelökning i snitt; övre gräns i analysen ca 2,2 g/kg.'},
+  issn_prot:{t:'Jäger R m.fl. 2017, J Int Soc Sports Nutr (ISSN-ståndpunkt)',d:'1,4–2,0 g/kg/dag för de flesta tränande; 20–40 g protein per mål; högre intag kan behövas i kaloriunderskott.'},
+  helms:{t:'Helms ER m.fl. 2014, Int J Sport Nutr Exerc Metab',d:'Systematisk översikt: 2,3–3,1 g protein per kg fettfri massa under kaloriunderskott hos smala styrketränande.'},
+  helms_prep:{t:'Helms ER, Aragon AA, Fitschen PJ 2014, J Int Soc Sports Nutr',d:'Rekommenderar viktnedgång på 0,5–1 % av kroppsvikten per vecka för att bevara muskelmassa.'},
+  garthe:{t:'Garthe I m.fl. 2011, Int J Sport Nutr Exerc Metab',d:'Idrottare som gick ner ca 0,7 %/vecka behöll/ökade muskelmassan bättre än de som gick ner ca 1,4 %/vecka.'},
+  sch_ar:{t:'Schoenfeld BJ & Aragon AA 2018, J Int Soc Sports Nutr',d:'Föreslår ca 0,4 g/kg protein per mål fördelat på minst 4 mål för att maximera muskeluppbyggnad.'},
+  iraki:{t:'Iraki J m.fl. 2019, Sports',d:'Off-season för kroppsbyggare: måttligt kaloriöverskott och långsam viktökning för att begränsa fettökning.'},
+  barakat:{t:'Barakat C m.fl. 2020, Strength Cond J',d:'Rekomposition (fett ner och muskler upp samtidigt) är väl dokumenterad, särskilt hos nybörjare, återkommande och personer med högre fettprocent.'},
+  kerksick:{t:'Kerksick CM m.fl. 2017, J Int Soc Sports Nutr (ISSN, näringstiming)',d:'Totalt intag av energi och protein är viktigast; protein inom några timmar före/efter passet är rimligt men timing är sekundärt.'},
+  moro:{t:'Moro T m.fl. 2016, J Transl Med',d:'16:8 hos styrketränade män i 8 veckor: mindre fettmassa, bibehållen muskelmassa och styrka jämfört med vanlig kost.'},
+  tinsley19:{t:'Tinsley GM m.fl. 2019, Am J Clin Nutr',d:'16:8 hos styrketränande kvinnor: liknande ökning av muskelmassa och styrka som vanlig kost när proteinet var högt.'},
+  tinsley17:{t:'Tinsley GM m.fl. 2017, Eur J Sport Sci',d:'20:4 fyra dagar/vecka hos otränade män: styrkan ökade som i kontrollgruppen, men muskelökningen tenderade att bli mindre.'},
+  lowe:{t:'Lowe DA m.fl. 2020, JAMA Intern Med (TREAT)',d:'16:8 utan styrketräning: liten viktnedgång som inte skilde sig från kontroll, och en betydande del av den var fettfri massa.'},
+  stote:{t:'Stote KS m.fl. 2007, Am J Clin Nutr',d:'En måltid per dag i en liten studie: viss fettminskning men högre hunger och blodtryck; mycket begränsad evidens.'},
+  harvie:{t:'Harvie MN m.fl. 2011, Int J Obes',d:'Två lågkaloridagar per vecka gav liknande viktnedgång som daglig kaloribegränsning.'},
+  trep:{t:'Trepanowski JF m.fl. 2017, JAMA Intern Med',d:'Varannandagsfasta var inte bättre än daglig kaloribegränsning för vikt, och fler hoppade av.'},
+  kreider:{t:'Kreider RB m.fl. 2017, J Int Soc Sports Nutr (ISSN, kreatin)',d:'Kreatinmonohydrat 3–5 g/dag ökar styrka och muskelmassa vid träning; välstuderat och säkert för friska.'},
+  guest:{t:'Guest NS m.fl. 2021, J Int Soc Sports Nutr (ISSN, koffein)',d:'Koffein ca 3–6 mg/kg 30–60 min före träning förbättrar prestation; lägre doser kan räcka.'},
+  nnr:{t:'Nordiska näringsrekommendationer 2023',d:'Vuxna rekommenderas minst 25–35 g fiber per dag.'}
+};
+const FAST={
+  none:{label:'Ingen',sub:'äta fritt',type:'none',win:null,meals:4,ev:'A',src:['kerksick'],text:'Ät när det passar. Totalt intag av energi och protein styr resultatet – inte klockan.'},
+  '12_12':{label:'12:12',sub:'nattfasta',type:'tre',win:12,meals:4,ev:'B',src:['kerksick'],text:'12 timmars nattfasta – i praktiken vanlig dygnsrytm utan kvällsätande. Lätt att hålla och inga kända nackdelar för muskler.'},
+  '14_10':{label:'14:10',sub:'mild',type:'tre',win:10,meals:3,ev:'B',src:['moro','tinsley19'],text:'Mjuk variant av 16:8. Bra start. Liknande resultat som 16:8 kan förväntas så länge kalorier och protein stämmer.'},
+  '16_8':{label:'16:8',sub:'vanligast',type:'tre',win:8,meals:3,ev:'A',src:['moro','tinsley19','lowe'],text:'Bäst studerat tillsammans med styrketräning: fett minskar och muskler/styrka bibehålls när proteinet är högt. Utan styrketräning tappar man en del muskler.'},
+  '18_6':{label:'18:6',sub:'krävande',type:'tre',win:6,meals:2,ev:'C',src:['sch_ar','tinsley17'],text:'Kort fönster gör det svårt att få i sig nog med protein och mat. Fungerar för fettminskning, mindre lämpligt för att bygga muskler.'},
+  '20_4':{label:'20:4',sub:'"warrior"',type:'tre',win:4,meals:2,ev:'C',src:['tinsley17'],text:'Studie: styrkan ökade men muskelökningen tenderade bli mindre. Svårt att nå protein. Mest för fettminskning hos vana.'},
+  omad:{label:'OMAD',sub:'1 mål/dag',type:'tre',win:1,meals:1,ev:'D',src:['stote','sch_ar'],text:'En måltid per dag. Mycket lite forskning, hög hunger och nästan omöjligt att fördela proteinet. Avråds om du vill bygga muskler.'},
+  '5_2':{label:'5:2',sub:'2 lågdagar',type:'days',meals:3,ev:'B',src:['harvie'],text:'Fem vanliga dagar och två dagar med ca 25 % av energibehovet. Lika effektivt som daglig kaloribegränsning. Lägg lågdagarna på vilodagar.'},
+  adf:{label:'Varannan dag',sub:'ADF',type:'adf',meals:3,ev:'C',src:['trep'],text:'Lågdag (ca 25 %) varannan dag. Inte bättre än vanlig kaloribegränsning och många hoppar av. Undvik tunga pass på lågdagar.'}
+};
+const EV_TXT={A:'Stark evidens med styrketräning',B:'Stöd, mest från viktminskningsstudier',C:'Begränsad/blandad evidens',D:'Mycket svag evidens'};
+const DAYN=['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
+const GOAL_TXT={fat_loss:'Gå ner i fett',hypertrophy:'Bygga muskler',recomp:'Båda samtidigt',strength:'Bli starkare',maintain:'Behålla'};
+const EXP_GAIN={beginner:[1,1.5],intermediate:[0.5,1],advanced:[0.25,0.5]}; // % kroppsvikt/månad (Helms/Aragon-pyramiden, Iraki 2019)
+const RATE_MUL={slow:0.7,std:1,fast:1.3};
+const SHOP=['Kyckling, färs, fisk','Ägg','Kvarg / grekisk yoghurt','Havregryn','Ris, potatis, pasta','Broccoli & frysta grönsaker','Bananer & bär','Bönor, linser','Whey/kasein (vid behov)','Olivolja, nötter','Kreatin monohydrat'];
+
+function srcTag(ids){return(ids||[]).map(id=>`<span class="src" onclick="showSrc('${id}')">[${Object.keys(SRC).indexOf(id)+1}]</span>`).join('');}
+function showSrc(id){const s=SRC[id];if(!s)return;hTitle.textContent='Källa ['+(Object.keys(SRC).indexOf(id)+1)+']';hBody.innerHTML=`<b>${s.t}</b><br>${s.d}<br><br><span class="muted">Alla källor finns under Meny → Evidens & källor.</span>`;helpModal.classList.add('on');}
+
+function navyBf(){
+  const h=S.height,w=S.waist,n=S.neck,hip=S.hip;if(!h||!w||!n)return null;
+  let bf;
+  if(S.sex==='f'){if(!hip||w+hip-n<=0)return null;bf=495/(1.29579-0.35004*Math.log10(w+hip-n)+0.22100*Math.log10(h))-450;}
+  else{if(w-n<=0)return null;bf=495/(1.0324-0.19077*Math.log10(w-n)+0.15456*Math.log10(h))-450;}
+  return bf>3&&bf<60?Math.round(bf*10)/10:null;
+}
+function bodyComp(){
+  let bf=null,src='none';
+  if(S.bfMode==='known'&&S.bf>2&&S.bf<60){bf=S.bf;src='known';}
+  else if(S.bfMode==='tape'){bf=navyBf();if(bf)src='tape';}
+  const f=S.sex==='f';
+  const cut=f?[18,23,28,32]:[10,15,20,25];
+  let cat=null,catTxt='okänd';
+  if(bf!=null){cat=bf<cut[0]?0:bf<cut[1]?1:bf<cut[2]?2:bf<cut[3]?3:4;catTxt=['mycket låg','låg','medel','förhöjd','hög'][cat];}
+  const bmi=S.bw/Math.pow((S.height||178)/100,2);
+  if(cat==null){cat=bmi>=30?4:bmi>=27?3:2;} // grov uppskattning utan fett%
+  const ffm=bf!=null?Math.round(S.bw*(1-bf/100)*10)/10:null;
+  return{bf,src,cat,catTxt,ffm,bmi:Math.round(bmi*10)/10};
+}
+function isLowDay(d){
+  const f=FAST[S.fast]||FAST.none;d=d||new Date();
+  if(f.type==='days')return(S.fastDays||[]).includes((d.getDay()+6)%7);
+  if(f.type==='adf'){const n=Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5);return(n+(S.adfOff||0))%2===0;}
+  return false;
+}
+function energyPlan(){
+  const bc=bodyComp();
+  const bmr=bc.ffm?370+21.6*bc.ffm:10*S.bw+6.25*(S.height||178)-5*(S.age||30)+(S.sex==='f'?-161:5);
+  const tdee=Math.round(bmr*(S.act||1.55));
+  const rm=RATE_MUL[S.rate||'std'],exp=S.exp||'beginner';
+  let delta=0,ratePct=null,gainRange=null,notes=[],srcs=[];
+  const g=S.goal;
+  if(g==='fat_loss'){
+    const base=[0.4,0.5,0.7,0.8,1.0][bc.cat];
+    ratePct=Math.min(bc.cat<=1?0.8:1.25,base*rm);
+    delta=-Math.round(ratePct/100*S.bw*7700/7);
+    delta=Math.max(delta,-Math.round(tdee*(bc.cat<=1?0.2:0.3)),-1000);
+    ratePct=Math.round(-delta*7/7700/S.bw*1000)/10;
+    srcs=['helms_prep','garthe'];
+    if(bc.cat===0)notes.push('Du är redan mycket smal – en lång deff ökar risken att tappa muskler och energi. Överväg att behålla istället.');
+  }else if(g==='hypertrophy'){
+    gainRange=EXP_GAIN[exp];
+    let pct=({beginner:0.15,intermediate:0.1,advanced:0.05})[exp]*rm;
+    if(bc.cat>=3){pct=Math.min(pct,0.05);notes.push('Med förhöjd fettprocent ger "båda samtidigt" eller en kort deff ofta bättre resultat än att bulka.');srcs.push('barakat');}
+    delta=Math.round(tdee*pct);srcs.unshift('iraki');
+  }else if(g==='recomp'){
+    delta=Math.round(tdee*[0,0,-0.05,-0.1,-0.15][bc.cat]*rm);srcs=['barakat'];
+    if(exp==='advanced'&&bc.cat<=1)notes.push('Som van och smal går rekomposition mycket långsamt. Växla hellre mellan korta bulk- och deffperioder.');
+  }else if(g==='strength'){delta=exp==='beginner'?Math.round(tdee*0.05):0;srcs=['kerksick'];}
+  return{bc,bmr:Math.round(bmr),tdee,delta,ratePct,gainRange,notes,srcs,bmrSrc:bc.ffm?'katch':'mifflin'};
+}
+function macros(){
+  const phase=getPhase(S.week);
+  const ep=energyPlan(),bc=ep.bc;
+  const a=adj(S.readiness,S.rAvg,hrvSt(S.hrv,S.hrvBase),phase,calcFatigue(S.logs));
+  const tmpl=currentSession();
+  const load=S.trainingDay?plannedLoad(tmpl,a.volumeMod):0;
+  let dayMod=0;
+  if(S.trainingDay){if(load>90)dayMod=100;else if(load>60)dayMod=50;}else dayMod=-120;
+  if(phase.phase==='deload')dayMod-=80;
+  const f=FAST[S.fast]||FAST.none;const low=isLowDay();
+  let cal=ep.tdee+ep.delta+dayMod;
+  const floor=Math.max(S.sex==='f'?1200:1400,Math.round(ep.bmr));
+  if(!low)cal=Math.max(floor,cal);
+  // Protein
+  const deficit=ep.delta<0;
+  let protein,pBasis;
+  if(bc.ffm&&deficit&&bc.cat<=2){protein=bc.ffm*2.6;pBasis='2,6 g/kg fettfri massa (smal i underskott)';}
+  else if(bc.ffm&&bc.cat>=3){protein=bc.ffm*(deficit?2.4:2.2);pBasis=(deficit?'2,4':'2,2')+' g/kg fettfri massa (räknas på FFM vid högre fett%)';}
+  else{
+    const refW=bc.bmi>=30?25*Math.pow((S.height||178)/100,2):S.bw;
+    const k=deficit?2.0:S.goal==='recomp'?2.0:S.goal==='maintain'?1.6:1.8;
+    protein=refW*k;pBasis=k.toString().replace('.',',')+' g/kg '+(bc.bmi>=30?'av vikt vid BMI 25':'kroppsvikt');
+  }
+  protein=Math.round(protein);
+  let fatKg=deficit?0.6:0.8,fat=Math.round(S.bw*fatKg);
+  if(low){ // 5:2 / ADF lågdag ≈ 25 % av behovet
+    cal=Math.round(ep.tdee*0.25/10)*10;
+    protein=Math.min(protein,Math.round(cal*0.5/4));fat=Math.round(cal*0.3/9);
+  }else{
+    fat=Math.max(fat,Math.round(cal*0.2/9));fat=Math.min(fat,Math.round(cal*0.35/9));
+  }
+  const carbs=Math.max(low?20:80,Math.round((cal-protein*4-fat*9)/4));
+  const fiber=Math.min(40,Math.max(25,Math.round(cal/1000*14)));
+  const mealsN=low?2:f.meals;
+  const proteinPerMeal=Math.round(protein/mealsN);
+  return{cal,protein,carbs,fat,fiber,ep,bc,phase,load:+load.toFixed(0),pBasis,proteinPerMeal,mealsN,f,low,fatKg,dayMod};
+}
+function nutritionCoach(m){
+  const tips=[];const f=m.f,bw=S.bw;
+  const T=(t,s)=>tips.push({t,s});
+  T(`Protein ${m.protein} g/dag (${m.pBasis}).`,m.bc.ffm&&m.ep.delta<0?['helms','morton']:['morton','issn_prot']);
+  if(m.proteinPerMeal/bw>0.55&&m.mealsN<=2)T(`Med ${m.mealsN} mål blir det ${m.proteinPerMeal} g protein per mål – det går, men 3–4 mål à ~${Math.round(bw*0.4)} g är mer optimalt för muskler.`,['sch_ar']);
+  else T(`Fördela proteinet på ${m.mealsN} mål à ca ${m.proteinPerMeal} g.`,['sch_ar','issn_prot']);
+  if(S.goal==='fat_loss')T(`Sikta på ca ${m.ep.ratePct} % av kroppsvikten per vecka (≈${(m.ep.ratePct/100*bw).toFixed(1)} kg). Långsammare = mer muskler kvar.`,['helms_prep','garthe']);
+  if(S.goal==='hypertrophy'&&m.ep.gainRange)T(`Rimlig viktökning för din erfarenhet: ${m.ep.gainRange[0]}–${m.ep.gainRange[1]} % per månad (≈${(m.ep.gainRange[0]/100*bw).toFixed(1)}–${(m.ep.gainRange[1]/100*bw).toFixed(1)} kg). Går det fortare är det mest fett.`,['iraki']);
+  if(S.goal==='recomp')T('Ät nära underhåll, högt protein och träna progressivt. Vågen står ofta still – följ midjemått och styrka istället.',['barakat']);
+  m.ep.notes.forEach(n=>T(n,m.ep.srcs));
+  if(f.type!=='none')T('Fasta fungerar främst genom att du äter mindre totalt. Det finns ingen extra fettförbränning när kalorier och protein matchas.',['moro','lowe']);
+  if(f.type!=='none'&&(S.goal==='hypertrophy')&&['18_6','20_4','omad','adf'].includes(S.fast))T(`${f.label} gör det svårt att äta i överskott. För att bygga muskler: välj 16:8 eller kortare fasta.`,f.src);
+  if(m.low)T('Lågdag idag: prioritera protein (kött, fisk, ägg, kvarg) och grönsaker. Kör vila eller lätt pass.',['harvie']);
+  if(S.trainingDay&&!m.low)T(m.load>=60?'Tungt pass idag: 20–40 g protein plus kolhydrater 1–3 h före och liknande efter.':'Lättare pass: ett proteinrikt mål efter passet räcker.',['kerksick']);
+  if(!S.trainingDay)T('Vilodag: behåll proteinet – sänk främst kolhydraterna något.',['kerksick']);
+  if(m.carbs/bw<2&&S.trainingDay&&!m.low)T(`Kolhydraterna är låga (${(m.carbs/bw).toFixed(1)} g/kg). Det kan sänka prestationen vid hög volym.`,['kerksick']);
+  T(`Fibrer minst ${m.fiber} g/dag – grönsaker, baljväxter, fullkorn, bär.`,['nnr']);
+  T('Kreatin 3–5 g/dag, när som helst på dagen (bryter inte fastan nämnvärt).',['kreider']);
+  if((S.context||[]).includes('poor_sleep'))T('Dålig sömn: undvik stort underskott idag och prioritera protein.',[]);
+  if((S.context||[]).includes('sick'))T('Sjuk: ät och drick – pausa fastan tills du mår bättre.',[]);
+  let peri;
+  if(m.low)peri='Lågdag: hoppa över tunga pass. Om du tränar – lägg passet nära en proteinrik måltid.';
+  else if(!S.trainingDay)peri='Vilodag: jämn fördelning av protein över dagen.';
+  else if(S.fastedTrain==='morning')peri='Morgonpass fastande: ingen frukost krävs. Ät 20–40 g protein inom ca 2 h efter passet'+(m.load>=60?' plus kolhydrater.':'.');
+  else if(S.fastedTrain==='late')peri='Pass sent i fastan: prestationen kan sjunka vid tunga/långa pass. Bryt fastan direkt efter med 30–40 g protein + kolhydrater, eller flytta fönstret så att passet hamnar tidigt i det.';
+  else peri=m.load>=60?'Före passet: 20–40 g protein + 30–60 g kolhydrater (1–3 h innan). Efter: liknande inom några timmar.':'Valfritt mål före; proteinrikt mål efter passet.';
+  const supplements=[['Kreatin 3–5 g/dag',['kreider']],['Koffein ca 3 mg/kg 30–60 min före pass om du tål det (inte sent på dagen)',['guest']],['Proteinpulver bara om du inte når proteinmålet med mat',['issn_prot']],['D-vitamin under vinterhalvåret enligt Livsmedelsverkets råd',[]]];
+  return{tips,peri,supplements};
+}
+function setFast(k){S.fast=k;if(FAST[k].type==='days'&&!(S.fastDays||[]).length)S.fastDays=[1,3];save();renderKost();refresh();}
+function setFasted(el){S.fastedTrain=el.dataset.v;save();renderKost();refresh();}
+function setWin(){S.winStart=+winStart.value;save();renderKost();refresh();}
+function setTrainHour(){S.trainHour=+trainHour.value;save();renderKost();}
+function suggestWin(){
+  const f=FAST[S.fast]||FAST.none;if(f.type!=='tre'){toast('Välj ett tidsfönster först (t.ex. 16:8)');return;}
+  const th=S.trainHour??17;let st;
+  if(S.fastedTrain==='morning')st=th+1;else st=Math.max(6,th-2);
+  if(st+f.win>23)st=Math.max(6,23-f.win);
+  S.winStart=Math.min(22,st);save();renderKost();refresh();toast('Fönster '+fmtH(S.winStart)+'–'+fmtH(S.winStart+f.win));
+}
+function toggleFastDay(i){S.fastDays=S.fastDays||[];if(S.fastDays.includes(i))S.fastDays=S.fastDays.filter(x=>x!==i);else{if(S.fastDays.length>=2){toast('Max 2 lågdagar – avmarkera en först');return;}S.fastDays.push(i);}save();renderKost();refresh();}
+function flipAdf(){S.adfOff=((S.adfOff||0)+1)%2;save();renderKost();refresh();}
+function fmtH(h){h=((h%24)+24)%24;const hh=Math.floor(h),mm=Math.round((h-hh)*60);return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0');}
+function fastState(){
+  const f=FAST[S.fast]||FAST.none;const now=new Date();const h=now.getHours()+now.getMinutes()/60;
+  if(f.type==='none')return{txt:'Ingen fasta',sub:'Ät när det passar dig'};
+  if(f.type!=='tre'){const low=isLowDay();return{txt:low?'Lågdag idag':'Vanlig dag',sub:low?'Ca 25 % av ditt behov':'Ät enligt dagens mål'};}
+  const s=S.winStart??12,e=s+f.win;
+  const inWin=(h>=s&&h<e)||(e>24&&h<e-24);
+  let left;
+  if(inWin)left=(e-h+24)%24;else left=(s-h+24)%24;
+  const lt=Math.floor(left)+' h '+Math.round((left%1)*60)+' min';
+  return inWin?{txt:'Ätfönstret är öppet',sub:'Stänger om '+lt+' ('+fmtH(e)+')',open:true}:{txt:'Du fastar',sub:'Fönstret öppnar om '+lt+' ('+fmtH(s)+')',open:false};
+}
+function setTrainDay(v){S.trainingDay=v;save();renderKost();}
+function setGoal(el){S.goal=el.dataset.v;save();renderKost();refresh();}
+function setRate(el){S.rate=el.dataset.v;save();renderKost();}
+function setExp(el){S.exp=el.dataset.v;save();renderKost();}
+function setBfMode(el){S.bfMode=el.dataset.v;save();renderKost();}
+function bodyIn(){
+  const n=id=>{const v=+document.getElementById(id).value;return v||null;};
+  if(n('kBw'))S.bw=n('kBw');if(n('kH'))S.height=n('kH');
+  S.bf=n('bfIn');S.waist=n('tWaist');S.neck=n('tNeck');S.hip=n('tHip');save();renderKost();
+}
+function renderBody(){
+  const m=macros(),ep=m.ep,bc=m.bc;
+  bBf.textContent=bc.bf!=null?bc.bf+' %':'—';bFfm.textContent=bc.ffm?bc.ffm+' kg':'—';bTdee.textContent=ep.tdee.toLocaleString('sv-SE');
+  const rows=[];
+  rows.push(['Mål',GOAL_TXT[S.goal]||S.goal]);
+  rows.push(['Fettprocent',bc.bf!=null?`${bc.bf} % · ${bc.catTxt}${bc.src==='tape'?' (måttband ±3–4)':''}`:`okänd · BMI ${bc.bmi} används som grov ledning`]);
+  rows.push(['Vilometabolism',`${ep.bmr} kcal ${srcTag([ep.bmrSrc])}`]);
+  rows.push(['Underhåll (inkl. aktivitet)',`${ep.tdee} kcal`]);
+  rows.push([ep.delta<0?'Underskott':'Överskott',`${ep.delta>0?'+':''}${ep.delta} kcal/dag`]);
+  if(ep.ratePct)rows.push(['Takt',`−${ep.ratePct} %/vecka ≈ ${(ep.ratePct/100*S.bw).toFixed(2)} kg ${srcTag(['helms_prep','garthe'])}`]);
+  if(ep.gainRange)rows.push(['Förväntad ökning',`${ep.gainRange[0]}–${ep.gainRange[1]} %/månad ${srcTag(['iraki'])}`]);
+  rows.push(['Protein',`${m.protein} g ${srcTag(bc.ffm&&ep.delta<0?['helms']:['morton'])}`]);
+  // tidslinje
+  let tl='';
+  if(S.goalW){
+    const diff=S.goalW-S.bw;
+    if(S.goal==='fat_loss'&&diff<0&&ep.ratePct){const wk=Math.ceil(-diff/(ep.ratePct/100*S.bw));tl=`Till ${S.goalW} kg: ca <b>${wk} veckor</b> (${new Date(Date.now()+wk*7*864e5).toLocaleDateString('sv-SE')}). Planera en vecka på underhåll var 8–12:e vecka.`;
+      if(bc.ffm){const tbf=Math.max(3,(1-(bc.ffm)/S.goalW)*100);tl+=` Vid ${S.goalW} kg ≈ ${tbf.toFixed(0)} % fett om du behåller musklerna.`;}}
+    else if(S.goal==='hypertrophy'&&diff>0&&ep.gainRange){const mid=(ep.gainRange[0]+ep.gainRange[1])/2/100*S.bw;const mo=Math.ceil(diff/mid);tl=`Till ${S.goalW} kg: ca <b>${mo} månader</b> i lugn takt.`;}
+    else tl='Målvikten passar inte riktigt ihop med målet du valt – kolla båda.';
+  }
+  planOut.innerHTML=rows.map(r=>`<div class="plan-row"><span class="muted">${r[0]}</span><span>${r[1]}</span></div>`).join('')+(tl?`<div class="coach" style="margin-top:8px">${tl}</div>`:'')+
+    ep.notes.map(n=>`<div class="coach" style="margin-top:8px"><strong>Obs:</strong> ${n} ${srcTag(ep.srcs)}</div>`).join('');
+}
+function renderKost(){
+  const m=macros(),coach=nutritionCoach(m),f=m.f;
+  tdChip.classList.toggle('on',S.trainingDay);rdChip.classList.toggle('on',!S.trainingDay);
+  kcal.textContent=m.cal.toLocaleString('sv-SE');
+  pg.textContent=m.protein+' g';cg.textContent=m.carbs+' g';fg.textContent=m.fat+' g';
+  fibG.textContent=m.fiber+' g';protMeal.textContent=m.proteinPerMeal+' g × '+m.mealsN;
+  nReason.textContent=`${GOAL_TXT[S.goal]} · ${S.trainingDay?'träningsdag':'vilodag'} · fasta ${f.label}${m.low?' (lågdag)':''}`;
+  const tot=m.protein*4+m.carbs*4+m.fat*9;
+  pb.style.width=(m.protein*4/tot*100)+'%';cb.style.width=(m.carbs*4/tot*100)+'%';fb.style.width=(m.fat*9/tot*100)+'%';
+  coachKost.innerHTML=`<strong>Kostcoach:</strong> ${coach.tips[0].t} ${srcTag(coach.tips[0].s)}`;
+  const today=new Date().toLocaleDateString('sv-SE');
+  if(S.mealDate!==today){S.meals=[];S.loggedKcal=0;S.mealDate=today;save();}
+  const lp=S.meals.reduce((s,x)=>s+(x.p||0),0);
+  loggedK.textContent=S.loggedKcal+' kcal · '+lp+' g protein';kb.style.width=Math.min(100,S.loggedKcal/m.cal*100)+'%';
+  mealEx.innerHTML=MEALS.map((x,i)=>`<div class="row between" style="padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;cursor:pointer" onclick="quickMeal(${i})">
+    <span>${x.d}<br><span class="muted" style="font-size:11px">${x.when||''} · protein ${x.p} g</span></span><span class="muted">${x.k} kcal</span></div>`).join('');
+  meals.innerHTML=S.meals.map((x,i)=>`<div class="row between" style="padding:6px 0;font-size:13px"><span>${x.d}</span><span>${x.k} kcal${x.p?' · '+x.p+' g':''} <button class="btn g sm" onclick="delMeal(${i})">✕</button></span></div>`).join('');
+  // Fasta
+  const st=fastState();
+  fastStatus.innerHTML=`<div class="row between"><div><div class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px">Just nu</div><div style="font-size:18px;font-weight:700;margin-top:2px;color:${st.open===false?'var(--a)':'var(--p)'}">${st.txt}</div><div class="muted">${st.sub}</div></div><div class="badge ok">${f.label}</div></div>`;
+  fastGrid.innerHTML=Object.entries(FAST).map(([k,x])=>`<div class="fo ${S.fast===k?'on':''}" onclick="setFast('${k}')"><b>${x.label}</b><span>${x.sub}</span></div>`).join('');
+  fastInfo.innerHTML=`<div><span class="ev ${f.ev}">Evidens ${f.ev}</span><span class="muted" style="font-size:11.5px">${EV_TXT[f.ev]}</span></div><p style="font-size:13px;line-height:1.5;color:var(--t2);margin-top:6px">${f.text} ${srcTag(f.src)}</p>`;
+  winCard.style.display=f.type==='tre'?'block':'none';
+  if(f.type==='tre'){
+    if(!winStart.options.length){for(let h=5;h<=22;h++){winStart.add(new Option(fmtH(h),h));}for(let h=5;h<=22;h++){trainHour.add(new Option(fmtH(h),h));}}
+    winStart.value=S.winStart??12;trainHour.value=S.trainHour??17;
+    const s=S.winStart??12,e=s+f.win,now=new Date(),nh=now.getHours()+now.getMinutes()/60,th=S.trainHour??17;
+    const seg=(a,b)=>`<div class="eat" style="left:${a/24*100}%;width:${(b-a)/24*100}%"></div>`;
+    winBar.innerHTML=(e<=24?seg(s,e):seg(s,24)+seg(0,e-24))+`<div class="trn" style="left:${(th+0.5)/24*100}%">🏋</div><div class="now" style="left:${nh/24*100}%"></div>`+
+      [0,6,12,18,24].map(x=>`<div class="lbl" style="left:${x/24*100}%">${x}</div>`).join('');
+  }
+  daysCard.style.display=f.type==='days'||f.type==='adf'?'block':'none';
+  if(f.type==='days'){daysTitle.textContent='Välj 2 lågdagar';fastDayChips.innerHTML=DAYN.map((d,i)=>`<div class="chip ${(S.fastDays||[]).includes(i)?'on':''}" onclick="toggleFastDay(${i})">${d}</div>`).join('');
+    const rest=rotation().map(r=>r.d);const clash=(S.fastDays||[]).filter(i=>rest.includes(DAYN[i]));
+    daysNote.textContent=clash.length?'⚠ '+clash.map(i=>DAYN[i]).join(', ')+' är träningsdag i ditt schema – välj hellre vilodagar.':'Bra – lågdagarna ligger på vilodagar. Inte två lågdagar i rad.';}
+  if(f.type==='adf'){daysTitle.textContent='Varannandagsfasta';fastDayChips.innerHTML=`<div class="chip on">${isLowDay()?'Idag: lågdag':'Idag: vanlig dag'}</div><div class="chip" onclick="flipAdf()">Byt dag</div>`;daysNote.textContent='Lågdagar ca 25 % av ditt energibehov. Lägg tunga pass på vanliga dagar.';}
+  document.querySelectorAll('#fastedChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===(S.fastedTrain||'no')));
+  fastedNote.innerHTML={no:'Ät ett mål 1–3 timmar före passet. Bäst för tunga och långa pass.',
+    morning:`Träning efter nattens fasta verkar ge liknande styrka och muskler som efter frukost, så länge dagens totala protein nås. Ät protein snart efter. ${srcTag(['kerksick','moro'])}`,
+    late:`Efter 14+ timmar utan mat kan prestationen sjunka vid tunga pass. Flytta hellre ätfönstret så att passet hamnar i början av det. ${srcTag(['kerksick'])}`}[S.fastedTrain||'no'];
+  // Kropp & mål
+  document.querySelectorAll('#goalChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.goal));
+  document.querySelectorAll('#rateChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===(S.rate||'std')));
+  document.querySelectorAll('#expChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===(S.exp||'beginner')));
+  document.querySelectorAll('#bfModeChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===(S.bfMode||'none')));
+  bfKnown.style.display=S.bfMode==='known'?'block':'none';bfTape.style.display=S.bfMode==='tape'?'block':'none';
+  hipWrap.style.display=S.sex==='f'?'block':'none';
+  tapeHow.textContent='Mät på morgonen. Midja: '+(S.sex==='f'?'smalaste stället':'i höjd med naveln')+'. Hals: under struphuvudet.'+(S.sex==='f'?' Höft: bredaste stället.':'')+' ';
+  const sv=(id,v)=>{const el=document.getElementById(id);if(document.activeElement!==el)el.value=v??'';};
+  sv('kBw',S.bw);sv('kH',S.height);sv('bfIn',S.bf);sv('tWaist',S.waist);sv('tNeck',S.neck);sv('tHip',S.hip);sv('goalW',S.goalW);
+  renderBody();
+  // Råd
+  nAdvice.innerHTML=coach.tips.map(t=>`<div class="tip">${t.t} ${srcTag(t.s)}</div>`).join('');
+  periBox.innerHTML=`<div class="coach">${coach.peri}</div>`+coach.supplements.map(s=>`<div class="tip">• ${s[0]} ${srcTag(s[1])}</div>`).join('');
+  shopList.innerHTML=SHOP.map(x=>'• '+x).join('<br>');
+  nutWhy.innerHTML=`<div class="tip">Underhållsbehov = vilometabolism × aktivitetsnivå (${S.act||1.55}). ${srcTag([m.ep.bmrSrc])}</div>
+    <div class="tip">Mål-kalorier = underhåll ${m.ep.delta>=0?'+':''}${m.ep.delta} (mål) ${m.dayMod>=0?'+':''}${m.dayMod} (dagens träning)${m.low?' → lågdag 25 %':''}.</div>
+    <div class="tip">Fett minst ${m.fatKg} g/kg och 20–35 % av energin; resten blir kolhydrater (${(m.carbs/S.bw).toFixed(1)} g/kg).</div>
+    <div class="tip">Fibrer ≈ 14 g per 1000 kcal, minst 25 g. ${srcTag(['nnr'])}</div>`;
+}
+function quickMeal(i){const x=MEALS[i];S.meals.push({d:x.d,k:x.k,p:x.p});S.loggedKcal+=x.k;save();renderKost();refresh();toast('+'+x.k+' kcal');}
+function addMeal(){const d=mealD.value||'Måltid',k=+mealK.value||0,p=+mealP.value||0;if(!k){toast('Ange kcal');return;}S.meals.push({d,k,p});S.loggedKcal+=k;mealD.value='';mealK.value='';mealP.value='';save();renderKost();refresh();toast('+'+k+' kcal');}
+function delMeal(i){const x=S.meals[i];S.loggedKcal=Math.max(0,S.loggedKcal-x.k);S.meals.splice(i,1);save();renderKost();refresh();}
+
+/* ===================== HJÄLP, ORDLISTA, GUIDE, BIBLIOTEK ===================== */
+const HELP={
+  dagsform:['Dagsform','Skatta hur pigg och stark du känner dig idag, 1–10. Appen väger ihop dagens siffra (60 %) med ditt snitt (40 %) och justerar antal set och hur tungt du ska köra. 7 = vanlig dag.'],
+  hrv:['HRV','Hjärtfrekvensvariabilitet från klocka/ring. Om dagens värde är mer än 10 % under din baslinje sänker appen volymen lite. Valfritt – hoppa över om du inte mäter.'],
+  rpe:['RPE – hur tungt var setet?','RPE 10 = du kunde inte göra en rep till. RPE 9 = 1 rep kvar. RPE 8 = 2 reps kvar. RPE 7 = 3 reps kvar. Appen visar max-RPE för dagen – stanna där även om det känns lätt.'],
+  budget:['Återhämtningsbudget','Ett enkelt mått på hur mycket träning du gjort senaste 7 dagarna (startar på 100). Varje set drar av lite. Under 15 gör appen passen lättare automatiskt för att du inte ska köra slut på dig.'],
+  fas:['Träningsfaser','Programmet går i en 12-veckorscykel: Uppbyggnad (5 v, mer volym) → Styrka (4 v, tyngre) → Topp (2 v, tungt och lite) → Återhämtning (1 v, lätt). Det kallas periodisering och ger bättre resultat än att köra likadant hela tiden.'],
+  split:['Upplägg','Över/Under: varannat pass ben, varannat överkropp. Push/Pull/Ben: tryck, drag och ben på olika dagar. Helkropp: hela kroppen varje pass – bra vid 3 pass/vecka.'],
+  season:['Säsong','Påverkar hur mycket du tränar. Deff = något mindre volym. Bulk = lite mer. Semester = kort underhåll. Tävling = färre, mer specifika set. Ditt kostmål ställer du under Kost → Kropp & mål.'],
+  logga:['Så loggar du','Fyll i vikt och reps för varje set du gör. RPE är hur tungt det kändes (se ?). ↓ kopierar setet till nästa rad. +2,5/−2,5 ändrar vikten på första setet. Spara när du är klar – appen går då vidare till nästa pass och föreslår vikter nästa gång.'],
+  e1rm:['Beräknad max (e1RM)','En uppskattning av hur mycket du skulle klara en enda gång, räknat från vikt × reps (Epley-formeln). Du behöver aldrig testa max – siffran visar om du blir starkare.'],
+  exp:['Träningserfarenhet','Räkna år av regelbunden styrketräning. Ju längre du tränat, desto långsammare kan du bygga muskler – därför sätter appen ett mindre kaloriöverskott för vana.'],
+  fettprocent:['Fettprocent','Om fettprocenten är känd räknar appen på din fettfria massa (muskler, skelett, organ) vilket ger bättre förbränning- och proteinsiffror. Måttband (marinens metod) duger bra för att följa trenden.'],
+  fasta:['Fasta','Tidsbegränsat ätande (t.ex. 16:8 = fasta 16 h, ät inom 8 h) eller lågkaloridagar (5:2). Alla metoder fungerar genom att du äter mindre totalt. Bokstaven visar hur stark forskningen är för den som styrketränar.']
+};
+const GLOSS=[['Dagsform (readiness)','Din egen skattning 1–10 av hur pigg du är.'],['RPE','Hur tungt ett set kändes, 1–10. 8 = två reps kvar.'],['e1RM','Beräknat max för en repetition.'],['Set / reps','Ett set = en omgång. Reps = antal lyft i omgången.'],['Volym','Antal hårda set per muskel och vecka.'],['MEV / MAV / MRV','Minsta effektiva, optimala och maximala återhämtningsbara volym per muskel.'],['Deload','Planerad lätt vecka för återhämtning.'],['Periodisering','Att variera träningen i faser över tid.'],['Progressiv överbelastning','Att gradvis öka vikt eller reps.'],['Deff / cut','Period med kaloriunderskott för att tappa fett.'],['Bulk','Period med kaloriöverskott för att bygga muskler.'],['Rekomposition','Tappa fett och bygga muskler samtidigt.'],['TDEE / underhåll','Hur många kalorier du gör av med per dag totalt.'],['BMR','Vilometabolism – kalorier kroppen gör av med i vila.'],['FFM','Fettfri massa – allt utom fett.'],['TRE','Tidsbegränsat ätande, t.ex. 16:8.'],['HRV','Hjärtfrekvensvariabilitet – mått på återhämtning.']];
+function help(k){const h=HELP[k];if(!h)return;hTitle.textContent=h[0];hBody.innerHTML=h[1];helpModal.classList.add('on');}
+function renderOrd(){ordBox.innerHTML=GLOSS.map(g=>`<div class="tip"><b>${g[0]}</b><br>${g[1]}</div>`).join('');}
+function renderSrc(){srcBox.innerHTML='<p class="muted" style="margin-bottom:6px;font-size:12px">Siffrorna i Kost och Fasta bygger på dessa studier och ståndpunkter. Siffrorna i [ ] i appen pekar hit. Råden ersätter inte vård eller dietist.</p>'+
+  Object.values(SRC).map((x,i)=>`<div class="tip"><b>[${i+1}] ${x.t}</b><br>${x.d}</div>`).join('')+
+  `<div class="tip"><b>Evidensnivåer för fasta</b><br>${Object.entries(EV_TXT).map(([k,v])=>`<span class="ev ${k}">${k}</span> ${v}`).join('<br>')}</div>`;}
+function renderGuide(){
+  const st=[['Skatta din dagsform','Varje morgon: dra reglaget på Idag. Appen anpassar passet direkt.'],['Kolla dagens pass','Tryck på en övning för instruktioner, bild och för att byta övning.'],['Logga passet','Tryck "Starta & logga passet". Fyll i vikt, reps och RPE. Spara.'],['Ställ in kosten','Kost → Kropp & mål: välj mål, takt och mät gärna fettprocent. Då räknas kalorier och protein ut.'],['Välj fasta (valfritt)','Kost → Fasta: välj metod och ätfönster. Status visas på startsidan.'],['Följ framstegen','Logga vikten 1–3 ggr/vecka under Framsteg. Där syns rekord och styrkekurvor.']];
+  guideBox.innerHTML='<div class="card">'+st.map((x,i)=>`<div class="gstep"><div class="n">${i+1}</div><div><b>${x[0]}</b><div class="muted">${x[1]}</div></div></div>`).join('')+'</div>'+
+  '<div class="card"><h4>Tips</h4><div class="tip">Ser du en <button class="q">?</button> – tryck för förklaring.</div><div class="tip">Allt ändras under Meny.</div><div class="tip">Datan sparas bara i din webbläsare – exportera en backup ibland.</div></div>';
+}
+let libMus='Alla';
+function renderLib(){
+  const mus=['Alla',...new Set(Object.values(EX).flatMap(e=>e.m))];
+  libMus=mus.includes(libMus)?libMus:'Alla';
+  document.getElementById('libMus').innerHTML=mus.map(m=>`<div class="chip ${m===libMus?'on':''}" onclick="libMus='${m}';renderLib()">${m}</div>`).join('');
+  const q=(libQ.value||'').toLowerCase();
+  const list=Object.entries(EX).filter(([k,e])=>(libMus==='Alla'||e.m.includes(libMus))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
+  libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_IMG[k]}" alt=""/>`:`<div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;font-size:18px">🏋️</div>`;
+    return `<div class="ex" onclick="openLib('${k}')"><div class="ex-row">${th}<div class="ex-body"><div class="ex-name">${e.name}</div><div class="ex-meta">${e.cue}</div><div class="tags">${e.m.map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;}).join('')||'<div class="empty">Ingen övning hittades.</div>';
+}
+function openLib(k){openEx(k,'','','',k);mMeta.textContent='Övningsbibliotek';document.getElementById('mSwapWrap').style.display='none';}
+
+function renderProf(){pName.value=S.name;pBw.value=S.bw;pGoal.value=S.goal;pWeek.value=S.week;
+  pSex.value=S.sex||'m';pAge.value=S.age||30;pH.value=S.height||178;pAct.value=String(S.act||1.55);
+  document.querySelectorAll('#pLim .chip').forEach(c=>c.classList.toggle('on',(S.limits||[]).includes(c.dataset.v)));
+  const lines=limitSwapList();limNote.textContent=lines.length?'Aktiva byten: '+lines.join(' · '):'Inga automatiska byten.';}
+function saveProf(){const oldF=S.freq;S.name=pName.value;S.bw=+pBw.value||82;S.goal=pGoal.value;S.week=Math.max(0,Math.min(11,+pWeek.value||0));
+  S.sex=pSex.value;S.age=+pAge.value||30;S.height=+pH.value||178;S.act=+pAct.value||1.55;
+  S.limits=[...document.querySelectorAll('#pLim .chip.on')].map(c=>c.dataset.v);
+  if(oldF!==S.freq){S.sIdx=0;S.sessionKey=rotation()[0].k;}
+  save();renderProf();toast('Sparat');refresh();}
+function exportData(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='aether-export-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  toast('JSON exporterad');
+}
+S=migrate(load());
+</script>
+</body>
+</html>
