@@ -4,10 +4,12 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
 <title>Aether</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 :root{--bg:#080a0f;--sf:#12161e;--sf2:#1a202b;--sf3:#2a3140;--t:#f2f4f8;--t2:#b8c0d0;--m:#7d8799;--p:#5eead4;--a:#818cf8;--d:#f87171;--w:#fbbf24}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--t);min-height:100vh}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-.005em;background:var(--bg);color:var(--t);min-height:100vh}
 #app{max-width:430px;margin:0 auto;min-height:100vh}
 .screen{display:none;min-height:100vh;padding-bottom:92px}
 .screen.active{display:block;animation:up .2s ease}
@@ -163,6 +165,55 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .gstep{display:flex;gap:10px;margin-bottom:10px}.gstep .n{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:rgba(94,234,212,.15);color:var(--p);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
 .plan-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .plan-row:last-child{border-bottom:none}
+/* ===== v6: professionell layout ===== */
+:root{--bg:#07090d;--sf:#10141b;--sf2:#171c25;--sf3:#262d3a;--t:#eef1f6;--t2:#b3bccb;--m:#7a8496;--line:rgba(255,255,255,.06)}
+.ico{width:20px;height:20px;flex-shrink:0;display:block}
+.hdr{padding:10px 16px;min-height:58px;border-bottom:1px solid var(--line)}
+.hl,.hr{display:flex;align-items:center;gap:10px}
+.ptitle{font-size:20px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.psub{font-size:12px;color:var(--m);margin-top:1px}
+.psub:empty{display:none}
+.iconbtn{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:var(--sf);color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.iconbtn:active{transform:scale(.96)}
+.hb{cursor:pointer;font-size:11px}
+.seg{top:58px}
+.bnav{padding:6px 6px;padding-bottom:max(10px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(10,12,17,.96);backdrop-filter:blur(16px)}
+.ni{gap:3px;font-size:10.5px;font-weight:600;padding:5px 2px;border-radius:12px;position:relative}
+.ni .ico{width:22px;height:22px}
+.ni.active{color:var(--p)}
+.ni.active::before{content:"";position:absolute;top:-7px;left:30%;right:30%;height:2px;border-radius:2px;background:var(--p)}
+.card{border:1px solid var(--line);border-radius:16px}
+.card h4{letter-spacing:.06em;font-size:10.5px}
+.hello{margin:2px 0 12px}.hi{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.mlist{border:1px solid var(--line)}
+.mi{gap:12px}.mic{width:36px;height:36px;border-radius:10px;background:var(--sf2);display:flex;align-items:center;justify-content:center;color:var(--p);font-size:0}
+.mic .ico{width:19px;height:19px}
+.chev{color:var(--m);font-size:0}.chev .ico{width:18px;height:18px}
+.ex-thumb.ph{display:flex;align-items:center;justify-content:center;color:var(--m)}
+.ex-thumb.ph .ico{width:22px;height:22px}
+.winbar .trn{color:#fff}.winbar .trn .ico{width:12px;height:12px}
+.searchbox{display:flex;align-items:center;gap:8px;background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:0 12px;color:var(--m)}
+.searchbox input{border:none;background:transparent;padding:12px 0}
+.searchbox input:focus{border:none}
+.acard{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}
+.acard:last-child{border-bottom:none}
+.aic{width:38px;height:38px;border-radius:11px;background:rgba(94,234,212,.1);color:var(--p);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.abody{flex:1;min-width:0}.at{font-size:14px;font-weight:600;line-height:1.3}.am{font-size:11.5px;color:var(--m);margin-top:3px;display:flex;align-items:center;gap:6px}
+.am .ev{margin:0;padding:1px 6px}
+.akicker{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--p);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.akicker .ico{width:15px;height:15px}
+.ah{font-size:24px;font-weight:750;letter-spacing:-.025em;line-height:1.2;margin:8px 0 8px}
+.alead{font-size:15px;line-height:1.55;color:var(--t2);margin-bottom:12px}
+.evrow{display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.keybox{background:linear-gradient(180deg,rgba(94,234,212,.08),rgba(94,234,212,.03));border:1px solid rgba(94,234,212,.18);border-radius:14px;padding:12px 14px;margin-bottom:16px}
+.kt{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--m);margin-bottom:8px}
+.keybox .kt{color:var(--p)}
+.kk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.45;margin:6px 0}
+.kk .ico{width:17px;height:17px;color:var(--p);margin-top:1px}
+.ah3{font-size:16px;font-weight:700;margin:16px 0 6px;letter-spacing:-.01em}
+.ap{font-size:14px;line-height:1.65;color:var(--t2)}
+.asrc,.arel{margin-top:20px}
+.btn.p{box-shadow:none}
 </style>
 </head>
 <body>
@@ -170,7 +221,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 <section id="splash" class="screen active" style="align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px;background:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(94,234,212,.12),transparent 60%),var(--bg)">
   <div style="width:100%">
     <div class="brand" style="font-size:42px;letter-spacing:7px;margin-bottom:10px">AETHER</div>
-    <p class="muted" style="margin-bottom:28px">Träning som anpassar sig – och förklarar varför</p>
+    <p class="muted" style="margin-bottom:28px">Evidensbaserad träning, kost och fasta – anpassad efter dig</p>
     <button class="btn p full" onclick="start(false)">Kom igång</button>
     <button class="btn g full" onclick="start(true)">Fortsätt där jag var</button>
   </div>
@@ -234,15 +285,20 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 
 <section id="main" class="screen">
   <header class="hdr">
-    <button class="back" id="backBtn" onclick="tab('menu')" style="display:none">‹ Meny</button>
-    <div class="brand" id="brandTxt">AETHER</div>
-    <div class="hb" id="hdrB" onclick="help('fas')">—</div>
+    <div class="hl">
+      <button class="iconbtn" id="backBtn" onclick="goBack()" style="display:none" aria-label="Tillbaka"></button>
+      <div><div class="ptitle" id="pTitle">Idag</div><div class="psub" id="pSub"></div></div>
+    </div>
+    <div class="hr">
+      <div class="hb" id="hdrB" onclick="help('fas')">—</div>
+      <button class="iconbtn" id="setBtn" onclick="tab('menu')" aria-label="Inställningar"></button>
+    </div>
   </header>
 
   <!-- ================= IDAG ================= -->
   <div id="t-today" class="tp">
     <div class="pad">
-      <div class="hello"><div class="sec" style="margin:0" id="helloTxt">Hej!</div><div class="muted" id="dateTxt"></div></div>
+      <div class="hello"><div class="hi" id="helloTxt">Hej!</div></div>
 
       <div class="card glow" style="background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(94,234,212,.1),transparent 70%),var(--sf)">
         <div class="ready-compact">
@@ -396,6 +452,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           </div>
         </div>
         <div class="card"><h4>Veckans pass</h4><div id="schema"></div></div>
+        <div class="card"><h4>Så tränar du smart – enligt forskningen</h4><div id="trainLearn"></div></div>
       </div>
 
       <div class="sp" data-g="train" data-s="ovn">
@@ -512,6 +569,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           </div>
           <p class="muted" id="fastedNote" style="margin-top:8px;line-height:1.45"></p>
         </div>
+        <div class="card"><h4>Lär dig mer om fasta</h4><div id="fastLearn"></div></div>
         <div class="card warnc">
           <h4>Viktigt</h4>
           <p class="muted" style="line-height:1.5;font-size:12.5px">Fasta passar inte alla. Prata med vården först om du är gravid eller ammar, är under 18, har diabetes med insulin eller blodsockersänkande tabletter, eller har haft problem med ätande. Avbryt om du blir yr, skakig eller mår dåligt.</p>
@@ -592,6 +650,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
         </div>
         <div class="card"><h4>Inköpslista (vecka)</h4><div id="shopList" class="muted"></div></div>
         <div class="card"><h4>Så räknas dina siffror</h4><div id="nutWhy"></div></div>
+        <div class="card"><h4>Fördjupning</h4><div id="radLearn"></div></div>
       </div>
     </div>
   </div>
@@ -599,7 +658,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
   <!-- ================= FRAMSTEG ================= -->
   <div id="t-hist" class="tp" style="display:none">
     <div class="pad">
-      <div class="sec">Framsteg</div>
+      
       <div class="card">
         <h4>Kroppsvikt</h4>
         <div class="row" style="gap:8px">
@@ -635,28 +694,27 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
   <!-- ================= MENY ================= -->
   <div id="t-menu" class="tp" style="display:none">
     <div class="pad">
-      <div class="sec">Meny</div>
       <div class="mlist">
-        <div class="mi" onclick="tab('m-prof')"><span class="mic">👤</span><div><b>Profil</b><div class="muted">Namn, ålder, kön, begränsningar</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="goSub('kost','kropp')"><span class="mic">🎯</span><div><b>Kropp & mål</b><div class="muted">Fettprocent, målvikt, takt</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="goSub('kost','fasta')"><span class="mic">⏳</span><div><b>Fasta</b><div class="muted">Metod, ätfönster, lågkaloridagar</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="goSub('train','schema')"><span class="mic">📅</span><div><b>Träningsschema</b><div class="muted">Upplägg och pass per vecka</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="goSub('train','ovn')"><span class="mic">📖</span><div><b>Övningsbibliotek</b><div class="muted">Alla övningar med instruktioner</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="goSub('train','period')"><span class="mic">🔄</span><div><b>Säsong & faser</b><div class="muted">Deff, bulk, semester, deload</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="tab('m-prof')"><span class="mic" data-ic="user"></span><div><b>Profil</b><div class="muted">Namn, ålder, kön, begränsningar</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="goSub('kost','kropp')"><span class="mic" data-ic="target"></span><div><b>Kropp & mål</b><div class="muted">Fettprocent, målvikt, takt</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="goSub('kost','fasta')"><span class="mic" data-ic="clock"></span><div><b>Fasta</b><div class="muted">Metod, ätfönster, lågkaloridagar</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="goSub('train','schema')"><span class="mic" data-ic="calendar"></span><div><b>Träningsschema</b><div class="muted">Upplägg och pass per vecka</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="goSub('train','ovn')"><span class="mic" data-ic="list"></span><div><b>Övningsbibliotek</b><div class="muted">Alla övningar med instruktioner</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="goSub('train','period')"><span class="mic" data-ic="refresh"></span><div><b>Säsong & faser</b><div class="muted">Deff, bulk, semester, deload</div></div><span class="chev" data-ic="chev"></span></div>
       </div>
       <div class="mlist" style="margin-top:12px">
-        <div class="mi" onclick="tab('m-guide')"><span class="mic">🧭</span><div><b>Så funkar appen</b><div class="muted">Kom igång på 2 minuter</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="tab('m-ord')"><span class="mic">💬</span><div><b>Ordlista</b><div class="muted">RPE, e1RM, deload…</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="tab('m-src')"><span class="mic">🔬</span><div><b>Evidens & källor</b><div class="muted">Studierna bakom råden</div></div><span class="chev">›</span></div>
-        <div class="mi" onclick="tab('m-data')"><span class="mic">💾</span><div><b>Data & backup</b><div class="muted">Exportera, importera, radera</div></div><span class="chev">›</span></div>
+        <div class="mi" onclick="tab('m-guide')"><span class="mic" data-ic="compass"></span><div><b>Så funkar appen</b><div class="muted">Kom igång på 2 minuter</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="tab('m-ord')"><span class="mic" data-ic="chat"></span><div><b>Ordlista</b><div class="muted">RPE, e1RM, deload…</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="tab('m-src')"><span class="mic" data-ic="flask"></span><div><b>Evidens & källor</b><div class="muted">Studierna bakom råden</div></div><span class="chev" data-ic="chev"></span></div>
+        <div class="mi" onclick="tab('m-data')"><span class="mic" data-ic="database"></span><div><b>Data & backup</b><div class="muted">Exportera, importera, radera</div></div><span class="chev" data-ic="chev"></span></div>
       </div>
-      <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Aether v5 · ersätter inte råd från vården</p>
+      <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Aether v6 · Informationen ersätter inte råd från vården</p>
     </div>
   </div>
 
   <div id="t-m-prof" class="tp" style="display:none">
     <div class="pad">
-      <div class="sec">Profil</div>
+      
       <div class="card">
         <label class="f" style="margin-top:0">Namn</label><input id="pName"/>
         <label class="f">Kön</label>
@@ -686,7 +744,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 
   <div id="t-m-data" class="tp" style="display:none">
     <div class="pad">
-      <div class="sec">Data & backup</div>
+      
       <div class="card">
         <p class="muted" style="margin-bottom:6px">All data sparas bara i den här webbläsaren. Exportera regelbundet om du vill ha en backup.</p>
         <button class="btn o full" onclick="exportData()">Exportera (JSON-fil)</button>
@@ -698,16 +756,26 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
     </div>
   </div>
 
-  <div id="t-m-guide" class="tp" style="display:none"><div class="pad"><div class="sec">Så funkar appen</div><div id="guideBox"></div></div></div>
-  <div id="t-m-ord" class="tp" style="display:none"><div class="pad"><div class="sec">Ordlista</div><div class="card" id="ordBox"></div></div></div>
-  <div id="t-m-src" class="tp" style="display:none"><div class="pad"><div class="sec">Evidens & källor</div><div class="card" id="srcBox"></div></div></div>
+  <div id="t-m-guide" class="tp" style="display:none"><div class="pad"><div id="guideBox"></div></div></div>
+  <div id="t-m-ord" class="tp" style="display:none"><div class="pad"><div class="card" id="ordBox"></div></div></div>
+  <div id="t-m-src" class="tp" style="display:none"><div class="pad"><div class="card" id="srcBox"></div></div></div>
+
+  <div id="t-learn" class="tp" style="display:none">
+    <div class="pad">
+      <div class="searchbox"><span data-ic="search"></span><input id="learnQ" placeholder="Sök, t.ex. protein, 16:8, sömn…" oninput="renderLearn()"/></div>
+      <div class="chips" id="learnCats" style="margin:10px 0 12px"></div>
+      <div id="learnList"></div>
+      <div class="card" style="margin-top:12px"><h4>Om evidensnivåerna</h4><div id="evLegend" class="muted" style="font-size:12.5px;line-height:1.7"></div></div>
+    </div>
+  </div>
+  <div id="t-art" class="tp" style="display:none"><div class="pad"><article id="artBox"></article></div></div>
 
   <nav class="bnav">
-    <button class="ni active" data-t="today" onclick="tab('today')"><span class="nic">◉</span>Idag</button>
-    <button class="ni" data-t="train" onclick="tab('train')"><span class="nic">🏋</span>Träna</button>
-    <button class="ni" data-t="kost" onclick="tab('kost')"><span class="nic">🥗</span>Kost</button>
-    <button class="ni" data-t="hist" onclick="tab('hist')"><span class="nic">📈</span>Framsteg</button>
-    <button class="ni" data-t="menu" onclick="tab('menu')"><span class="nic">☰</span>Meny</button>
+    <button class="ni active" data-t="today" data-ic="home" onclick="tab('today')"><span>Idag</span></button>
+    <button class="ni" data-t="train" data-ic="dumbbell" onclick="tab('train')"><span>Träna</span></button>
+    <button class="ni" data-t="kost" data-ic="food" onclick="tab('kost')"><span>Kost</span></button>
+    <button class="ni" data-t="hist" data-ic="chart" onclick="tab('hist')"><span>Framsteg</span></button>
+    <button class="ni" data-t="learn" data-ic="book" onclick="tab('learn')"><span>Kunskap</span></button>
   </nav>
 </section>
 </div>
@@ -993,7 +1061,7 @@ function adj(r,rAvg,hs,phase,fatigue){
   const rec=calcRecoveryBudget(S.logs,S.freq);
   if(rec.left<15){vol=Math.min(vol,.7);reasons.push('Återhämtningsbudgeten är låg ('+rec.left+') → skyddar dig');decisions.push({k:'recovery',v:rec.left});}
   return{volumeMod:+vol.toFixed(2),rpeCap:+rpeCap.toFixed(1),reasons,decisions,rec,
-    recText:eff<=4.5?'Lättare pass eller vila idag.':vol>1.02?'Du kan ta i lite extra idag.':'Kör enligt plan.',
+    recText:eff<=4.5?'Lättare pass eller vila idag.':eff<7?'Passet är lite nedskalat idag.':vol>1.02?'Du kan ta i lite extra idag.':'Kör enligt plan.',
     counterfactual:eff<7?`Om readiness varit 8+ hade volymmod varit närmare ×${(vol/(eff>=5.5?0.88:0.7)*1.0).toFixed(2)}.`:`Med lägre readiness (≤5) hade passet kapats kraftigt.`};
 }
 
@@ -1051,27 +1119,37 @@ function finishOB(){
   onboard.classList.remove('active');main.classList.add('active');tab('today');toast('Program skapat');
 }
 const SUBS={train:'logga',kost:'idag'};
-const PAGE_TITLE={'m-prof':'Profil','m-data':'Data','m-guide':'Guide','m-ord':'Ordlista','m-src':'Källor'};
-function tab(t){
+const PAGE_TITLE={today:'Idag',train:'Träna',kost:'Kost',hist:'Framsteg',learn:'Kunskap',art:'Kunskap',menu:'Inställningar','m-prof':'Profil','m-data':'Data & backup','m-guide':'Så funkar appen','m-ord':'Ordlista','m-src':'Evidens & källor'};
+const PAGE_SUB={learn:'Forskningen bakom råden',menu:'Profil, mål och hjälp',train:'',kost:''};
+const NAV_OF={art:'learn'};
+let curTab='today',backTo=null;
+function tab(t,fromBack){
   document.querySelectorAll('.tp').forEach(p=>p.style.display='none');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   const el=document.getElementById('t-'+t);if(!el)return;el.style.display='block';
-  const isSub=t.startsWith('m-');
-  const n=document.querySelector(`.ni[data-t="${isSub?'menu':t}"]`);if(n)n.classList.add('active');
-  backBtn.style.display=isSub?'inline-block':'none';brandTxt.style.display=isSub?'none':'block';
+  const isSub=t.startsWith('m-')||t==='art';
+  if(!fromBack){backTo=isSub?(t==='art'?(curTab==='art'?backTo:curTab):'menu'):null;}
+  curTab=t;
+  const navT=t.startsWith('m-')||t==='menu'?null:(NAV_OF[t]||t);
+  const n=navT&&document.querySelector(`.ni[data-t="${navT}"]`);if(n)n.classList.add('active');
+  backBtn.style.display=isSub?'flex':'none';setBtn.style.display=(t==='menu'||isSub)?'none':'flex';
+  hdrB.style.display=t==='today'?'block':'none';
+  pTitle.textContent=PAGE_TITLE[t]||'';const ds=new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'long'});pSub.textContent=t==='today'?ds.charAt(0).toUpperCase()+ds.slice(1):(PAGE_SUB[t]||'');
   window.scrollTo(0,0);
   if(t==='today')refresh();
   if(t==='train')sub('train',SUBS.train);if(t==='kost')sub('kost',SUBS.kost);
-  if(t==='hist')renderHist();if(t==='m-prof')renderProf();
+  if(t==='hist')renderHist();if(t==='m-prof')renderProf();if(t==='learn')renderLearn();
   if(t==='m-guide')renderGuide();if(t==='m-ord')renderOrd();if(t==='m-src')renderSrc();
   if(t==='m-data')wipeBox.style.display='none';
 }
+function goBack(){const b=backTo||'today';backTo=null;tab(b,true);}
 function sub(g,s){
   SUBS[g]=s;
   document.querySelectorAll(`.seg[data-g="${g}"] button`).forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   document.querySelectorAll(`.sp[data-g="${g}"]`).forEach(p=>p.classList.toggle('on',p.dataset.s===s));
   if(g==='train'){if(s==='logga')renderLog();if(s==='schema'||s==='period')renderTrain();if(s==='ovn')renderLib();}
   if(g==='kost')renderKost();
+  if(g==='train'&&s==='schema')trainLearn.innerHTML=artLinks('traning',6);
 }
 function goSub(g,s){SUBS[g]=s;tab(g);}
 function wipeAsk(){wipeBox.style.display='block';}
@@ -1093,7 +1171,7 @@ function refresh(){
   hint.textContent=a.recText;
   const season=SEASON[S.season]||SEASON.normal;
   hdrB.textContent=PHASE_SV[phase.phase]+' · v'+phase.weekInPhase+'/'+phase.totalWeeks;
-  helloTxt.textContent='Hej '+(S.name||'')+'!';dateTxt.textContent=new Date().toLocaleDateString('sv-SE',{weekday:'long',day:'numeric',month:'short'});
+  helloTxt.textContent='Hej '+(S.name||'')+'!';
   hrvBaseTxt.textContent=S.hrvBase;
   try{const m=macros();tileKcal.textContent=Math.max(0,m.cal-S.loggedKcal*(S.mealDate===new Date().toLocaleDateString('sv-SE')?1:0))+'';tileProt.textContent='kcal kvar · '+m.protein+' g prot';
     const st=fastState();tileFast.textContent=(FAST[S.fast]||FAST.none).label;tileFastSub.textContent=st.txt;}catch(e){}
@@ -1125,7 +1203,7 @@ function refresh(){
     const prev=S.prev[e.id];let sug='';
     if(prev){const prog=sugW(prev.w,prev.reps,prev.rpe,e.reps[1],rpe,liftHist(S.logs,e.id));const e1=e1rm(prev.w,prev.reps);
       sug=`<div class="ex-meta">Föreslagen <b>${prog.weight??'—'} kg</b> · e1RM ≈ ${e1}${prog.action==='reset'?' · <span class="badge mid">reset</span>':prog.action==='up'?' · ↑':''}</div><div class="ex-meta">${prog.detail}</div>`;}
-    const thumb=EX_IMG[e.id]?`<img class="ex-thumb" src="${EX_IMG[e.id]}" alt=""/>`:`<div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;font-size:18px">🏋️</div>`;
+    const thumb=EX_IMG[e.id]?`<img class="ex-thumb" src="${EX_IMG[e.id]}" alt=""/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
     const sw=e.swapReason?`<div class="swapnote">↻ ${e.swapReason}</div>`:'';
     return `<div class="ex" onclick="openEx('${e.id}',${sets},'${e.reps[0]}-${e.reps[1]}',${rpe},'${e.orig||e.id}')"><div class="ex-row">${thumb}<div class="ex-body"><div class="ex-name">${ex.name}</div>${sw}
       <div class="ex-meta">${sets} × ${e.reps[0]}-${e.reps[1]} @ RPE ${rpe}</div>${sug}
@@ -1316,30 +1394,40 @@ const SRC={
   issn_prot:{t:'Jäger R m.fl. 2017, J Int Soc Sports Nutr (ISSN-ståndpunkt)',d:'1,4–2,0 g/kg/dag för de flesta tränande; 20–40 g protein per mål; högre intag kan behövas i kaloriunderskott.'},
   helms:{t:'Helms ER m.fl. 2014, Int J Sport Nutr Exerc Metab',d:'Systematisk översikt: 2,3–3,1 g protein per kg fettfri massa under kaloriunderskott hos smala styrketränande.'},
   helms_prep:{t:'Helms ER, Aragon AA, Fitschen PJ 2014, J Int Soc Sports Nutr',d:'Rekommenderar viktnedgång på 0,5–1 % av kroppsvikten per vecka för att bevara muskelmassa.'},
-  garthe:{t:'Garthe I m.fl. 2011, Int J Sport Nutr Exerc Metab',d:'Idrottare som gick ner ca 0,7 %/vecka behöll/ökade muskelmassan bättre än de som gick ner ca 1,4 %/vecka.'},
+  garthe:{t:'Garthe I m.fl. 2011, Int J Sport Nutr Exerc Metab',d:'Elitidrottare med styrketräning: gruppen som siktade på 0,7 %/vecka ökade sin fettfria massa och styrka, vilket gruppen som siktade på 1,4 %/vecka inte gjorde. Vid uppföljning efter 12 månader fanns ingen skillnad kvar.'},
   sch_ar:{t:'Schoenfeld BJ & Aragon AA 2018, J Int Soc Sports Nutr',d:'Föreslår ca 0,4 g/kg protein per mål fördelat på minst 4 mål för att maximera muskeluppbyggnad.'},
   iraki:{t:'Iraki J m.fl. 2019, Sports',d:'Off-season för kroppsbyggare: måttligt kaloriöverskott och långsam viktökning för att begränsa fettökning.'},
   barakat:{t:'Barakat C m.fl. 2020, Strength Cond J',d:'Rekomposition (fett ner och muskler upp samtidigt) är väl dokumenterad, särskilt hos nybörjare, återkommande och personer med högre fettprocent.'},
   kerksick:{t:'Kerksick CM m.fl. 2017, J Int Soc Sports Nutr (ISSN, näringstiming)',d:'Totalt intag av energi och protein är viktigast; protein inom några timmar före/efter passet är rimligt men timing är sekundärt.'},
-  moro:{t:'Moro T m.fl. 2016, J Transl Med',d:'16:8 hos styrketränade män i 8 veckor: mindre fettmassa, bibehållen muskelmassa och styrka jämfört med vanlig kost.'},
-  tinsley19:{t:'Tinsley GM m.fl. 2019, Am J Clin Nutr',d:'16:8 hos styrketränande kvinnor: liknande ökning av muskelmassa och styrka som vanlig kost när proteinet var högt.'},
-  tinsley17:{t:'Tinsley GM m.fl. 2017, Eur J Sport Sci',d:'20:4 fyra dagar/vecka hos otränade män: styrkan ökade som i kontrollgruppen, men muskelökningen tenderade att bli mindre.'},
-  lowe:{t:'Lowe DA m.fl. 2020, JAMA Intern Med (TREAT)',d:'16:8 utan styrketräning: liten viktnedgång som inte skilde sig från kontroll, och en betydande del av den var fettfri massa.'},
-  stote:{t:'Stote KS m.fl. 2007, Am J Clin Nutr',d:'En måltid per dag i en liten studie: viss fettminskning men högre hunger och blodtryck; mycket begränsad evidens.'},
-  harvie:{t:'Harvie MN m.fl. 2011, Int J Obes',d:'Två lågkaloridagar per vecka gav liknande viktnedgång som daglig kaloribegränsning.'},
-  trep:{t:'Trepanowski JF m.fl. 2017, JAMA Intern Med',d:'Varannandagsfasta var inte bättre än daglig kaloribegränsning för vikt, och fler hoppade av.'},
+  moro:{t:'Moro T m.fl. 2016, J Transl Med',d:'34 styrketränade män, 8 veckor, samma kalorier i båda grupperna. 16:8 (ätfönster 13–20) minskade fettmassan och bibehöll muskelmassa och styrka. Testosteron och IGF-1 sjönk i fastegruppen.'},
+  tinsley19:{t:'Tinsley GM m.fl. 2019, Am J Clin Nutr',d:'Styrketränade kvinnor, 8 veckor. Ätfönster 12–20 gav samma ökning av muskelmassa och styrka som vanlig kost. Båda grupperna åt ca 1,6 g protein/kg.'},
+  tinsley17:{t:'Tinsley GM m.fl. 2017, Eur J Sport Sci',d:'Unga män, 8 veckor. 4 timmars ätfönster de fyra dagar/vecka de inte tränade. Ingen negativ effekt på muskelmassa eller styrka, men de åt mindre totalt. Liten studie.'},
+  lowe:{t:'Lowe DA m.fl. 2020, JAMA Intern Med (TREAT)',d:'116 vuxna med övervikt, 12 veckor. 16:8 (ätfönster 12–20) utan andra ändringar gav inte mer viktnedgång än tre mål om dagen. I den uppmätta gruppen var ca 65 % av viktnedgången fettfri massa (normalt 20–30 %).'},
+  stote:{t:'Stote KS m.fl. 2007, Am J Clin Nutr',d:'Normalviktiga, 8 veckor, samma kalorier. En måltid per dag gav något mindre fettmassa men mer hunger, högre blodtryck och högre LDL-kolesterol än tre mål.'},
+  harvie:{t:'Harvie MN m.fl. 2011, Int J Obes',d:'107 kvinnor med övervikt, 6 månader. Två dagar/vecka med ca 650 kcal gav liknande viktnedgång som 25 % kaloriminskning varje dag.'},
+  trep:{t:'Trepanowski JF m.fl. 2017, JAMA Intern Med',d:'100 vuxna med fetma, 1 år. Varannandagsfasta (25 %/125 %) gav samma viktnedgång som daglig kaloribegränsning (−6,8 % efter 6 mån), men fler hoppade av (38 % mot 29 %) och LDL var högre efter 12 mån.'},
   kreider:{t:'Kreider RB m.fl. 2017, J Int Soc Sports Nutr (ISSN, kreatin)',d:'Kreatinmonohydrat 3–5 g/dag ökar styrka och muskelmassa vid träning; välstuderat och säkert för friska.'},
   guest:{t:'Guest NS m.fl. 2021, J Int Soc Sports Nutr (ISSN, koffein)',d:'Koffein ca 3–6 mg/kg 30–60 min före träning förbättrar prestation; lägre doser kan räcka.'},
-  nnr:{t:'Nordiska näringsrekommendationer 2023',d:'Vuxna rekommenderas minst 25–35 g fiber per dag.'}
+  nnr:{t:'Nordiska näringsrekommendationer 2023',d:'Vuxna rekommenderas minst 25–35 g fiber per dag.'},
+  anton:{t:'Anton SD m.fl. 2018, Obesity',d:'Översikt: den "metabola switchen" – när leverns glykogen tar slut och kroppen börjar använda fettsyror och ketoner – inträffar oftast efter mer än 12 timmar utan mat.'},
+  sch_vol:{t:'Schoenfeld BJ, Ogborn D, Krieger JW 2017, J Sports Sci (meta-analys)',d:'Fler set per vecka ger mer muskeltillväxt (dos–respons). Minst ca 10 set per muskel och vecka gav bäst resultat i analysen.'},
+  sch_load:{t:'Schoenfeld BJ m.fl. 2017, J Strength Cond Res (meta-analys)',d:'Lätta (≤60 % av max) och tunga vikter gav lika mycket muskeltillväxt när seten kördes nära utmattning. Maxstyrkan ökade mer med tunga vikter.'},
+  sch_freq:{t:'Schoenfeld BJ, Ogborn D, Krieger JW 2016, Sports Med (meta-analys)',d:'Att träna en muskel minst två gånger per vecka gav mer tillväxt än en gång. Om tre gånger är bättre än två är oklart.'},
+  sch_rest:{t:'Schoenfeld BJ m.fl. 2016, J Strength Cond Res',d:'21 tränade män, 8 veckor. 3 minuters vila mellan set gav mer styrka och muskeltillväxt än 1 minut.'},
+  refalo:{t:'Refalo MC m.fl. 2023, Sports Med (meta-analys)',d:'Att köra varje set till failure gav ingen tydlig fördel för muskeltillväxt jämfört med att stanna strax innan. Att träna nära failure är dock viktigt.'},
+  schumann:{t:'Schumann M m.fl. 2022, Sports Med (meta-analys, 43 studier)',d:'Kondition plus styrketräning minskade inte muskeltillväxt eller maxstyrka. Explosiv styrka kunde påverkas något, mest när båda gjordes i samma pass.'},
+  lamon:{t:'Lamon S m.fl. 2021, Physiol Rep',d:'En natt helt utan sömn minskade muskelproteinsyntesen med 18 %, höjde kortisol med 21 % och sänkte testosteron med 24 %.'},
+  parr:{t:'Parr EB m.fl. 2014, PLoS One',d:'Alkohol efter träning minskade muskelproteinsyntesen, även när protein intogs samtidigt.'},
+  slv_d:{t:'Livsmedelsverket – D-vitamin',d:'Rekommenderat intag 10 µg/dag för vuxna (20 µg över 75 år). Tillskott rekommenderas till vissa grupper, t.ex. de som får lite sol eller inte äter fisk eller berikade produkter. Vuxna bör inte få i sig mer än 100 µg/dag.'}
 };
 const FAST={
   none:{label:'Ingen',sub:'äta fritt',type:'none',win:null,meals:4,ev:'A',src:['kerksick'],text:'Ät när det passar. Totalt intag av energi och protein styr resultatet – inte klockan.'},
   '12_12':{label:'12:12',sub:'nattfasta',type:'tre',win:12,meals:4,ev:'B',src:['kerksick'],text:'12 timmars nattfasta – i praktiken vanlig dygnsrytm utan kvällsätande. Lätt att hålla och inga kända nackdelar för muskler.'},
   '14_10':{label:'14:10',sub:'mild',type:'tre',win:10,meals:3,ev:'B',src:['moro','tinsley19'],text:'Mjuk variant av 16:8. Bra start. Liknande resultat som 16:8 kan förväntas så länge kalorier och protein stämmer.'},
-  '16_8':{label:'16:8',sub:'vanligast',type:'tre',win:8,meals:3,ev:'A',src:['moro','tinsley19','lowe'],text:'Bäst studerat tillsammans med styrketräning: fett minskar och muskler/styrka bibehålls när proteinet är högt. Utan styrketräning tappar man en del muskler.'},
+  '16_8':{label:'16:8',sub:'vanligast',type:'tre',win:8,meals:3,ev:'A',src:['moro','tinsley19','lowe'],text:'Bäst studerat tillsammans med styrketräning: hos män och kvinnor som tränade bibehölls eller ökade muskler och styrka när proteinet var tillräckligt. Utan styrketräning (TREAT-studien) var en stor del av viktnedgången muskler.'},
   '18_6':{label:'18:6',sub:'krävande',type:'tre',win:6,meals:2,ev:'C',src:['sch_ar','tinsley17'],text:'Kort fönster gör det svårt att få i sig nog med protein och mat. Fungerar för fettminskning, mindre lämpligt för att bygga muskler.'},
-  '20_4':{label:'20:4',sub:'"warrior"',type:'tre',win:4,meals:2,ev:'C',src:['tinsley17'],text:'Studie: styrkan ökade men muskelökningen tenderade bli mindre. Svårt att nå protein. Mest för fettminskning hos vana.'},
-  omad:{label:'OMAD',sub:'1 mål/dag',type:'tre',win:1,meals:1,ev:'D',src:['stote','sch_ar'],text:'En måltid per dag. Mycket lite forskning, hög hunger och nästan omöjligt att fördela proteinet. Avråds om du vill bygga muskler.'},
+  '20_4':{label:'20:4',sub:'"warrior"',type:'tre',win:4,meals:2,ev:'C',src:['tinsley17','sch_ar'],text:'En liten studie (4 h fönster fyra dagar/vecka) såg ingen negativ effekt på muskler eller styrka, men deltagarna åt mindre. Svårt att nå proteinmålet varje dag. Mest för fettminskning hos vana.'},
+  omad:{label:'OMAD',sub:'1 mål/dag',type:'tre',win:1,meals:1,ev:'D',src:['stote','sch_ar'],text:'En måltid per dag. I den enda kontrollerade studien gav den mer hunger, högre blodtryck och högre LDL-kolesterol. Proteinet går inte att fördela. Avråds om du vill bygga muskler.'},
   '5_2':{label:'5:2',sub:'2 lågdagar',type:'days',meals:3,ev:'B',src:['harvie'],text:'Fem vanliga dagar och två dagar med ca 25 % av energibehovet. Lika effektivt som daglig kaloribegränsning. Lägg lågdagarna på vilodagar.'},
   adf:{label:'Varannan dag',sub:'ADF',type:'adf',meals:3,ev:'C',src:['trep'],text:'Lågdag (ca 25 %) varannan dag. Inte bättre än vanlig kaloribegränsning och många hoppar av. Undvik tunga pass på lågdagar.'}
 };
@@ -1460,7 +1548,7 @@ function nutritionCoach(m){
   if(m.carbs/bw<2&&S.trainingDay&&!m.low)T(`Kolhydraterna är låga (${(m.carbs/bw).toFixed(1)} g/kg). Det kan sänka prestationen vid hög volym.`,['kerksick']);
   T(`Fibrer minst ${m.fiber} g/dag – grönsaker, baljväxter, fullkorn, bär.`,['nnr']);
   T('Kreatin 3–5 g/dag, när som helst på dagen (bryter inte fastan nämnvärt).',['kreider']);
-  if((S.context||[]).includes('poor_sleep'))T('Dålig sömn: undvik stort underskott idag och prioritera protein.',[]);
+  if((S.context||[]).includes('poor_sleep'))T('Dålig sömn sänker kroppens förmåga att bygga muskler. Undvik stort underskott idag och prioritera protein.',['lamon']);
   if((S.context||[]).includes('sick'))T('Sjuk: ät och drick – pausa fastan tills du mår bättre.',[]);
   let peri;
   if(m.low)peri='Lågdag: hoppa över tunga pass. Om du tränar – lägg passet nära en proteinrik måltid.';
@@ -1468,7 +1556,7 @@ function nutritionCoach(m){
   else if(S.fastedTrain==='morning')peri='Morgonpass fastande: ingen frukost krävs. Ät 20–40 g protein inom ca 2 h efter passet'+(m.load>=60?' plus kolhydrater.':'.');
   else if(S.fastedTrain==='late')peri='Pass sent i fastan: prestationen kan sjunka vid tunga/långa pass. Bryt fastan direkt efter med 30–40 g protein + kolhydrater, eller flytta fönstret så att passet hamnar tidigt i det.';
   else peri=m.load>=60?'Före passet: 20–40 g protein + 30–60 g kolhydrater (1–3 h innan). Efter: liknande inom några timmar.':'Valfritt mål före; proteinrikt mål efter passet.';
-  const supplements=[['Kreatin 3–5 g/dag',['kreider']],['Koffein ca 3 mg/kg 30–60 min före pass om du tål det (inte sent på dagen)',['guest']],['Proteinpulver bara om du inte når proteinmålet med mat',['issn_prot']],['D-vitamin under vinterhalvåret enligt Livsmedelsverkets råd',[]]];
+  const supplements=[['Kreatin 3–5 g/dag',['kreider']],['Koffein ca 3 mg/kg 30–60 min före pass om du tål det (inte sent på dagen)',['guest']],['Proteinpulver bara om du inte når proteinmålet med mat',['issn_prot']],['D-vitamin 10 µg/dag om du får lite sol eller inte äter fisk/berikade livsmedel – inte över 100 µg/dag',['slv_d']]];
   return{tips,peri,supplements};
 }
 function setFast(k){S.fast=k;if(FAST[k].type==='days'&&!(S.fastDays||[]).length)S.fastDays=[1,3];save();renderKost();refresh();}
@@ -1558,7 +1646,7 @@ function renderKost(){
     winStart.value=S.winStart??12;trainHour.value=S.trainHour??17;
     const s=S.winStart??12,e=s+f.win,now=new Date(),nh=now.getHours()+now.getMinutes()/60,th=S.trainHour??17;
     const seg=(a,b)=>`<div class="eat" style="left:${a/24*100}%;width:${(b-a)/24*100}%"></div>`;
-    winBar.innerHTML=(e<=24?seg(s,e):seg(s,24)+seg(0,e-24))+`<div class="trn" style="left:${(th+0.5)/24*100}%">🏋</div><div class="now" style="left:${nh/24*100}%"></div>`+
+    winBar.innerHTML=(e<=24?seg(s,e):seg(s,24)+seg(0,e-24))+`<div class="trn" style="left:${(th+0.5)/24*100}%">${ic('dumbbell')}</div><div class="now" style="left:${nh/24*100}%"></div>`+
       [0,6,12,18,24].map(x=>`<div class="lbl" style="left:${x/24*100}%">${x}</div>`).join('');
   }
   daysCard.style.display=f.type==='days'||f.type==='adf'?'block':'none';
@@ -1568,7 +1656,7 @@ function renderKost(){
   if(f.type==='adf'){daysTitle.textContent='Varannandagsfasta';fastDayChips.innerHTML=`<div class="chip on">${isLowDay()?'Idag: lågdag':'Idag: vanlig dag'}</div><div class="chip" onclick="flipAdf()">Byt dag</div>`;daysNote.textContent='Lågdagar ca 25 % av ditt energibehov. Lägg tunga pass på vanliga dagar.';}
   document.querySelectorAll('#fastedChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===(S.fastedTrain||'no')));
   fastedNote.innerHTML={no:'Ät ett mål 1–3 timmar före passet. Bäst för tunga och långa pass.',
-    morning:`Träning efter nattens fasta verkar ge liknande styrka och muskler som efter frukost, så länge dagens totala protein nås. Ät protein snart efter. ${srcTag(['kerksick','moro'])}`,
+    morning:`Det finns få studier på styrketräning direkt efter nattens fasta. Det som är väl belagt är att dagens totala energi och protein betyder mest – ät 20–40 g protein inom några timmar efter passet. Märker du sämre prestation, ät något litet före. ${srcTag(['kerksick'])}`,
     late:`Efter 14+ timmar utan mat kan prestationen sjunka vid tunga pass. Flytta hellre ätfönstret så att passet hamnar i början av det. ${srcTag(['kerksick'])}`}[S.fastedTrain||'no'];
   // Kropp & mål
   document.querySelectorAll('#goalChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.goal));
@@ -1585,6 +1673,7 @@ function renderKost(){
   nAdvice.innerHTML=coach.tips.map(t=>`<div class="tip">${t.t} ${srcTag(t.s)}</div>`).join('');
   periBox.innerHTML=`<div class="coach">${coach.peri}</div>`+coach.supplements.map(s=>`<div class="tip">• ${s[0]} ${srcTag(s[1])}</div>`).join('');
   shopList.innerHTML=SHOP.map(x=>'• '+x).join('<br>');
+  fastLearn.innerHTML=artLinks('fasta',6);radLearn.innerHTML=`<div class="mlist">${['kost-protein','kost-takt','kost-kolhydrat','till-kreatin','till-d','myter'].map(id=>artCard(ARTS.find(a=>a.id===id))).join('')}</div>`;
   nutWhy.innerHTML=`<div class="tip">Underhållsbehov = vilometabolism × aktivitetsnivå (${S.act||1.55}). ${srcTag([m.ep.bmrSrc])}</div>
     <div class="tip">Mål-kalorier = underhåll ${m.ep.delta>=0?'+':''}${m.ep.delta} (mål) ${m.dayMod>=0?'+':''}${m.dayMod} (dagens träning)${m.low?' → lågdag 25 %':''}.</div>
     <div class="tip">Fett minst ${m.fatKg} g/kg och 20–35 % av energin; resten blir kolhydrater (${(m.carbs/S.bw).toFixed(1)} g/kg).</div>
@@ -1616,9 +1705,9 @@ function renderSrc(){srcBox.innerHTML='<p class="muted" style="margin-bottom:6px
   Object.values(SRC).map((x,i)=>`<div class="tip"><b>[${i+1}] ${x.t}</b><br>${x.d}</div>`).join('')+
   `<div class="tip"><b>Evidensnivåer för fasta</b><br>${Object.entries(EV_TXT).map(([k,v])=>`<span class="ev ${k}">${k}</span> ${v}`).join('<br>')}</div>`;}
 function renderGuide(){
-  const st=[['Skatta din dagsform','Varje morgon: dra reglaget på Idag. Appen anpassar passet direkt.'],['Kolla dagens pass','Tryck på en övning för instruktioner, bild och för att byta övning.'],['Logga passet','Tryck "Starta & logga passet". Fyll i vikt, reps och RPE. Spara.'],['Ställ in kosten','Kost → Kropp & mål: välj mål, takt och mät gärna fettprocent. Då räknas kalorier och protein ut.'],['Välj fasta (valfritt)','Kost → Fasta: välj metod och ätfönster. Status visas på startsidan.'],['Följ framstegen','Logga vikten 1–3 ggr/vecka under Framsteg. Där syns rekord och styrkekurvor.']];
+  const st=[['Skatta din dagsform','Varje morgon: dra reglaget på Idag. Appen anpassar passet direkt.'],['Kolla dagens pass','Tryck på en övning för instruktioner, bild och för att byta övning.'],['Logga passet','Tryck "Starta & logga passet". Fyll i vikt, reps och RPE. Spara.'],['Ställ in kosten','Kost → Kropp & mål: välj mål, takt och mät gärna fettprocent. Då räknas kalorier och protein ut.'],['Välj fasta (valfritt)','Kost → Fasta: välj metod och ätfönster. Status visas på startsidan.'],['Följ framstegen','Logga vikten 1–3 ggr/vecka under Framsteg. Där syns rekord och styrkekurvor.'],['Lär dig mer','Under Kunskap finns korta artiklar om fasta, kost, träning och återhämtning – alla med källor.']];
   guideBox.innerHTML='<div class="card">'+st.map((x,i)=>`<div class="gstep"><div class="n">${i+1}</div><div><b>${x[0]}</b><div class="muted">${x[1]}</div></div></div>`).join('')+'</div>'+
-  '<div class="card"><h4>Tips</h4><div class="tip">Ser du en <button class="q">?</button> – tryck för förklaring.</div><div class="tip">Allt ändras under Meny.</div><div class="tip">Datan sparas bara i din webbläsare – exportera en backup ibland.</div></div>';
+  '<div class="card"><h4>Tips</h4><div class="tip">Ser du en <button class="q">?</button> – tryck för förklaring.</div><div class="tip">Profil, mål och data hittar du under kugghjulet uppe till höger.</div><div class="tip">Datan sparas bara i din webbläsare – exportera en backup ibland.</div></div>';
 }
 let libMus='Alla';
 function renderLib(){
@@ -1627,10 +1716,224 @@ function renderLib(){
   document.getElementById('libMus').innerHTML=mus.map(m=>`<div class="chip ${m===libMus?'on':''}" onclick="libMus='${m}';renderLib()">${m}</div>`).join('');
   const q=(libQ.value||'').toLowerCase();
   const list=Object.entries(EX).filter(([k,e])=>(libMus==='Alla'||e.m.includes(libMus))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
-  libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_IMG[k]}" alt=""/>`:`<div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;font-size:18px">🏋️</div>`;
+  libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_IMG[k]}" alt=""/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
     return `<div class="ex" onclick="openLib('${k}')"><div class="ex-row">${th}<div class="ex-body"><div class="ex-name">${e.name}</div><div class="ex-meta">${e.cue}</div><div class="tags">${e.m.map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;}).join('')||'<div class="empty">Ingen övning hittades.</div>';
 }
 function openLib(k){openEx(k,'','','',k);mMeta.textContent='Övningsbibliotek';document.getElementById('mSwapWrap').style.display='none';}
+
+/* ===================== IKONER ===================== */
+const ICONS={
+ home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+ dumbbell:'<path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"/>',
+ food:'<path d="M7 3v7a2 2 0 0 0 4 0V3M9 10v11M17 21V3c-2 1-3 3.5-3 6.5V13h3"/>',
+ chart:'<path d="M3 21h18M7 17v-5M12 17V7M17 17v-8"/>',
+ book:'<path d="M4 19.5V5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2 2 2 0 0 0 2 2h14"/><path d="M8 7h8"/>',
+ settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ list:'<path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
+ refresh:'<path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4h-4"/>',
+ compass:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+ chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+ flask:'<path d="M9 3h6M10 3v6L5 18a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 14h9"/>',
+ database:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+ moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4 6.5 6.5 0 0 0 20 14.5z"/>',
+ pill:'<rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="m9.5 9.5 5 5"/>',
+ alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>',
+ chev:'<path d="m9 6 6 6-6 6"/>',
+ back:'<path d="m15 6-6 6 6 6"/>',
+ check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+ scale:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8.5 9a5 5 0 0 1 7 0l-2.5 3"/>',
+ flame:'<path d="M12 3c.5 3.5 5 5.5 5 10.5a5 5 0 0 1-10 0c0-2.8 1.6-4.4 2.5-6 .7 1.3 1.5 2.2 2.5 2.7C12.3 8 12 5.5 12 3z"/>',
+ play:'<path d="M7 4.5v15l13-7.5z"/>'
+};
+function ic(n,c){return `<svg class="ico ${c||''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`;}
+function paintIcons(root){(root||document).querySelectorAll('[data-ic]').forEach(el=>{if(!el.dataset.done){el.innerHTML=ic(el.dataset.ic)+el.innerHTML;el.dataset.done=1;}});}
+
+/* ===================== KUNSKAPSBANK ===================== */
+const CATS={fasta:['Fasta','clock'],kost:['Kost','food'],traning:['Träning','dumbbell'],aterhamt:['Återhämtning','moon'],tillskott:['Tillskott','pill'],myter:['Myter','alert']};
+const ARTS=[
+ {id:'fasta-kropp',cat:'fasta',ev:'B',min:3,t:'Vad händer i kroppen när du fastar?',
+  lead:'Kroppen växlar gradvis bränsle under en fasta – från maten du nyss ätit till lagrat socker och sedan allt mer fett.',
+  keys:['0–4 h: maten tas upp och används','Efter ca 12 h: mer fett och ketoner som bränsle','Påståenden om "detox" saknar stöd'],
+  body:[['De första timmarna','Efter en måltid används näringen direkt och överskottet lagras. Blodsocker och insulin är förhöjda en stund.'],
+   ['4–12 timmar','Levern frisätter sitt lagrade socker (glykogen) för att hålla blodsockret stabilt.'],
+   ['Efter cirka 12 timmar','När leverns glykogen börjar ta slut ökar fettförbränningen och levern börjar bilda ketoner. Forskare kallar det den metabola switchen. Hur snabbt det sker beror på vad och hur mycket du åt innan och hur aktiv du är.'],
+   ['Vad vi inte vet','Autofagi (cellernas "städning") är väl studerat i djur men dåligt i människor vid korta fastor. Det finns inget stöd för att fasta "rensar ut gifter".']],
+  src:['anton']},
+ {id:'fasta-vikt',cat:'fasta',ev:'A',min:3,t:'Fasta och viktnedgång – vad säger forskningen?',
+  lead:'Fasta fungerar – men främst för att du äter mindre. Jämfört med vanlig kaloribegränsning är resultaten i stort sett lika.',
+  keys:['16:8 utan andra ändringar var inte bättre än tre mål','5:2 och varannandagsfasta ≈ vanlig kaloriminskning','Välj den metod du kan hålla'],
+  body:[['Tidsbegränsat ätande','I TREAT-studien åt 116 personer med övervikt mellan kl 12 och 20 i 12 veckor. De gick inte ner mer än gruppen som åt tre mål om dagen, och en stor del av det de tappade var muskler.'],
+   ['5:2','Två lågkaloridagar i veckan gav ungefär samma viktnedgång som att minska kalorierna lite varje dag under ett halvår.'],
+   ['Varannandagsfasta','Efter ett år var viktnedgången densamma som med daglig kaloriminskning, men fler hoppade av och LDL-kolesterolet var högre.'],
+   ['Slutsats','Den metod du klarar att följa i månader är den bästa. För vissa är fasta enklare än att räkna kalorier – för andra tvärtom.']],
+  src:['lowe','harvie','trep']},
+ {id:'fasta-muskler',cat:'fasta',ev:'A',min:3,t:'Fasta och muskler',
+  lead:'Om du styrketränar och äter tillräckligt med protein verkar 16:8 inte kosta muskler.',
+  keys:['Styrketräning + protein skyddar musklerna','16:8 fungerade hos både män och kvinnor','Utan styrketräning tappar man mer muskler'],
+  body:[['Män som tränar','34 vana män åt samma mängd kalorier, antingen inom 8 timmar eller utspritt. Fastegruppen tappade fett och behöll muskler och styrka.'],
+   ['Kvinnor som tränar','Kvinnor som åt mellan 12 och 20 byggde lika mycket muskler och styrka som de som åt hela dagen. Båda grupperna fick ca 1,6 g protein/kg.'],
+   ['Utan styrketräning','I TREAT-studien, där deltagarna inte styrketränade, var en ovanligt stor andel av viktnedgången fettfri massa.'],
+   ['Gör så här','Träna styrka 2–4 gånger i veckan, nå ditt proteinmål varje dag och fördela det på 2–4 mål i fönstret.']],
+  src:['moro','tinsley19','lowe','sch_ar']},
+ {id:'fasta-bryta',cat:'fasta',ev:'C',min:2,t:'Vad bryter fastan?',
+  lead:'Allt som innehåller energi bryter tekniskt sett fastan. För viktnedgång är det dock totalen över dagen som räknas.',
+  keys:['Vatten, svart kaffe och te: nästan noll kalorier','Mjölk, socker, juice: bryter fastan','Några få kalorier spelar liten roll för vikten'],
+  body:[['Okej under fastan','Vatten, kolsyrat vatten, svart kaffe och te utan tillsatser innehåller nästan ingen energi. Kreatin innehåller ingen energi heller.'],
+   ['Bryter fastan','Mjölk eller grädde i kaffet, socker, juice, proteinpulver och måltidsersättningar innehåller energi.'],
+   ['Sötningsmedel','Forskningen om hur kalorifria sötningsmedel påverkar insulin och hunger under fasta är begränsad och spretig.'],
+   ['Det praktiska','Om målet är viktnedgång avgör totalt intag över dagen. En skvätt mjölk i kaffet förstör inte resultatet.']],
+  src:['kerksick']},
+ {id:'fasta-vem',cat:'fasta',ev:'B',min:2,t:'Vem bör inte fasta?',
+  lead:'Fasta är säkert för de flesta friska vuxna, men vissa grupper bör avstå eller prata med vården först.',
+  keys:['Gravida, ammande och under 18 år','Diabetes med insulin eller blodsockersänkande tabletter','Tidigare ätstörning'],
+  body:[['Avstå eller rådgör först','Gravida och ammande, barn och ungdomar under 18 år och personer som har eller har haft en ätstörning. Även den som tar läkemedel som ska tas med mat bör prata med vården.'],
+   ['Diabetes','Vid behandling med insulin eller vissa tabletter kan fasta ge farligt lågt blodsocker. Läkaren behöver justera behandlingen.'],
+   ['Varningssignaler','Yrsel, skakighet, hjärtklappning, stark huvudvärk eller att tankarna kretsar kring mat. Avbryt och ät.']],
+  src:[]},
+ {id:'fasta-tips',cat:'fasta',ev:'B',min:2,t:'Så kommer du igång med fasta',
+  lead:'Börja mjukt och anpassa fönstret efter när du tränar.',
+  keys:['Börja med 12:12, öka till 14:10 och 16:8','Lägg passet tidigt i ätfönstret','Första målet: proteinrikt'],
+  body:[['Steg för steg','Kör 12:12 en vecka (inget kvällsätande), sedan 14:10 och därefter 16:8 om det känns bra.'],
+   ['Träningen','Lägg gärna tunga pass strax före eller i början av fönstret så att du kan äta efter. Appen kan föreslå ett fönster under Kost → Fasta.'],
+   ['Måltiderna','Bryt fastan med ett proteinrikt mål (20–40 g). Försök få 2–4 mål i fönstret för att fördela proteinet.'],
+   ['Drick','Drick vatten under fastan. Kaffe och te går bra.']],
+  src:['kerksick','sch_ar']},
+ {id:'kost-protein',cat:'kost',ev:'A',min:3,t:'Hur mycket protein behöver du?',
+  lead:'För de flesta som styrketränar räcker 1,6–2,2 g per kg kroppsvikt. I underskott kan mer behövas.',
+  keys:['1,6 g/kg räcker för de flesta','2,3–3,1 g/kg fettfri massa vid deff hos smala','20–40 g per mål, 3–4 mål'],
+  body:[['Bygga muskler','En stor meta-analys fann att protein över ca 1,6 g/kg/dag i snitt inte gav mer muskeltillväxt. För att vara säker kan man sikta upp mot 2,2 g/kg.'],
+   ['I kaloriunderskott','För smala som deffar föreslås 2,3–3,1 g per kg fettfri massa – mer ju smalare och ju större underskott.'],
+   ['Fördelning','Ca 0,4 g/kg per mål fördelat på minst fyra mål verkar optimalt, men totalen per dag är viktigast.'],
+   ['Hur appen räknar','Appen använder din fettfria massa om fettprocenten är känd och annars kroppsvikten. Vid högre BMI räknas på en lägre referensvikt.']],
+  src:['morton','helms','issn_prot','sch_ar']},
+ {id:'kost-takt',cat:'kost',ev:'B',min:3,t:'Hur snabbt ska man gå ner eller upp i vikt?',
+  lead:'Långsam viktnedgång bevarar mer muskler. Snabb viktökning ger mest fett.',
+  keys:['Deff: 0,5–1 % av kroppsvikten per vecka','Smal? Välj den lägre takten','Bulk: långsamt, mer för nybörjare'],
+  body:[['Gå ner','Rekommendationen är 0,5–1 % av kroppsvikten per vecka. Hos elitidrottare ökade gruppen som siktade på 0,7 %/vecka sin muskelmassa, vilket gruppen på 1,4 % inte gjorde. Efter ett år hade skillnaden dock jämnats ut.'],
+   ['Gå upp','Ett måttligt överskott räcker. Nybörjare kan bygga mer muskler per månad än vana, så överskottet minskas ju längre du tränat.'],
+   ['Båda samtidigt','Nybörjare, de som gör comeback och personer med högre fettprocent kan ofta tappa fett och bygga muskler samtidigt.']],
+  src:['helms_prep','garthe','iraki','barakat']},
+ {id:'kost-kolhydrat',cat:'kost',ev:'B',min:2,t:'Kolhydrater, fett och timing',
+  lead:'Totalt intag betyder mest. Timing är finjustering.',
+  keys:['Fett minst 20 % av energin','Kolhydrater ger bränsle för hård träning','20–40 g protein runt passet'],
+  body:[['Fett','För lite fett över tid kan påverka hormoner och upptaget av vissa vitaminer. Appen håller fettet på minst 0,6–0,8 g/kg och 20 % av energin.'],
+   ['Kolhydrater','Fyller på musklernas glykogen. Mycket låga nivåer kan sänka prestationen vid många set.'],
+   ['Timing','Protein och kolhydrater några timmar före och efter passet är bra, men exakt timing är sekundärt jämfört med dagens totala intag.']],
+  src:['kerksick','issn_prot']},
+ {id:'tr-volym',cat:'traning',ev:'A',min:2,t:'Hur många set per vecka?',
+  lead:'Fler hårda set per muskel ger mer tillväxt – upp till en gräns där återhämtningen sätter stopp.',
+  keys:['Minst ca 10 set per muskel och vecka','Öka gradvis om du står still','Kvalitet: set nära failure räknas'],
+  body:[['Forskningen','En meta-analys fann ett tydligt samband: ju fler set per vecka, desto mer muskeltillväxt. Minst ca 10 set per muskel och vecka gav bäst effekt.'],
+   ['I appen','Under Idag → "Varför ser passet ut så här?" ser du dina set per muskel de senaste 7 dagarna jämfört med riktvärden.']],
+  src:['sch_vol']},
+ {id:'tr-vikt',cat:'traning',ev:'A',min:2,t:'Tunga eller lätta vikter?',
+  lead:'För muskeltillväxt fungerar både tunga och lätta vikter – för maxstyrka behövs tunga.',
+  keys:['Lätta och tunga vikter: lika mycket muskeltillväxt','Krav: kör nära utmattning','Maxstyrka: tunga vikter'],
+  body:[['Muskler','Med vikter från ca 30 % av max upp till tunga vikter blev muskeltillväxten lika stor, så länge seten kördes nära utmattning.'],
+   ['Styrka','Maxstyrkan ökade mer med tunga vikter – det är en färdighet som tränas specifikt.'],
+   ['Praktiskt','Blanda: tunga baslyft med 3–8 reps och lättare övningar med 8–20 reps.']],
+  src:['sch_load']},
+ {id:'tr-frekvens',cat:'traning',ev:'A',min:2,t:'Hur ofta ska du träna en muskel?',
+  lead:'Minst två gånger i veckan per muskel ger mer tillväxt än en gång.',
+  keys:['2×/vecka slår 1×/vecka','3× är inte bevisat bättre än 2×','Därför kör appen Över/Under eller Helkropp'],
+  body:[['Forskningen','En meta-analys fann att två pass per muskel och vecka gav mer tillväxt än ett. Om tre är bättre än två kunde inte avgöras.'],
+   ['I appen','Över/Under med 4 pass och Helkropp med 3 pass träffar varje muskel ungefär två gånger per vecka.']],
+  src:['sch_freq']},
+ {id:'tr-failure',cat:'traning',ev:'A',min:2,t:'Måste man köra till failure?',
+  lead:'Nej. Att stanna 1–3 reps innan ger i stort sett samma tillväxt och mindre trötthet.',
+  keys:['Ingen tydlig fördel med failure','Men: träna nära failure','RPE 7–9 är en bra zon'],
+  body:[['Forskningen','En meta-analys från 2023 fann ingen tydlig fördel med att köra varje set till failure jämfört med att stanna strax innan.'],
+   ['RPE i appen','RPE 8 = två reps kvar. Appen sätter ett tak för dagen utifrån din dagsform och fas.']],
+  src:['refalo']},
+ {id:'tr-vila',cat:'traning',ev:'B',min:2,t:'Hur länge ska man vila mellan set?',
+  lead:'Längre vila, ca 2–3 minuter, ger mer kvalitet i seten och mer muskler och styrka än 1 minut.',
+  keys:['3 min > 1 min i studie med vana','Baslyft: 2–3 min','Små övningar: 1–2 min'],
+  body:[['Forskningen','Vana män som vilade 3 minuter fick mer styrka och muskeltillväxt på 8 veckor än de som vilade 1 minut. Troligen för att de orkade fler reps i varje set.'],
+   ['I appen','Vilotimern finns under Träna → Logga.']],
+  src:['sch_rest']},
+ {id:'tr-kondition',cat:'traning',ev:'A',min:2,t:'Kondition och styrka – krockar det?',
+  lead:'Nej, inte för muskler och maxstyrka. Explosivitet kan påverkas något.',
+  keys:['Kondition minskar inte muskeltillväxten','Explosiv styrka kan påverkas lite','Dela gärna upp passen med några timmar'],
+  body:[['Forskningen','En meta-analys av 43 studier fann att konditionsträning inte minskade muskeltillväxt eller maxstyrka. Explosiv styrka påverkades något, mest när båda gjordes i samma pass.'],
+   ['Praktiskt','Kör gärna kondition på andra dagar eller minst några timmar från styrkepasset om du vill vara snabb och explosiv.']],
+  src:['schumann']},
+ {id:'aterh-somn',cat:'aterhamt',ev:'B',min:2,t:'Sömn och muskler',
+  lead:'En enda natt utan sömn minskade kroppens muskeluppbyggnad med 18 %.',
+  keys:['Sömnbrist bromsar muskeluppbyggnad','Kortisol upp, testosteron ner','Sov dåligt? Kör lättare'],
+  body:[['Forskningen','I en studie med 13 friska vuxna minskade muskelproteinsyntesen med 18 % efter en natt utan sömn. Kortisol steg med 21 % och testosteron sjönk med 24 %.'],
+   ['I appen','Markera "Dålig sömn" under Idag → Justera dagens pass, så sänks volymen något och kostrådet anpassas.']],
+  src:['lamon']},
+ {id:'aterh-alkohol',cat:'aterhamt',ev:'B',min:2,t:'Alkohol och träning',
+  lead:'Alkohol efter träning sänker muskeluppbyggnaden – även om du äter protein.',
+  keys:['Mindre muskeluppbyggnad efter passet','Protein kompenserar inte helt','Undvik alkohol närmast efter passet'],
+  body:[['Forskningen','När vältränade drack alkohol efter ett hårt pass blev muskelproteinsyntesen lägre än utan alkohol, även när de drack proteinshake samtidigt.'],
+   ['Praktiskt','Alkohol ger också sämre sömn. Vill du festa, lägg det inte direkt efter ett tungt pass.']],
+  src:['parr']},
+ {id:'aterh-deload',cat:'aterhamt',ev:'C',min:2,t:'Deload och periodisering',
+  lead:'En lätt vecka med jämna mellanrum är vanligt bland styrkeidrottare. Forskningen om exakt hur ofta är begränsad.',
+  keys:['Appen: 1 lätt vecka var 12:e','Fler lätta dagar vid låg dagsform','Lyssna på kroppen – appen hjälper'],
+  body:[['Hur appen gör','Programmet går i block: uppbyggnad, styrka, topp och en lätt vecka. Dessutom sänker appen volymen automatiskt vid låg dagsform, mycket träning senaste veckan eller sjukdom.'],
+   ['Evidens','Periodisering och deload bygger mest på praktisk erfarenhet och mindre studier. Därför finns den här artikeln på nivå C.']],
+  src:[]},
+ {id:'till-kreatin',cat:'tillskott',ev:'A',min:2,t:'Kreatin',
+  lead:'Det bäst studerade tillskottet för styrka och muskler.',
+  keys:['3–5 g om dagen, när som helst','Ingen laddning behövs','Ingen energi – bryter inte fastan'],
+  body:[['Effekt','Kreatinmonohydrat ökar styrka och muskelmassa när man tränar. Det är välstuderat och säkert för friska.'],
+   ['Dosering','3–5 g dagligen. Effekten bygger upp sig över några veckor. Vikten kan öka 1–2 kg av vatten i musklerna.']],
+  src:['kreider']},
+ {id:'till-koffein',cat:'tillskott',ev:'A',min:2,t:'Koffein',
+  lead:'Förbättrar prestationen – men tänk på sömnen.',
+  keys:['Ca 3–6 mg/kg 30–60 min före','Lägre doser kan räcka','Inte sent på dagen'],
+  body:[['Effekt','Koffein förbättrar både styrka och uthållighet hos många.'],
+   ['Sömn','Koffein kan störa sömnen i många timmar. Undvik det efter tidig eftermiddag om du tränar på kvällen.']],
+  src:['guest','lamon']},
+ {id:'till-d',cat:'tillskott',ev:'B',min:2,t:'D-vitamin',
+  lead:'Ett av få vitaminer som många i Sverige riskerar att få för lite av.',
+  keys:['Rekommendation: 10 µg/dag (20 µg över 75 år)','Tillskott om du får lite sol eller inte äter fisk/berikat','Max 100 µg/dag'],
+  body:[['Vem behöver tillskott?','Livsmedelsverket rekommenderar tillskott till vissa grupper, t.ex. de som är lite ute, täcker huden eller inte äter fisk eller D-vitaminberikade livsmedel.'],
+   ['Akta för mycket','Vuxna bör inte få i sig mer än 100 µg per dag. Kombinera inte flera tillskott med D-vitamin i onödan.']],
+  src:['slv_d']},
+ {id:'till-protein',cat:'tillskott',ev:'B',min:1,t:'Proteinpulver – behövs det?',
+  lead:'Nej, men det är ett smidigt sätt att nå proteinmålet.',
+  keys:['Mat fungerar lika bra','Praktiskt efter träning eller i ett kort ätfönster'],
+  body:[['Fakta','Det spelar ingen roll om proteinet kommer från pulver eller mat – totalen per dag avgör. Pulver är bara bekvämt.']],
+  src:['issn_prot']},
+ {id:'myter',cat:'myter',ev:'A',min:3,t:'Vanliga myter',
+  lead:'Sex vanliga påståenden – och vad forskningen faktiskt visar.',
+  keys:['Fasta bränner inte mer fett vid samma kalorier','Lätta vikter bygger också muskler','Kondition äter inte upp musklerna'],
+  body:[['"Fasta bränner mer fett"','Vid samma kalorier och protein blir viktnedgången i stort sett densamma som med vanlig kaloriminskning.'],
+   ['"Man måste äta var tredje timme"','Studier med 8-timmarsfönster visar att muskler och styrka kan byggas med 2–3 mål om dagen.'],
+   ['"Lätta vikter tonar, tunga bygger"','Lätta och tunga vikter ger lika mycket muskeltillväxt nära utmattning.'],
+   ['"Varje set måste gå till failure"','Ingen tydlig fördel jämfört med att stanna 1–3 reps innan.'],
+   ['"Kondition äter upp musklerna"','En stor meta-analys hittade ingen negativ effekt på muskeltillväxt.'],
+   ['"Mer protein är alltid bättre"','Över ca 1,6–2,2 g/kg är extra nytta liten för de flesta.']],
+  src:['lowe','trep','moro','tinsley19','sch_load','refalo','schumann','morton']}
+];
+let learnCat='alla';
+function artCard(a){const c=CATS[a.cat];return `<div class="acard" onclick="openArt('${a.id}')"><div class="aic">${ic(c[1])}</div><div class="abody"><div class="at">${a.t}</div><div class="am"><span class="ev ${a.ev}">${a.ev}</span>${c[0]} · ${a.min} min</div></div><span class="chev">${ic('chev')}</span></div>`;}
+function renderLearn(){
+  const q=(learnQ.value||'').toLowerCase();
+  learnCats.innerHTML=[['alla','Alla']].concat(Object.entries(CATS).map(([k,v])=>[k,v[0]])).map(([k,l])=>`<div class="chip ${learnCat===k?'on':''}" onclick="learnCat='${k}';renderLearn()">${l}</div>`).join('');
+  const list=ARTS.filter(a=>(learnCat==='alla'||a.cat===learnCat)&&(!q||(a.t+' '+a.lead+' '+a.keys.join(' ')+' '+a.body.map(b=>b.join(' ')).join(' ')).toLowerCase().includes(q)));
+  learnList.innerHTML=list.length?`<div class="mlist">${list.map(artCard).join('')}</div>`:'<div class="empty">Inga artiklar matchar sökningen.</div>';
+}
+function openArt(id){
+  const a=ARTS.find(x=>x.id===id);if(!a)return;const c=CATS[a.cat];
+  artBox.innerHTML=`<div class="akicker">${ic(c[1])} ${c[0]} · ${a.min} min läsning</div><h1 class="ah">${a.t}</h1><p class="alead">${a.lead}</p>
+    <div class="evrow"><span class="ev ${a.ev}">Evidens ${a.ev}</span><span class="muted" style="font-size:12px">${EV_TXT[a.ev]}</span></div>
+    <div class="keybox"><div class="kt">I korthet</div>${a.keys.map(k=>`<div class="kk">${ic('check')}<span>${k}</span></div>`).join('')}</div>
+    ${a.body.map(b=>`<h3 class="ah3">${b[0]}</h3><p class="ap">${b[1]}</p>`).join('')}
+    ${a.src.length?`<div class="asrc"><div class="kt">Källor</div>${a.src.map(id=>`<div class="tip" onclick="showSrc('${id}')" style="cursor:pointer"><b>[${Object.keys(SRC).indexOf(id)+1}]</b> ${SRC[id].t}</div>`).join('')}</div>`:'<div class="asrc"><div class="kt">Underlag</div><div class="tip">Försiktighetsprincip och allmän klinisk praxis. Rådgör med vården vid tveksamhet.</div></div>'}
+    <div class="arel"><div class="kt">Läs också</div><div class="mlist">${ARTS.filter(x=>x.cat===a.cat&&x.id!==a.id).slice(0,3).map(artCard).join('')}</div></div>`;
+  tab('art');
+}
+function artLinks(cat,max){return `<div class="mlist">${ARTS.filter(a=>a.cat===cat).slice(0,max||6).map(artCard).join('')}</div>`;}
 
 function renderProf(){pName.value=S.name;pBw.value=S.bw;pGoal.value=S.goal;pWeek.value=S.week;
   pSex.value=S.sex||'m';pAge.value=S.age||30;pH.value=S.height||178;pAct.value=String(S.act||1.55);
@@ -1647,6 +1950,8 @@ function exportData(){
   toast('JSON exporterad');
 }
 S=migrate(load());
+paintIcons();backBtn.innerHTML=ic('back');setBtn.innerHTML=ic('settings');
+try{evLegend.innerHTML=Object.entries(EV_TXT).map(([k,v])=>`<span class="ev ${k}">${k}</span> ${v}`).join('<br>');}catch(e){}
 </script>
 </body>
 </html>
