@@ -214,6 +214,27 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .ap{font-size:14px;line-height:1.65;color:var(--t2)}
 .asrc,.arel{margin-top:20px}
 .btn.p{box-shadow:none}
+.dswitch{display:flex;gap:6px;margin:6px 0 4px}.dswitch:empty{display:none}
+.dswitch button{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--sf2);border:1px solid var(--line);color:var(--t2);border-radius:10px;padding:8px 6px;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.dswitch button.on{border-color:var(--p);color:var(--p);background:rgba(94,234,212,.1)}.dswitch .ico{width:14px;height:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit}.btn .ico{width:18px;height:18px}
+.pstats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}
+.pstats div{background:var(--bg);border-radius:11px;padding:9px 4px;text-align:center}.pstats b{display:block;font-size:17px;color:var(--p)}.pstats span{font-size:10px;color:var(--m)}
+.checks{display:flex;flex-direction:column;gap:6px}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;line-height:1.4;color:var(--t2)}.chk .ico{width:16px;height:16px;margin-top:1px}
+.chk.good .ico{color:var(--p)}.chk.bad .ico{color:var(--w)}
+.wday{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}.wday:last-of-type{border-bottom:none}
+.wday.today .wd{color:var(--p)}
+.wd{width:40px;font-size:12.5px;font-weight:700;padding-top:6px;flex-shrink:0}.wd span{display:block;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.wsess{flex:1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:30px}
+.spill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;background:rgba(94,234,212,.1);color:var(--p);font-size:12.5px;font-weight:600;cursor:pointer;border:1px solid rgba(94,234,212,.2)}
+.spill.cardio{background:rgba(129,140,248,.12);color:var(--a);border-color:rgba(129,140,248,.25)}.spill .ico{width:14px;height:14px}
+.addp{width:30px;height:30px;border-radius:9px;border:1px dashed var(--sf3);background:transparent;color:var(--m);font-size:18px;cursor:pointer;line-height:1}
+.edrow{background:var(--sf);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+.edgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+.edgrid label{font-size:10.5px;color:var(--m);font-weight:600}.edgrid input{margin-top:3px;padding:8px 6px;text-align:center;font-size:13px}
+.fgrid.g2{grid-template-columns:repeat(2,1fr)}.fo .ico{width:20px;height:20px;margin:0 auto 4px;color:var(--p)}.fgrid.g2 .fo b{font-size:13px}
+.cardio .aic{width:36px;height:36px}
 </style>
 </head>
 <body>
@@ -333,8 +354,9 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           <span class="muted" style="font-size:12px" id="sessionMeta"></span>
           <span class="badge ok" id="recMini" onclick="help('budget')">—</span>
         </div>
+        <div class="dswitch" id="daySwitch"></div>
         <div id="exList"></div>
-        <button class="btn p full hero-cta" onclick="goSub('train','logga')">Starta & logga passet</button>
+        <button class="btn p full hero-cta" id="heroCta" onclick="goSub('train','logga')">Starta & logga passet</button>
         <div class="next-chip" id="nextInfo"></div>
       </div>
 
@@ -402,7 +424,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
   <div id="t-train" class="tp" style="display:none">
     <div class="seg" data-g="train">
       <button data-s="logga" onclick="sub('train','logga')">Logga</button>
-      <button data-s="schema" onclick="sub('train','schema')">Schema</button>
+      <button data-s="schema" onclick="sub('train','schema')">Program</button>
       <button data-s="ovn" onclick="sub('train','ovn')">Övningar</button>
       <button data-s="period" onclick="sub('train','period')">Period</button>
     </div>
@@ -427,7 +449,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           <button class="btn o sm" onclick="startTimer(180)">3:00</button>
         </div>
         <div class="coach" id="coachLog" style="margin-bottom:8px"></div>
-        <div class="set-head"><span>Set</span><span>kg</span><span>Reps</span><span>RPE <button class="q" onclick="help('rpe')">?</button></span><span></span></div>
+        <div class="set-head" id="setHead"><span>Set</span><span>kg</span><span>Reps</span><span>RPE <button class="q" onclick="help('rpe')">?</button></span><span></span></div>
         <div id="logArea"></div>
         <label class="f">Anteckning</label>
         <textarea id="logNote" rows="2" placeholder="Känsla, smärta, teknik…"></textarea>
@@ -436,6 +458,8 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
       </div>
 
       <div class="sp" data-g="train" data-s="schema">
+        <div id="progBox"></div>
+        <div id="stdBox">
         <div class="card">
           <h4>Upplägg <button class="q" onclick="help('split')">?</button></h4>
           <div class="chips">
@@ -451,13 +475,15 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
             <div class="chip" data-v="6" onclick="setFreq(6)">6</div>
           </div>
         </div>
-        <div class="card"><h4>Veckans pass</h4><div id="schema"></div></div>
+        <div class="card"><h4>Veckans pass (standard)</h4><div id="schema"></div></div>
+        </div>
         <div class="card"><h4>Så tränar du smart – enligt forskningen</h4><div id="trainLearn"></div></div>
       </div>
 
       <div class="sp" data-g="train" data-s="ovn">
         <input id="libQ" placeholder="Sök övning eller muskel…" oninput="renderLib()"/>
-        <div class="chips" id="libMus" style="margin-top:8px"></div>
+        <div class="chips" id="libEqChips" style="margin-top:8px"></div>
+        <div class="chips" id="libMus" style="margin-top:6px"></div>
         <div class="card" style="margin-top:10px"><div id="libList"></div></div>
       </div>
 
@@ -768,6 +794,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
       <div class="card" style="margin-top:12px"><h4>Om evidensnivåerna</h4><div id="evLegend" class="muted" style="font-size:12.5px;line-height:1.7"></div></div>
     </div>
   </div>
+  <div id="t-sheet" class="tp" style="display:none"><div class="pad" id="sheetBox"></div></div>
   <div id="t-art" class="tp" style="display:none"><div class="pad"><article id="artBox"></article></div></div>
 
   <nav class="bnav">
@@ -921,7 +948,7 @@ function defaults(){return{
   week:2,readiness:7,rAvg:6.8,hrv:68,hrvBase:72,
   split:'ul',sessionKey:'lower_heavy',season:'normal',fast:'none',fastedTrain:'no',winStart:12,trainHour:17,fastDays:[],adfOff:0,bfMode:'none',bf:null,waist:null,neck:null,hip:null,exp:'beginner',rate:'std',goalW:null,timeBudget:'full',context:[],trainingDay:true,
   logs:[],meals:[],loggedKcal:0,mealDate:'',readinessLog:[],e1Log:[],decisions:[],feedback:[],bwLog:[],prs:{},e1View:'squat',
-  e1Hist:{squat:[],bench:[],rdl:[]},
+  e1Hist:{squat:[],bench:[],rdl:[]},plan:null,customT:{},selSlot:0,override:null,done:null,weekStamp:null,
   prev:{back_squat:{w:120,reps:5,rpe:8},bench_press:{w:90,reps:5,rpe:8},rdl:{w:100,reps:7,rpe:7.5}},
   e1:{squat:null,bench:null,rdl:null}
 };}
@@ -930,7 +957,8 @@ function migrate(o){
   const m={...d,...o};
   m.prev={...(o.prev||d.prev)};m.e1={...d.e1,...(o.e1||{})};m.e1Hist={...d.e1Hist,...(o.e1Hist||{})};
   ['logs','meals','readinessLog','e1Log','decisions','feedback','bwLog','context','limits'].forEach(k=>{if(!Array.isArray(m[k]))m[k]=[];});
-  if(!m.swaps||typeof m.swaps!=='object')m.swaps={};if(!m.prs||typeof m.prs!=='object')m.prs={};
+  if(!m.swaps||typeof m.swaps!=='object')m.swaps={};if(!m.customT||typeof m.customT!=='object')m.customT={};
+  if(m.plan&&(!Array.isArray(m.plan.days)||m.plan.days.length!==7))m.plan=null;if(!m.prs||typeof m.prs!=='object')m.prs={};
   // gammalt fritextfält "lim" → begränsnings-chips
   if(typeof o.lim==='string'&&o.lim&&!(o.limits||[]).length){const t=o.lim.toLowerCase();
     m.limits=Object.keys(LIMIT_SWAPS).filter(k=>t.includes(k)||(k==='ländrygg'&&t.includes('rygg')));}
@@ -1065,8 +1093,8 @@ function adj(r,rAvg,hs,phase,fatigue){
     counterfactual:eff<7?`Om readiness varit 8+ hade volymmod varit närmare ×${(vol/(eff>=5.5?0.88:0.7)*1.0).toFixed(2)}.`:`Med lägre readiness (≤5) hade passet kapats kraftigt.`};
 }
 
-function rotation(){const keys=ROTATIONS[S.split]||ROTATIONS.ul;const days=DAYS[S.freq]||DAYS[4];return days.map((d,i)=>({d,k:keys[i%keys.length]}));}
-function sessName(k){return SESSION_NAMES[k]||String(k).replace(/_/g,' ');}
+function rotation(){if(S.plan){const r=[];S.plan.days.forEach((l,di)=>l.forEach(x=>r.push({d:DAYN[di],k:x.k})));if(r.length)return r;}const keys=ROTATIONS[S.split]||ROTATIONS.ul;const days=DAYS[S.freq]||DAYS[4];return days.map((d,i)=>({d,k:keys[i%keys.length]}));}
+function sessName(k){return SESSION_NAMES[k]||((S.customT||{})[k]&&S.customT[k].n)||String(k).replace(/_/g,' ');}
 function effBudget(){return((S.context||[]).includes('time_crunch')&&S.timeBudget==='full')?'30':S.timeBudget;}
 function pickSession(i){const rot=rotation();S.sIdx=i;S.sessionKey=rot[i].k;save();refresh();tab('today');toast(sessName(S.sessionKey));}
 function limitSwap(id,taken){
@@ -1076,7 +1104,7 @@ function limitSwap(id,taken){
   return{id:cur,why};
 }
 function resolveSession(key){
-  const base=TEMPLATES[key]||TEMPLATES.lower_heavy;const taken=new Set(base.map(e=>e.id));
+  const base=getT(key);const taken=new Set(base.map(e=>e.id));
   return base.map(e=>{
     const man=(S.swaps||{})[e.id];
     if(man&&EX[man]&&man!==e.id){taken.add(man);return{...e,id:man,orig:e.id,swapReason:'Ditt val (ersätter '+EX[e.id].name+')'};}
@@ -1085,7 +1113,7 @@ function resolveSession(key){
     return{...e,orig:e.id};
   });
 }
-function currentSession(){return applyTimeBudget(resolveSession(S.sessionKey),effBudget());}
+function currentSession(){if(kindOf(S.sessionKey)==='cardio'||isRestToday())return[];return applyTimeBudget(resolveSession(S.sessionKey),effBudget());}
 function limitSwapList(){
   const seen=new Set(),out=[];
   Object.keys(TEMPLATES).forEach(k=>resolveSession(k).forEach(e=>{if(e.swapReason&&e.swapReason.startsWith('Pga')){const t=EX[e.orig].name+' → '+EX[e.id].name;if(!seen.has(t)){seen.add(t);out.push(t);}}}));
@@ -1121,14 +1149,14 @@ function finishOB(){
 const SUBS={train:'logga',kost:'idag'};
 const PAGE_TITLE={today:'Idag',train:'Träna',kost:'Kost',hist:'Framsteg',learn:'Kunskap',art:'Kunskap',menu:'Inställningar','m-prof':'Profil','m-data':'Data & backup','m-guide':'Så funkar appen','m-ord':'Ordlista','m-src':'Evidens & källor'};
 const PAGE_SUB={learn:'Forskningen bakom råden',menu:'Profil, mål och hjälp',train:'',kost:''};
-const NAV_OF={art:'learn'};
+const NAV_OF={art:'learn',sheet:'train'};
 let curTab='today',backTo=null;
 function tab(t,fromBack){
   document.querySelectorAll('.tp').forEach(p=>p.style.display='none');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   const el=document.getElementById('t-'+t);if(!el)return;el.style.display='block';
-  const isSub=t.startsWith('m-')||t==='art';
-  if(!fromBack){backTo=isSub?(t==='art'?(curTab==='art'?backTo:curTab):'menu'):null;}
+  const isSub=t.startsWith('m-')||t==='art'||t==='sheet';
+  if(!fromBack){backTo=isSub?((t==='art'||t==='sheet')?(curTab===t?backTo:curTab):'menu'):null;}
   curTab=t;
   const navT=t.startsWith('m-')||t==='menu'?null:(NAV_OF[t]||t);
   const n=navT&&document.querySelector(`.ni[data-t="${navT}"]`);if(n)n.classList.add('active');
@@ -1142,7 +1170,7 @@ function tab(t,fromBack){
   if(t==='m-guide')renderGuide();if(t==='m-ord')renderOrd();if(t==='m-src')renderSrc();
   if(t==='m-data')wipeBox.style.display='none';
 }
-function goBack(){const b=backTo||'today';backTo=null;tab(b,true);}
+function goBack(){if(curTab==='sheet'&&SH.length>1){SH.pop();renderSheet();window.scrollTo(0,0);return;}SH=[];const b=backTo||'today';backTo=null;tab(b,true);}
 function sub(g,s){
   SUBS[g]=s;
   document.querySelectorAll(`.seg[data-g="${g}"] button`).forEach(b=>b.classList.toggle('on',b.dataset.s===s));
@@ -1162,6 +1190,7 @@ function svgFront(p,s){const on=id=>`class="muscle ${p.has(id)?'on':s.has(id)?'s
 function svgBack(p,s){const on=id=>`class="muscle ${p.has(id)?'on':s.has(id)?'sec':''}"`;return `<svg viewBox="0 0 120 280"><ellipse cx="60" cy="22" rx="16" ry="18" fill="#3d4658"/><rect x="48" y="38" width="24" height="10" rx="3" fill="#3d4658"/><path ${on('shoulders')} d="M28 52 L48 48 L48 70 L32 78 Z"/><path ${on('shoulders')} d="M92 52 L72 48 L72 70 L88 78 Z"/><path ${on('upperback')} d="M46 50 L74 50 L72 85 L48 85 Z"/><path ${on('lats')} d="M40 70 L48 68 L50 115 L36 100 Z"/><path ${on('lats')} d="M80 70 L72 68 L70 115 L84 100 Z"/><path ${on('glutes')} d="M46 122 L74 122 L72 155 L48 155 Z"/><path ${on('hams')} d="M48 155 L58 155 L58 200 L46 200 Z"/><path ${on('hams')} d="M62 155 L72 155 L74 200 L62 200 Z"/><path ${on('calves')} d="M46 200 L58 200 L57 250 L48 250 Z"/><path ${on('calves')} d="M62 200 L74 200 L72 250 L63 250 Z"/></svg>`;}
 
 function refresh(){
+  syncPlan();
   const phase=getPhase(S.week),hs=hrvSt(S.hrv,S.hrvBase),fatigue=calcFatigue(S.logs),muscleVol=calcMuscleVolume(S.logs);
   const a=adj(S.readiness,S.rAvg,hs,phase,fatigue);
   logDecision(a,S.sessionKey);
@@ -1177,8 +1206,14 @@ function refresh(){
     const st=fastState();tileFast.textContent=(FAST[S.fast]||FAST.none).label;tileFastSub.textContent=st.txt;}catch(e){}
   const bl=S.bwLog||[];tileBw.textContent=(bl.length?bl[bl.length-1].v:S.bw)+' kg';tileBwSub.textContent=bl.length>1?((bl[bl.length-1].v-bl[0].v>=0?'+':'')+(bl[bl.length-1].v-bl[0].v).toFixed(1)+' kg totalt'):'Logga vikt';
   const eb=effBudget();sName.textContent=sessName(S.sessionKey)+(eb!=='full'?' · '+eb+' min':'');
-  const rot=rotation();nextInfo.textContent='Pass '+((S.sIdx||0)%rot.length+1)+' av '+rot.length+' i veckan · Nästa: '+sessName(rot[((S.sIdx||0)+1)%rot.length].k);
-  sRpe.textContent='RPE ≤ '+a.rpeCap;sNote.textContent=a.reasons[0]||'';
+  if(S.plan){nextInfo.textContent=nextPlanText();}else{const rot=rotation();nextInfo.textContent='Pass '+((S.sIdx||0)%rot.length+1)+' av '+rot.length+' i veckan · Nästa: '+sessName(rot[((S.sIdx||0)+1)%rot.length].k);}
+  const tdl=todayList(),doneI=(S.done&&S.done.date===todayStr())?S.done.idx:[];
+  daySwitch.innerHTML=S.plan&&tdl.length>1&&!hasOverride()?tdl.map((x,i)=>`<button class="${i===(S.selSlot||0)?'on':''}" onclick="selectSlot(${i})">${doneI.includes(i)?ic('check'):''}${SLOT_TXT[i]} · ${sessName(x.k)}</button>`).join(''):'';
+  const rest=isRestToday(),cardio=!rest&&kindOf(S.sessionKey)==='cardio';
+  heroCta.style.display=rest?'none':'block';heroCta.textContent=cardio?'Starta & logga konditionspasset':'Starta & logga passet';
+  if(rest){sName.textContent='Vilodag';}
+  sRpe.textContent='RPE ≤ '+a.rpeCap;sNote.textContent=a.reasons[0]||'';sRpe.style.display=(isRestToday()||kindOf(S.sessionKey)==='cardio')?'none':'';
+  if(isRestToday())sNote.textContent='Återhämtning enligt ditt program';else if(S.plan&&!hasOverride()&&S.done&&S.done.date===todayStr()&&S.done.idx.includes(S.selSlot||0))sNote.textContent='✓ Klart – bra jobbat!';else if(kindOf(S.sessionKey)==='cardio')sNote.textContent='Konditionspass';
   timeNote.textContent=S.timeBudget==='20'?'Minimum: bara de viktigaste lyften, 2–3 set.':S.timeBudget==='full'?'Fullt pass enligt schemat.':'Kortare pass – småövningar tas bort först.';
   coachToday.innerHTML=`<strong>Coach:</strong> ${a.reasons[0]||'Kör enligt plan.'}${S.fastedTrain&&S.fastedTrain!=='no'&&S.trainingDay?' · Fastande pass – ät protein efteråt.':''}${isLowDay()?' · Lågdag i fastan – kör hellre lätt eller vila.':''}`;
   const sm=document.getElementById('sessionMeta');
@@ -1196,7 +1231,11 @@ function refresh(){
   document.querySelectorAll('#timeChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.timeBudget));
 
   const muscles=new Set();const prim=new Set(),sec=new Set();
-  exList.innerHTML=tmpl.map(e=>{
+  if(isRestToday()){
+    const wk=S.plan.days.map((l,di)=>l.map(x=>x.k)).flat().filter((k,i,a)=>a.indexOf(k)===i);
+    exList.innerHTML=`<p class="muted" style="line-height:1.5;margin:6px 0 10px">Ingen träning schemalagd idag. Vila är när kroppen återhämtar sig och bygger upp sig – sömn och protein gör jobbet. ${srcTag(['lamon'])}</p><div class="kt">Vill du träna ändå?</div>`+wk.map(k=>`<div class="ex" onclick="trainAnyway('${k}')"><div class="ex-name">${sessName(k)}</div><div class="ex-meta">${kindOf(k)==='cardio'?'Kondition':'Styrka'} · tryck för att välja</div></div>`).join('');
+  }else if(kindOf(S.sessionKey)==='cardio'){exList.innerHTML=cardioHtml(S.sessionKey);}
+  else exList.innerHTML=tmpl.map(e=>{
     const sets=Math.max(1,Math.round(e.sets*a.volumeMod));const rpe=Math.min(e.rpe,a.rpeCap);
     const ex=EX[e.id]||{name:e.id,m:[]};(ex.m||[]).forEach(m=>{muscles.add(m);const k=MUSCLE_MAP[m];if(k)prim.add(k);});
     (ex.sec||[]).forEach(m=>{const k=MUSCLE_MAP[m];if(k&&!prim.has(k))sec.add(k);});
@@ -1268,6 +1307,12 @@ function renderLog(){
   const phase=getPhase(S.week);const a=adj(S.readiness,S.rAvg,hrvSt(S.hrv,S.hrvBase),phase,calcFatigue(S.logs));
   const tmpl=currentSession();
   logTitle.textContent=sessName(S.sessionKey);
+  const isC=kindOf(S.sessionKey)==='cardio'&&!isRestToday();setHead.style.display=isC?'none':'grid';
+  if(isRestToday()){coachLog.innerHTML='<strong>Coach:</strong> Vilodag enligt ditt program. Välj ett pass under Idag om du vill träna ändå.';logArea.innerHTML='';return;}
+  if(isC){const c=cT(S.sessionKey).cardio,P=CARDIO[c.proto]||CARDIO.z2;
+    coachLog.innerHTML='<strong>Coach:</strong> '+P.desc;
+    logArea.innerHTML=`<div class="card">${cardioHtml(S.sessionKey)}<div class="edgrid" style="margin-top:10px"><label>Minuter<input type="number" id="cMin" value="${c.min}"/></label><label>Ansträngning 1–10<input type="number" id="cRpe" min="1" max="10" value="${P.rpe}"/></label><label>Km (valfritt)<input type="number" id="cKm" step=".1"/></label><label>Snittpuls<input type="number" id="cHr"/></label></div></div>`;
+    logMsg.textContent='';logNote.value='';return;}
   coachLog.innerHTML='<strong>Coach:</strong> Max RPE idag: '+a.rpeCap+'. Vikterna är förifyllda från förra gången. ↓ kopierar setet nedåt.';
   logArea.innerHTML=tmpl.map((e,i)=>{
     const sets=Math.max(1,Math.round(e.sets*a.volumeMod));const ex=EX[e.id]||{name:e.id};const prev=S.prev[e.id];const defW=prev?prev.w:'';
@@ -1284,7 +1329,22 @@ function renderLog(){
 function copySet(i,s,max){if(s>=max)return;['w','r','p'].forEach(k=>document.getElementById(k+i+'_'+(s+1)).value=document.getElementById(k+i+'_'+s).value);toast('Kopierat');}
 function bump(i,s,d){const el=document.getElementById('w'+i+'_'+s);if(el)el.value=(+(el.value||0)+d)||'';}
 function e1Cat(id){if(['back_squat','front_squat','box_squat'].includes(id))return'squat';if(id==='bench_press'||id==='db_bench'||id==='incline_bench')return'bench';if(id==='rdl'||id==='deadlift')return'rdl';return null;}
+function afterSession(){
+  if(S.plan){
+    const td=todayList();S.done=S.done&&S.done.date===todayStr()?S.done:{date:todayStr(),idx:[]};
+    if(hasOverride()){S.override=null;}else{S.done.idx.push(S.selSlot||0);const nx=td.findIndex((x,i)=>!S.done.idx.includes(i));if(nx>=0)S.selSlot=nx;}
+    const nx2=todayList().findIndex((x,i)=>!S.done.idx.includes(i));return nx2>=0?'Nästa idag: '+sessName(todayList()[nx2].k):(nextPlanText()||'Bra jobbat!');
+  }
+  const rot=rotation();S.sIdx=((S.sIdx||0)+1)%rot.length;S.sessionKey=rot[S.sIdx].k;if(S.sIdx===0){S.week=(S.week+1)%12;}
+  return 'Nästa: '+sessName(S.sessionKey);
+}
 function saveLog(){
+  if(kindOf(S.sessionKey)==='cardio'&&!isRestToday()){
+    const c=cT(S.sessionKey).cardio,min=+cMin.value||0;if(!min){logMsg.textContent='Ange minuter.';return;}
+    S.logs.unshift({date:todayStr(),ts:Date.now(),session:S.sessionKey,lifts:[],sets:0,cardio:{proto:c.proto,mod:c.mod,min,rpe:+cRpe.value||null,km:+cKm.value||null,hr:+cHr.value||null},note:logNote.value||'',readiness:S.readiness,context:[...(S.context||[])]});
+    S.readinessLog.push({ts:Date.now(),v:S.readiness});if(S.readinessLog.length>30)S.readinessLog=S.readinessLog.slice(-30);
+    const nxt=afterSession();save();logMsg.textContent='Sparat ✓';toast('Konditionspass sparat · '+nxt);setTimeout(()=>{tab('today');},600);return;
+  }
   const phase=getPhase(S.week);const a=adj(S.readiness,S.rAvg,hrvSt(S.hrv,S.hrvBase),phase,calcFatigue(S.logs));
   const tmpl=currentSession();
   const entry={date:new Date().toLocaleDateString('sv-SE'),ts:Date.now(),session:S.sessionKey,lifts:[],sets:0,note:logNote.value||'',readiness:S.readiness,context:[...(S.context||[])]};
@@ -1301,11 +1361,9 @@ function saveLog(){
   if(catBest.squat)S.e1Log=[...S.e1Log,{ts:Date.now(),v:catBest.squat}].slice(-30);
   S.logs.unshift(entry);S.readinessLog.push({ts:Date.now(),v:S.readiness});
   if(S.readinessLog.length>30)S.readinessLog=S.readinessLog.slice(-30);
-  // gå vidare till nästa pass i veckan
-  const rot=rotation();S.sIdx=((S.sIdx||0)+1)%rot.length;S.sessionKey=rot[S.sIdx].k;
-  if(S.sIdx===0){S.week=(S.week+1)%12;}
+  const nxt=afterSession();
   save();logMsg.textContent='Sparat ✓';logMsg.style.color='var(--p)';
-  toast(newPRs.length?'🏆 Nytt PR: '+newPRs[0]+' kg e1RM':'Pass sparat · nästa: '+sessName(S.sessionKey));
+  toast(newPRs.length?'🏆 Nytt PR: '+newPRs[0]+' kg e1RM':'Pass sparat · '+nxt);
   setTimeout(()=>{tab('today');refresh();},newPRs.length?1400:600);
 }
 function startTimer(sec){stopTimer();tLeft=sec;timerCard.classList.add('on');tick();timerInt=setInterval(tick,1000);}
@@ -1315,6 +1373,7 @@ function stopTimer(){if(timerInt)clearInterval(timerInt);timerInt=null;timerCard
 function setFreq(f){S.freq=f;S.sIdx=0;S.sessionKey=rotation()[0].k;save();renderTrain();refresh();toast(f+' pass/vecka');}
 function setSplit(s){S.split=s;S.sIdx=0;S.sessionKey=rotation()[0].k;save();renderTrain();refresh();}
 function renderTrain(){
+  try{renderProgram();}catch(e){console.error(e);}
   ['ul','ppl','fb'].forEach(x=>{const el=document.getElementById('sp-'+x);if(el)el.classList.toggle('on',x===S.split);});
   document.querySelectorAll('#seasonChips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.season));
   const rot=rotation(),cur=(S.sIdx||0)%rot.length;
@@ -1380,7 +1439,7 @@ function renderHist(){
   const fat=calcFatigue(S.logs);const mv=calcMuscleVolume(S.logs);
   const over=Object.entries(mv.status).filter(([,s])=>s.status==='over').map(([m])=>m);
   coachProgress.innerHTML=`<strong>Coach:</strong> Fatigue ${fat.level} (${fat.score}). ${over.length?'Över landmärke: '+over.join(', ')+'.':'Volym inom rimliga ramar.'}`;
-  histList.innerHTML=S.logs.length?S.logs.slice(0,15).map(l=>`<div class="ex"><div class="ex-name">${sessName(l.session)}</div><div class="ex-meta">${l.date} · ${l.lifts.length} set · R${l.readiness}${l.context?.length?' · '+l.context.join(','):''}</div></div>`).join(''):'<div class="empty">Inga pass ännu.</div>';
+  histList.innerHTML=S.logs.length?S.logs.slice(0,15).map(l=>`<div class="ex"><div class="ex-name">${sessName(l.session)}</div><div class="ex-meta">${l.date} · ${l.cardio?l.cardio.min+' min kondition'+(l.cardio.km?' · '+l.cardio.km+' km':''):l.lifts.length+' set'} · R${l.readiness}${l.context?.length?' · '+l.context.join(','):''}</div></div>`).join(''):'<div class="empty">Inga pass ännu.</div>';
   const fb=S.feedback||[];const up=fb.filter(x=>x.v===1).length,dn=fb.filter(x=>x.v===-1).length;
   fbStats.textContent=fb.length?`👍 ${up} · 👎 ${dn} (${fb.length} totalt)`:'Ingen feedback ännu – använd knapparna under Idag.';
 }
@@ -1418,6 +1477,11 @@ const SRC={
   schumann:{t:'Schumann M m.fl. 2022, Sports Med (meta-analys, 43 studier)',d:'Kondition plus styrketräning minskade inte muskeltillväxt eller maxstyrka. Explosiv styrka kunde påverkas något, mest när båda gjordes i samma pass.'},
   lamon:{t:'Lamon S m.fl. 2021, Physiol Rep',d:'En natt helt utan sömn minskade muskelproteinsyntesen med 18 %, höjde kortisol med 21 % och sänkte testosteron med 24 %.'},
   parr:{t:'Parr EB m.fl. 2014, PLoS One',d:'Alkohol efter träning minskade muskelproteinsyntesen, även när protein intogs samtidigt.'},
+  who:{t:'Bull FC m.fl. 2020, Br J Sports Med (WHO:s riktlinjer)',d:'Vuxna bör ha 150–300 min måttlig eller 75–150 min hög intensitet konditionsaktivitet per vecka, plus muskelstärkande träning minst 2 dagar per vecka.'},
+  acsm:{t:'ACSM 2009, Med Sci Sports Exerc (progressionsmodeller)',d:'Nybörjare: 8–12 RM och 2–3 pass/vecka; medel 3–4; vana 4–5. Stora muskler och flerledsövningar före små. Tung styrketräning (1–6 RM) med 3–5 min vila.'},
+  currier:{t:'Currier BS m.fl. 2023, Br J Sports Med (nätverksmeta-analys)',d:'Nästan 200 studier, över 5 000 personer. All styrketräning – även med kroppsvikt – gav mer styrka och muskler än ingen träning. Tunga vikter gav mest styrka; muskeltillväxten var likartad oavsett belastning, och flera set rankades högst.'},
+  milanovic:{t:'Milanović Z m.fl. 2015, Sports Med (meta-analys)',d:'Både intervaller och vanlig uthållighetsträning gav stora förbättringar av VO₂max hos friska vuxna; intervaller gav något större förbättring.'},
+  helgerud:{t:'Helgerud J m.fl. 2007, Med Sci Sports Exerc',d:'40 män, 3 pass/vecka i 8 veckor med samma totala arbete. 4×4 min och 15/15 s intervaller ökade VO₂max mer än lugn distans och tröskelträning.'},
   slv_d:{t:'Livsmedelsverket – D-vitamin',d:'Rekommenderat intag 10 µg/dag för vuxna (20 µg över 75 år). Tillskott rekommenderas till vissa grupper, t.ex. de som får lite sol eller inte äter fisk eller berikade produkter. Vuxna bör inte få i sig mer än 100 µg/dag.'}
 };
 const FAST={
@@ -1709,13 +1773,14 @@ function renderGuide(){
   guideBox.innerHTML='<div class="card">'+st.map((x,i)=>`<div class="gstep"><div class="n">${i+1}</div><div><b>${x[0]}</b><div class="muted">${x[1]}</div></div></div>`).join('')+'</div>'+
   '<div class="card"><h4>Tips</h4><div class="tip">Ser du en <button class="q">?</button> – tryck för förklaring.</div><div class="tip">Profil, mål och data hittar du under kugghjulet uppe till höger.</div><div class="tip">Datan sparas bara i din webbläsare – exportera en backup ibland.</div></div>';
 }
-let libMus='Alla';
+let libMus='Alla',libEq='alla';
 function renderLib(){
   const mus=['Alla',...new Set(Object.values(EX).flatMap(e=>e.m))];
   libMus=mus.includes(libMus)?libMus:'Alla';
   document.getElementById('libMus').innerHTML=mus.map(m=>`<div class="chip ${m===libMus?'on':''}" onclick="libMus='${m}';renderLib()">${m}</div>`).join('');
+  libEqChips.innerHTML=[['alla','All utrustning'],['gym','Gym'],['db','Hantlar'],['bw','Kroppsvikt']].map(([k,l])=>`<div class="chip ${libEq===k?'on':''}" onclick="libEq='${k}';renderLib()">${l}</div>`).join('');
   const q=(libQ.value||'').toLowerCase();
-  const list=Object.entries(EX).filter(([k,e])=>(libMus==='Alla'||e.m.includes(libMus))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
+  const list=Object.entries(EX).filter(([k,e])=>(libEq==='alla'||eqOk(k,libEq))&&(libMus==='Alla'||e.m.includes(libMus))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
   libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_IMG[k]}" alt=""/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
     return `<div class="ex" onclick="openLib('${k}')"><div class="ex-row">${th}<div class="ex-body"><div class="ex-name">${e.name}</div><div class="ex-meta">${e.cue}</div><div class="tags">${e.m.map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;}).join('')||'<div class="empty">Ingen övning hittades.</div>';
 }
@@ -1914,6 +1979,45 @@ const ARTS=[
    ['"Kondition äter upp musklerna"','En stor meta-analys hittade ingen negativ effekt på muskeltillväxt.'],
    ['"Mer protein är alltid bättre"','Över ca 1,6–2,2 g/kg är extra nytta liten för de flesta.']],
   src:['lowe','trep','moro','tinsley19','sch_load','refalo','schumann','morton']}
+
+ ,{id:'tr-program',cat:'traning',ev:'A',min:3,t:'Så bygger du ett program efter ditt mål',
+  lead:'All styrketräning fungerar – men upplägget avgör om du främst blir starkare, större eller får bättre kondition.',
+  keys:['Styrka: tunga vikter (3–6 reps), längre vila','Muskler: 6–15 reps, ≥10 set/muskel/vecka','Alla: varje muskel minst 2 gånger/vecka'],
+  body:[['Gemensamt för alla mål','Träna varje stor muskel minst två gånger i veckan, kör stora flerledsövningar först och stanna 1–3 reps före failure. Öka vikt eller reps gradvis.'],
+   ['Bli starkare','Tyngre vikter ger mest maxstyrka. Basövningar med 3–6 reps och ca 3 minuters vila mellan seten.'],
+   ['Bygga muskler','Belastningen spelar mindre roll – lätta och tunga vikter ger liknande tillväxt nära failure. Det som driver resultatet är antalet hårda set; flera set per övning rankas högst.'],
+   ['Nybörjare','8–12 reps och 2–3 pass i veckan räcker gott i början. Fler pass blir aktuellt efter ungefär ett halvår.'],
+   ['Programgeneratorn','Under Träna → Program kan appen bygga ett schema åt dig utifrån mål, dagar, tid och utrustning – med förklaring och källor till varje val.']],
+  src:['acsm','currier','sch_vol','sch_freq','refalo','sch_rest']},
+ {id:'tr-kond2',cat:'traning',ev:'A',min:3,t:'Kondition: lugnt eller intervaller?',
+  lead:'Både lugn distans och intervaller förbättrar konditionen kraftigt. Intervaller ger lite mer per minut.',
+  keys:['Intervaller höjer VO₂max mest','Lugn träning ger också stora förbättringar','Blanda: mest lugnt, 1–2 intervallpass/vecka'],
+  body:[['Forskningen','En meta-analys fann stora förbättringar av maximal syreupptagning med båda metoderna, med något större effekt av intervaller.'],
+   ['4×4 och 15/15','I en norsk studie gav 4 × 4 minuter hårt och 15 sekunder hårt/15 sekunder lugnt större ökning av VO₂max än lugn distans och tröskelträning – trots samma totala arbete.'],
+   ['Zon 2','Lugnt tempo där du kan prata. Lätt att återhämta sig från och lätt att få mycket tid i.'],
+   ['I appen','Lägg till konditionspass i ditt veckoschema: Zon 2, 4×4, 15/15 eller lätt återhämtning.']],
+  src:['milanovic','helgerud']},
+ {id:'tr-halsa',cat:'traning',ev:'A',min:2,t:'Hur mycket träning behövs för hälsan?',
+  lead:'WHO:s riktlinjer: kondition varje vecka plus styrketräning minst två dagar.',
+  keys:['150–300 min måttlig kondition per vecka','eller 75–150 min hög intensitet','Styrketräning minst 2 dagar/vecka'],
+  body:[['Riktlinjerna','Vuxna bör ha 150–300 minuter måttlig eller 75–150 minuter hög intensitet per vecka, eller en kombination, samt muskelstärkande träning för de stora muskelgrupperna minst två dagar i veckan.'],
+   ['All rörelse räknas','Promenader, cykling till jobbet och trädgårdsarbete bidrar också.'],
+   ['I appen','Under Träna → Program visar appen om ditt schema uppfyller WHO:s rekommendationer.']],
+  src:['who']},
+ {id:'tr-dubbel',cat:'traning',ev:'C',min:2,t:'Dubbelpass – när och hur?',
+  lead:'Två pass samma dag kan vara smidigt, särskilt för att få in både styrka och kondition.',
+  keys:['Minst 3 timmar mellan passen','Kondition påverkar inte muskeltillväxt','Mer pass = mer återhämtning behövs'],
+  body:[['Styrka + kondition','Konditionsträning minskade inte muskeltillväxt eller maxstyrka i en stor meta-analys. Explosiv styrka påverkades något, främst när båda gjordes i samma pass – inte när passen låg minst 3 timmar isär.'],
+   ['Två styrkepass','Att dela upp samma antal set på två pass är inte bevisat bättre än ett längre pass. Gör det om det passar din vardag.'],
+   ['Tips','Lägg det viktigaste passet först, ät mellan passen och se till att sova ordentligt.']],
+  src:['schumann','lamon']},
+ {id:'tr-hemma',cat:'traning',ev:'A',min:2,t:'Träna hemma utan gym',
+  lead:'Kroppsvikt och hantlar räcker för att bygga både styrka och muskler.',
+  keys:['All styrketräning slår ingen träning','Lätta vikter fungerar nära failure','Gör övningar svårare i stället för tyngre'],
+  body:[['Forskningen','I den största analysen av styrketräning gav alla upplägg – även med kroppsvikt – mer styrka och muskler än att inte träna. Muskeltillväxten var likartad med lätta och tunga belastningar när seten kördes nära failure.'],
+   ['Gör det svårare','Långsammare nedåtfas, enbensvarianter, pauser i bottenläget eller fler reps.'],
+   ['I appen','Välj "Hantlar hemma" eller "Bara kroppsvikt" i programgeneratorn, eller filtrera övningsbiblioteket på utrustning.']],
+  src:['currier','sch_load']}
 ];
 let learnCat='alla';
 function artCard(a){const c=CATS[a.cat];return `<div class="acard" onclick="openArt('${a.id}')"><div class="aic">${ic(c[1])}</div><div class="abody"><div class="at">${a.t}</div><div class="am"><span class="ev ${a.ev}">${a.ev}</span>${c[0]} · ${a.min} min</div></div><span class="chev">${ic('chev')}</span></div>`;}
@@ -1934,6 +2038,316 @@ function openArt(id){
   tab('art');
 }
 function artLinks(cat,max){return `<div class="mlist">${ARTS.filter(a=>a.cat===cat).slice(0,max||6).map(artCard).join('')}</div>`;}
+
+/* ===================== TRÄNINGSPROGRAM: veckoschema, dubbelpass, generator ===================== */
+const EXEQ={back_squat:'gym',front_squat:'gym',rdl:'gym',hip_thrust:'db',deadlift:'gym',bench_press:'gym',incline_bench:'gym',barbell_row:'gym',cable_row:'gym',ohp:'gym',db_ohp:'db',pullup:'bw',lat_pulldown:'gym',walking_lunge:'bw',leg_curl:'gym',calf_raise:'bw',face_pull:'gym',tricep_pushdown:'gym',barbell_curl:'gym',db_bench:'db',landmine_press:'gym',chest_supported_row:'db',leg_press:'gym',box_squat:'gym',hammer_curl:'db',back_extension:'gym',
+ goblet_squat:'db',bw_squat:'bw',bulgarian_split_squat:'bw',step_up:'bw',db_rdl:'db',single_leg_rdl:'bw',glute_bridge:'bw',nordic_curl:'bw',push_up:'bw',pike_push_up:'bw',inverted_row:'bw',db_row:'db',db_incline_press:'db',lateral_raise:'db',db_rear_fly:'db',db_curl:'db',overhead_tricep_ext:'db',bench_dip:'bw',plank:'bw',dead_bug:'bw',hanging_leg_raise:'bw',leg_extension:'gym',cable_fly:'gym',chin_up:'bw',kettlebell_swing:'db'};
+const EQ_TXT={gym:'Gym',db:'Hantlar hemma',bw:'Kroppsvikt'};
+function eqOk(id,eq){const e=EXEQ[id]||'gym';if(eq==='gym')return true;if(eq==='db')return e!=='gym';return e==='bw';}
+const NEW_EX={
+ goblet_squat:{name:'Goblet Squat',m:['Quadriceps','Glutes'],sec:['Core'],cue:'Hantel mot bröstet, sitt mellan hälarna.',coach:'Bra knäböj för nybörjare och hemmaträning.',priority:1,steps:['Håll en hantel lodrätt mot bröstet','Sitt ner mellan hälarna med rak rygg','Knän följer tårna','Pressa upp genom hela foten']},
+ bw_squat:{name:'Knäböj (kroppsvikt)',m:['Quadriceps','Glutes'],sec:[],cue:'Djupt och kontrollerat.',coach:'Långsamt nedåt (3 s) gör den tyngre.',priority:1,steps:['Fötter axelbrett','Sitt så djupt du kan med rak rygg','Pressa upp']},
+ bulgarian_split_squat:{name:'Bulgarisk utfallsböj',m:['Quadriceps','Glutes'],sec:['Hamstrings'],cue:'Bakre fot på bänk, sänk rakt ner.',coach:'Tung övning även utan vikter.',priority:1,steps:['Bakre foten på bänk/stol','Sänk bakre knät mot golvet','Främre knä över foten','Pressa upp genom främre hälen']},
+ step_up:{name:'Step-up',m:['Quadriceps','Glutes'],sec:[],cue:'Kliv upp med hela foten på lådan.',coach:'Pressa med det övre benet, inte det nedre.',priority:2,steps:['Hela foten på låda/bänk','Kliv upp utan att skjuta ifrån med bakre benet','Sänk kontrollerat']},
+ db_rdl:{name:'Rumänsk marklyft (hantlar)',m:['Hamstrings','Glutes'],sec:['Lower Back'],cue:'Höften bakåt, hantlar nära benen.',coach:'Stretch i baksida lår.',priority:1,steps:['Hantlar framför låren','Skjut höften bakåt med rak rygg','Känn stretch i baksida lår','Res dig genom att föra höften framåt']},
+ single_leg_rdl:{name:'Enbens marklyft',m:['Hamstrings','Glutes'],sec:['Core'],cue:'Fäll framåt på ett ben, höften rak.',coach:'Balans och baksida i ett.',priority:2,steps:['Stå på ett ben','Fäll framåt, andra benet bakåt','Höften parallell med golvet','Res dig kontrollerat']},
+ glute_bridge:{name:'Höftlyft (golv)',m:['Glutes'],sec:['Hamstrings'],cue:'Pressa höften upp, kläm sätet.',coach:'Gör den enbent för mer belastning.',priority:3,steps:['Ligg på rygg, fötter i golvet','Pressa upp höften','Pausa och sänk']},
+ nordic_curl:{name:'Nordic curl',m:['Hamstrings'],sec:[],cue:'Fäll framåt långsamt med fötterna fixerade.',coach:'Mycket tung – för vana.',priority:3,steps:['Fötterna fixerade, knä på mjukt underlag','Fäll framåt så långsamt du kan','Ta emot med händerna och tryck tillbaka']},
+ push_up:{name:'Armhävning',m:['Chest'],sec:['Triceps','Shoulders'],cue:'Kroppen rak som en planka.',coach:'Höj fötterna för svårare, händerna för lättare.',priority:1,steps:['Händerna lite bredare än axlarna','Kroppen rak','Sänk bröstet mot golvet','Pressa upp']},
+ pike_push_up:{name:'Pike push-up',m:['Shoulders'],sec:['Triceps'],cue:'Höften högt, huvudet mot golvet.',coach:'Axelpress utan vikter.',priority:1,steps:['Händer och fötter i golvet, höften högt','Sänk huvudet mot golvet mellan händerna','Pressa upp']},
+ inverted_row:{name:'Inverterad rodd',m:['Upper Back','Lats'],sec:['Biceps'],cue:'Dra bröstet mot stången/bordskanten.',coach:'Ju plattare kropp desto tyngre.',priority:1,steps:['Häng under en stång eller stadigt bord','Kroppen rak','Dra bröstet upp','Sänk kontrollerat']},
+ db_row:{name:'Hantelrodd',m:['Upper Back','Lats'],sec:['Biceps'],cue:'Dra hanteln mot höften.',coach:'Stöd mot bänk för rak rygg.',priority:1,steps:['Ena handen och knät på bänk','Dra hanteln mot höften','Sänk till full sträckning']},
+ db_incline_press:{name:'Lutande hantelpress',m:['Chest'],sec:['Shoulders','Triceps'],cue:'Bänk 30–45°.',coach:'Övre bröst.',priority:2,steps:['Bänk i 30–45°','Pressa hantlarna upp','Sänk till stretch i bröstet']},
+ lateral_raise:{name:'Sidolyft',m:['Shoulders'],sec:[],cue:'Lyft ut åt sidan till axelhöjd.',coach:'Lätt vikt, kontrollerat.',priority:3,steps:['Hantlar vid sidorna','Lyft ut till axelhöjd','Sänk långsamt']},
+ db_rear_fly:{name:'Omvända flyes',m:['Rear Delts','Upper Back'],sec:[],cue:'Framåtlutad, lyft ut åt sidan.',coach:'Bakre axel och hållning.',priority:3,steps:['Luta framåt med rak rygg','Lyft hantlarna ut åt sidan','Kläm skulderbladen']},
+ db_curl:{name:'Hantelcurl',m:['Biceps'],sec:[],cue:'Armbågar stilla.',coach:'Långsamt nedåt.',priority:3,steps:['Armbågar mot sidorna','Curl upp','Sänk kontrollerat']},
+ overhead_tricep_ext:{name:'Triceps över huvud',m:['Triceps'],sec:[],cue:'Sänk hanteln bakom huvudet.',coach:'Lång triceps-stretch.',priority:3,steps:['Håll en hantel över huvudet','Sänk bakom huvudet','Sträck armarna']},
+ bench_dip:{name:'Bänkdips',m:['Triceps'],sec:['Chest'],cue:'Händerna på bänk bakom dig.',coach:'Gå inte för djupt om axeln känns.',priority:3,steps:['Händerna på bänkkanten','Sänk kroppen genom att böja armbågarna','Pressa upp']},
+ plank:{name:'Planka',m:['Core'],sec:[],cue:'Rak kropp, spänd mage.',coach:'30–60 s per set.',priority:3,steps:['Underarmar i golvet','Kroppen rak från huvud till häl','Håll']},
+ dead_bug:{name:'Dead bug',m:['Core'],sec:[],cue:'Ländryggen mot golvet.',coach:'Långsamt och kontrollerat.',priority:3,steps:['Ligg på rygg, armar och ben upp','Sträck motsatt arm och ben','Håll ländryggen i golvet']},
+ hanging_leg_raise:{name:'Hängande benlyft',m:['Core'],sec:[],cue:'Lyft benen utan att gunga.',coach:'Böj knäna för lättare variant.',priority:3,steps:['Häng i stång','Lyft knän/ben mot bröstet','Sänk långsamt']},
+ leg_extension:{name:'Benspark',m:['Quadriceps'],sec:[],cue:'Full sträckning, långsamt ned.',coach:'Isolerar framsida lår.',priority:3,steps:['Justera dynan över vristen','Sträck benen','Sänk långsamt']},
+ cable_fly:{name:'Kabelflyes',m:['Chest'],sec:[],cue:'Lätt böj i armbågen, kram ihop.',coach:'Bröststretch.',priority:3,steps:['Kablarna i axelhöjd','För ihop händerna framför bröstet','Tillbaka till stretch']},
+ chin_up:{name:'Chin-up',m:['Lats','Biceps'],sec:[],cue:'Underhandsgrepp, hakan över.',coach:'Mer biceps än pull-up.',priority:1,steps:['Underhandsgrepp axelbrett','Dra upp tills hakan är över','Sänk till full häng']},
+ kettlebell_swing:{name:'Kettlebell swing',m:['Glutes','Hamstrings'],sec:['Core'],cue:'Explosiv höftrörelse.',coach:'Kraft från höften, inte armarna.',priority:2,steps:['Kettlebell mellan benen','Skjut höften bakåt','Explodera framåt med höften','Låt klotet svinga till brösthöjd']}
+};
+Object.entries(NEW_EX).forEach(([k,v])=>{const{steps,...rest}=v;EX[k]=rest;EX_STEPS[k]=steps;});
+Object.assign(MUSCLE_MAP,{'Rear Delts':'reardelt'});
+
+const CARDIO={
+ z2:{n:'Zon 2 – lugn distans',short:'Zon 2',rpe:4,desc:'Jämnt, lugnt tempo där du kan prata i hela meningar (ca 60–75 % av maxpuls).',steps:['5 min lätt start','Håll ett tempo där du kan prata','Avsluta med 5 min lugnt'],src:['who','milanovic']},
+ int44:{n:'4×4-intervaller',short:'4×4',rpe:8,desc:'Fyra intervaller à 4 min hårt (85–95 % av maxpuls, svårt att prata) med 3 min lugn aktiv vila.',steps:['10 min uppvärmning','4 min hårt – 3 min lugnt, ×4','5 min nedvarvning'],src:['helgerud','milanovic']},
+ int1515:{n:'15/15-intervaller',short:'15/15',rpe:8,desc:'15 sekunder hårt följt av 15 sekunder lugnt, upprepat i block.',steps:['10 min uppvärmning','15 s hårt / 15 s lugnt i 2 block à 8–10 min, 3 min vila mellan','5 min nedvarvning'],src:['helgerud','milanovic']},
+ easy:{n:'Återhämtning',short:'Lätt',rpe:2,desc:'Mycket lugn promenad, cykeltur eller simning. Ska kännas lätt.',steps:['20–40 min i lugnt tempo','Fokusera på att röra dig, inte prestera'],src:['who']}
+};
+const MODS=['Valfri','Löpning','Cykel','Rodd','Promenad','Simning','Crosstrainer'];
+const DAYN_L=['Måndag','Tisdag','Onsdag','Torsdag','Fredag','Lördag','Söndag'];
+const SLOT_TXT=['Pass 1','Pass 2'];
+
+function todayIdx(){return(new Date().getDay()+6)%7;}
+function todayStr(){return new Date().toLocaleDateString('sv-SE');}
+function isoWeek(d){d=d||new Date();const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const n=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-n);const y=new Date(Date.UTC(t.getUTCFullYear(),0,1));return t.getUTCFullYear()*100+Math.ceil(((t-y)/864e5+1)/7);}
+function cT(k){return(S.customT||{})[k];}
+function getT(k){return TEMPLATES[k]||(cT(k)&&cT(k).ex)||[];}
+function kindOf(k){return(cT(k)&&cT(k).kind)||'strength';}
+function todayList(){return S.plan?(S.plan.days[todayIdx()]||[]):[];}
+function hasOverride(){return S.override&&S.override.date===todayStr();}
+function isRestToday(){return !!S.plan&&!todayList().length&&!hasOverride();}
+function syncPlan(){
+  if(!S.plan)return;
+  const d=todayStr();if(!S.done||S.done.date!==d)S.done={date:d,idx:[]};
+  const wk=isoWeek();if(S.weekStamp==null)S.weekStamp=wk;else if(wk!==S.weekStamp){S.weekStamp=wk;S.week=(S.week+1)%12;}
+  if(hasOverride()){S.sessionKey=S.override.k;return;}
+  const td=todayList();
+  if(td.length){let i=S.selSlot||0;if(i>=td.length)i=0;S.selSlot=i;S.sessionKey=td[i].k;}
+}
+function selectSlot(i){S.selSlot=i;S.override=null;save();refresh();}
+function trainAnyway(k){S.override={date:todayStr(),k};save();refresh();toast(sessName(k));}
+function nextPlanText(){
+  if(!S.plan)return'';const ti=todayIdx();
+  for(let o=1;o<=7;o++){const di=(ti+o)%7,l=S.plan.days[di]||[];if(l.length)return(o===1?'Imorgon':DAYN_L[di])+': '+l.map(x=>sessName(x.k)).join(' + ');}
+  return'';
+}
+function cardioHtml(k){
+  const c=cT(k).cardio,P=CARDIO[c.proto]||CARDIO.z2;
+  return `<div class="cardio"><div class="row" style="gap:10px;margin-bottom:8px"><div class="aic">${ic('flame')}</div><div><div class="ex-name">${P.n}</div><div class="ex-meta">${c.mod&&c.mod!=='Valfri'?c.mod+' · ':''}${c.min} min · ansträngning ca ${P.rpe}/10</div></div></div>
+    <p class="muted" style="font-size:13px;line-height:1.5">${P.desc} ${srcTag(P.src)}</p>
+    ${P.steps.map((t,i)=>`<div class="step"><div class="n">${i+1}</div><div class="t">${t}</div></div>`).join('')}</div>`;
+}
+
+/* ---------- sheet-system (undersidor med egen historik) ---------- */
+let SH=[];
+function openSheet(fn){if(curTab!=='sheet'){SH=[fn];tab('sheet');}else SH.push(fn);renderSheet();window.scrollTo(0,0);}
+function renderSheet(){const r=SH[SH.length-1]();sheetBox.innerHTML=r.h;pTitle.textContent=r.t;pSub.textContent=r.s||'';}
+function closeSheets(){SH=[];goBack();}
+
+/* ---------- programvy ---------- */
+function weekStats(plan){
+  let str=0,cmin=0;const mus={};
+  plan.days.forEach(l=>l.forEach(x=>{if(kindOf(x.k)==='cardio'){cmin+=+cT(x.k).cardio.min||0;}else{str++;getT(x.k).forEach(e=>{const ex=EX[e.id];if(!ex)return;ex.m.forEach(m=>mus[m]=(mus[m]||0)+e.sets);(ex.sec||[]).forEach(m=>mus[m]=(mus[m]||0)+e.sets*.5);});}}));
+  const sdays=plan.days.filter(l=>l.some(x=>kindOf(x.k)!=='cardio')).length;
+  return{str,sdays,cmin,mus,dbl:plan.days.filter(l=>l.length>1).length,rest:plan.days.filter(l=>!l.length).length};
+}
+function renderProgram(){
+  stdBox.style.display=S.plan?'none':'block';
+  if(!S.plan){
+    progBox.innerHTML=`<div class="card glow"><h4>Ditt träningsprogram</h4><p class="muted" style="line-height:1.5;margin-bottom:6px">Du kör just nu ett standardupplägg som roterar. Skapa ett program efter ditt mål – eller bygg ett eget veckoschema med upp till två pass per dag.</p>
+      <button class="btn p full" onclick="openGen()">${ic('target')}<span>Skapa program efter mål</span></button>
+      <button class="btn o full" onclick="newEmptyPlan()">Bygg eget veckoschema</button></div>`;return;
+  }
+  const st=weekStats(S.plan),ti=todayIdx();
+  const top=Object.entries(st.mus).filter(([m])=>VOLUME_LANDMARKS[m]).sort((a,b)=>b[1]-a[1]);
+  const lowM=top.filter(([m,v])=>v<10).map(([m])=>m);
+  progBox.innerHTML=`<div class="card glow">
+    <div class="row between"><div><div class="kt" style="margin:0">Ditt program</div><div style="font-size:17px;font-weight:700;margin-top:2px">${S.plan.name||'Mitt schema'}</div></div><button class="iconbtn" onclick="openGen()" aria-label="Nytt program">${ic('refresh')}</button></div>
+    <div class="pstats"><div><b>${st.str}</b><span>styrkepass</span></div><div><b>${st.cmin}</b><span>min kondition</span></div><div><b>${st.dbl}</b><span>dubbelpass</span></div><div><b>${st.rest}</b><span>vilodagar</span></div></div>
+    <div class="checks">
+      <div class="chk ${st.sdays>=2?'good':'bad'}">${ic(st.sdays>=2?'check':'info')}<span>Styrka ${st.sdays} dagar/v · WHO: minst 2 ${srcTag(['who'])}</span></div>
+      <div class="chk ${st.cmin>=150?'good':'bad'}">${ic(st.cmin>=150?'check':'info')}<span>Kondition ${st.cmin} min/v · WHO: 150–300 måttlig ${srcTag(['who'])}</span></div>
+      <div class="chk ${!lowM.length?'good':'bad'}">${ic(!lowM.length?'check':'info')}<span>${lowM.length?'Under 10 set/vecka: '+lowM.slice(0,4).join(', '):'Alla stora muskler har ≥10 set/vecka'} ${srcTag(['sch_vol'])}</span></div>
+    </div>
+  </div>
+  <div class="card"><h4>Veckan</h4>${S.plan.days.map((l,di)=>`<div class="wday ${di===ti?'today':''}"><div class="wd">${DAYN[di]}${di===ti?'<span>idag</span>':''}</div><div class="wsess">${l.length?l.map((x,si)=>`<div class="spill ${kindOf(x.k)}" onclick="openSess(${di},${si})">${ic(kindOf(x.k)==='cardio'?'flame':'dumbbell')}<span>${l.length>1?SLOT_TXT[si]+': ':''}${sessName(x.k)}</span></div>`).join(''):'<span class="muted" style="font-size:12.5px">Vila</span>'}${l.length<2?`<button class="addp" onclick="openAdd(${di})" aria-label="Lägg till pass">+</button>`:''}</div></div>`).join('')}
+    <p class="muted" style="font-size:11.5px;margin-top:8px">Tryck på ett pass för att se, ändra eller flytta det. Max två pass per dag.</p></div>
+  <div class="card"><button class="btn o full" onclick="endPlan()" style="color:var(--d)">Avsluta programmet (tillbaka till standard)</button></div>`;
+}
+function newEmptyPlan(){S.plan={name:'Mitt schema',goal:null,days:[[],[],[],[],[],[],[]]};S.selSlot=0;save();renderProgram();refresh();toast('Tomt schema skapat – lägg till pass');}
+function endPlan(){S.plan=null;S.override=null;S.sessionKey=rotation()[0].k;save();renderProgram();refresh();toast('Tillbaka till standardupplägg');}
+
+/* ---------- lägga till / visa pass ---------- */
+function openAdd(di){openSheet(()=>{
+  const own=Object.entries(S.customT||{}).filter(([k,v])=>!v.hidden);
+  const opt=(k)=>`<div class="acard" onclick="addToDay(${di},'${k}')"><div class="aic">${ic(kindOf(k)==='cardio'?'flame':'dumbbell')}</div><div class="abody"><div class="at">${sessName(k)}</div><div class="am">${kindOf(k)==='cardio'?cT(k).cardio.min+' min':getT(k).length+' övningar'}</div></div><span class="chev">${ic('chev')}</span></div>`;
+  return{t:'Lägg till pass',s:DAYN_L[di]+((S.plan.days[di]||[]).length?' · pass 2 (dubbelpass)':''),h:
+   ((S.plan.days[di]||[]).length?`<div class="coach" style="margin-bottom:10px"><strong>Dubbelpass:</strong> Lägg minst 3 timmar mellan passen. Kondition och styrka i samma pass kan minska explosiv styrka något. ${srcTag(['schumann'])}</div>`:'')+
+   `<div class="mlist"><div class="acard" onclick="newSess(${di},'strength')"><div class="aic">${ic('dumbbell')}</div><div class="abody"><div class="at">Nytt styrkepass</div><div class="am">Välj övningar själv</div></div><span class="chev">${ic('chev')}</span></div>
+    <div class="acard" onclick="newSess(${di},'cardio')"><div class="aic">${ic('flame')}</div><div class="abody"><div class="at">Nytt konditionspass</div><div class="am">Zon 2, 4×4, 15/15 eller lätt</div></div><span class="chev">${ic('chev')}</span></div></div>
+   ${own.length?`<div class="kt" style="margin-top:16px">Dina pass</div><div class="mlist">${own.map(([k])=>opt(k)).join('')}</div>`:''}
+   <div class="kt" style="margin-top:16px">Färdiga mallar</div><div class="mlist">${Object.keys(TEMPLATES).map(opt).join('')}</div>`};});}
+function addToDay(di,k){const l=S.plan.days[di];if(l.length>=2){toast('Max två pass per dag');return;}l.push({k});save();SH=[];goBack();renderProgram();refresh();toast(l.length>1?'Dubbelpass – minst 3 h mellan passen':'Pass tillagt');}
+function openSess(di,si){openSheet(()=>{
+  const x=S.plan.days[di][si];if(!x)return{t:'Pass',h:''};const k=x.k,card=kindOf(k)==='cardio';
+  const body=card?cardioHtml(k):getT(k).map(e=>`<div class="ex" onclick="openLib('${e.id}')"><div class="ex-name">${(EX[e.id]||{name:e.id}).name}</div><div class="ex-meta">${e.sets} × ${e.reps[0]}–${e.reps[1]} @ RPE ${e.rpe}${e.note?' · '+e.note:''}</div></div>`).join('');
+  return{t:sessName(k),s:DAYN_L[di]+(S.plan.days[di].length>1?' · '+SLOT_TXT[si]:''),h:`<div class="card">${body||'<div class="empty">Inga övningar ännu.</div>'}</div>
+   <button class="btn p full" onclick="editSess('${k}',${di},${si})">${cT(k)?'Redigera passet':'Gör en egen kopia och redigera'}</button>
+   <button class="btn o full" onclick="trainAnyway('${k}');closeSheets();tab('today')">Kör det här passet idag</button>
+   <div class="card" style="margin-top:12px"><h4>Flytta till</h4><div class="chips">${DAYN.map((d,i)=>`<div class="chip ${i===di?'on':''}" onclick="moveSess(${di},${si},${i})">${d}</div>`).join('')}</div></div>
+   <button class="btn o full" style="color:var(--d)" onclick="removeSess(${di},${si})">Ta bort från ${DAYN_L[di].toLowerCase()}</button>`};});}
+function moveSess(di,si,to){if(to===di)return;const t=S.plan.days[to];if(t.length>=2){toast(DAYN[to]+' har redan två pass');return;}const [x]=S.plan.days[di].splice(si,1);t.push(x);save();SH=[];goBack();renderProgram();refresh();toast('Flyttat till '+DAYN_L[to].toLowerCase());}
+function removeSess(di,si){S.plan.days[di].splice(si,1);save();SH=[];goBack();renderProgram();refresh();toast('Borttaget');}
+
+/* ---------- passredigerare ---------- */
+let ED=null;
+function newSess(di,kind){const k='c_'+Date.now().toString(36);ED={k,di,isNew:true,d:kind==='cardio'?{n:'Kondition',kind:'cardio',cardio:{proto:'z2',min:40,mod:'Valfri'}}:{n:'Mitt styrkepass',kind:'strength',ex:[]}};openSheet(edSheet);}
+function editSess(k,di,si){
+  let key=k,d;
+  if(cT(k))d=JSON.parse(JSON.stringify(cT(k)));else{key='c_'+Date.now().toString(36);d={n:sessName(k)+' (egen)',kind:'strength',ex:JSON.parse(JSON.stringify(TEMPLATES[k]||[]))};}
+  ED={k:key,orig:k,di,si,isNew:!cT(k),d};openSheet(edSheet);
+}
+function edSheet(){
+  const d=ED.d;let h=`<label class="f" style="margin-top:0">Namn på passet</label><input value="${(d.n||'').replace(/"/g,'&quot;')}" oninput="ED.d.n=this.value"/>`;
+  if(d.kind==='cardio'){
+    const c=d.cardio;
+    h+=`<label class="f">Typ</label><div class="fgrid">${Object.entries(CARDIO).map(([k,P])=>`<div class="fo ${c.proto===k?'on':''}" onclick="ED.d.cardio.proto='${k}';if('${k}'==='int44'||'${k}'==='int1515')ED.d.cardio.min=Math.max(ED.d.cardio.min,35);renderSheet()"><b>${P.short}</b><span>${k==='z2'?'lugnt':k==='easy'?'vila':'hårt'}</span></div>`).join('')}</div>
+      <p class="muted" style="font-size:12.5px;line-height:1.5;margin-top:8px">${CARDIO[c.proto].desc} ${srcTag(CARDIO[c.proto].src)}</p>
+      <label class="f">Aktivitet</label><div class="chips">${MODS.map(m=>`<div class="chip ${c.mod===m?'on':''}" onclick="ED.d.cardio.mod='${m}';renderSheet()">${m}</div>`).join('')}</div>
+      <label class="f">Minuter</label><div class="chips">${[20,30,40,45,60,75,90].map(m=>`<div class="chip ${+c.min===m?'on':''}" onclick="ED.d.cardio.min=${m};renderSheet()">${m}</div>`).join('')}</div>`;
+  }else{
+    h+=`<div class="kt" style="margin-top:14px">Övningar</div>${d.ex.length?'':'<div class="empty">Lägg till din första övning.</div>'}
+      ${d.ex.map((e,i)=>`<div class="edrow"><div class="row between"><b style="font-size:13.5px">${(EX[e.id]||{name:e.id}).name}</b><div class="row" style="gap:4px"><button class="btn o sm" onclick="edMove(${i},-1)">↑</button><button class="btn o sm" onclick="edMove(${i},1)">↓</button><button class="btn o sm" style="color:var(--d)" onclick="ED.d.ex.splice(${i},1);renderSheet()">✕</button></div></div>
+        <div class="edgrid"><label>Set<input type="number" min="1" max="10" value="${e.sets}" onchange="ED.d.ex[${i}].sets=+this.value||1"/></label><label>Reps från<input type="number" min="1" value="${e.reps[0]}" onchange="ED.d.ex[${i}].reps[0]=+this.value||1"/></label><label>till<input type="number" min="1" value="${e.reps[1]}" onchange="ED.d.ex[${i}].reps[1]=+this.value||1"/></label><label>RPE<input type="number" step=".5" min="5" max="10" value="${e.rpe}" onchange="ED.d.ex[${i}].rpe=+this.value||8"/></label></div></div>`).join('')}
+      <button class="btn o full" onclick="openSheet(pickSheet)">+ Lägg till övning</button>
+      <p class="muted" style="font-size:11.5px;margin-top:8px">Tips: tunga baslyft först, småövningar sist. ${srcTag(['acsm'])}</p>`;
+  }
+  h+=`<button class="btn p full" onclick="saveSess()">Spara passet</button>`;
+  return{t:ED.isNew&&!ED.orig?'Nytt pass':'Redigera pass',s:d.kind==='cardio'?'Kondition':'Styrka',h};
+}
+function edMove(i,d){const a=ED.d.ex,j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];renderSheet();}
+function saveSess(){
+  const d=ED.d;if(d.kind!=='cardio'&&!d.ex.length){toast('Lägg till minst en övning');return;}
+  S.customT=S.customT||{};S.customT[ED.k]=d;
+  if(ED.isNew&&!ED.orig){S.plan.days[ED.di].push({k:ED.k});}
+  else if(ED.orig&&ED.orig!==ED.k){const x=S.plan.days[ED.di][ED.si];if(x)x.k=ED.k;}
+  save();SH=[];goBack();renderProgram();refresh();toast('Passet sparat');
+}
+let pickQ='',pickEq='alla',pickMus='Alla';
+function pickSheet(){
+  const mus=['Alla',...new Set(Object.values(EX).flatMap(e=>e.m))];
+  const list=Object.entries(EX).filter(([k,e])=>(pickEq==='alla'||eqOk(k,pickEq))&&(pickMus==='Alla'||e.m.includes(pickMus))&&(!pickQ||(e.name+' '+e.m.join(' ')).toLowerCase().includes(pickQ)));
+  return{t:'Välj övning',s:list.length+' övningar',h:`<div class="searchbox">${ic('search')}<input placeholder="Sök övning eller muskel…" value="${pickQ}" oninput="pickQ=this.value.toLowerCase();clearTimeout(window._pq);window._pq=setTimeout(()=>{renderSheet();const i=sheetBox.querySelector('input');i.focus();i.setSelectionRange(i.value.length,i.value.length)},250)"/></div>
+   <div class="chips" style="margin:10px 0 4px">${[['alla','All utrustning'],['gym','Gym'],['db','Hantlar'],['bw','Kroppsvikt']].map(([k,l])=>`<div class="chip ${pickEq===k?'on':''}" onclick="pickEq='${k}';renderSheet()">${l}</div>`).join('')}</div>
+   <div class="chips" style="margin-bottom:10px">${mus.map(m=>`<div class="chip ${pickMus===m?'on':''}" onclick="pickMus='${m}';renderSheet()" style="padding:5px 9px;font-size:11px">${m}</div>`).join('')}</div>
+   <div class="mlist">${list.map(([k,e])=>`<div class="acard" onclick="ED.d.ex.push({id:'${k}',sets:3,reps:${e.priority===1?'[6,10]':'[10,15]'},rpe:8});SH.pop();renderSheet();toast('${e.name.replace(/'/g,"")} tillagd')"><div class="aic">${ic('dumbbell')}</div><div class="abody"><div class="at">${e.name}</div><div class="am">${e.m.join(', ')} · ${EQ_TXT[EXEQ[k]||'gym']}</div></div><span class="chev">+</span></div>`).join('')||'<div class="empty">Inga träffar.</div>'}</div>`};
+}
+
+/* ---------- programgenerator ---------- */
+const GOALS_T={hypertrophy:['Bygga muskler','dumbbell'],strength:['Bli starkare','zap'],fat_loss:['Gå ner i fett','flame'],endurance:['Bättre kondition','refresh'],health:['Hälsa & allround','target']};
+let GEN=null;
+function openGen(){
+  GEN={goal:{fat_loss:'fat_loss',hypertrophy:'hypertrophy',recomp:'hypertrophy',strength:'strength',maintain:'health'}[S.goal]||'hypertrophy',days:Math.min(7,Math.max(2,S.freq||4)),len:60,eq:'gym',exp:S.exp||'beginner',dbl:false,mod:'Valfri',prev:null};
+  openSheet(genSheet);
+}
+function gset(k,v){GEN[k]=v;GEN.prev=null;renderSheet();}
+function genSheet(){
+  const g=GEN,ch=(k,opts)=>`<div class="chips">${opts.map(([v,l])=>`<div class="chip ${g[k]===v?'on':''}" onclick="gset('${k}',${typeof v==='string'?`'${v}'`:v})">${l}</div>`).join('')}</div>`;
+  let h=`<div class="kt">Mål</div><div class="fgrid g2">${Object.entries(GOALS_T).map(([k,[l,i]])=>`<div class="fo ${g.goal===k?'on':''}" onclick="gset('goal','${k}')">${ic(i)}<b>${l}</b></div>`).join('')}</div>
+   <label class="f">Träningsdagar per vecka</label>${ch('days',[2,3,4,5,6,7].map(n=>[n,n]))}
+   <label class="f">Tid per pass</label>${ch('len',[[30,'30 min'],[45,'45 min'],[60,'60 min'],[75,'75 min'],[90,'90 min']])}
+   <label class="f">Utrustning</label>${ch('eq',[['gym','Gym'],['db','Hantlar hemma'],['bw','Bara kroppsvikt']])}
+   <label class="f">Erfarenhet</label>${ch('exp',[['beginner','Under 1 år'],['intermediate','1–3 år'],['advanced','Över 3 år']])}
+   <label class="f">Konditionsform</label>${ch('mod',MODS.map(m=>[m,m]))}
+   <label class="f">Dubbelpass (två pass samma dag)</label>${ch('dbl',[[false,'Nej'],[true,'Ja, tillåt']])}
+   <button class="btn p full" onclick="GEN.prev=buildProgram(GEN);renderSheet();setTimeout(()=>document.getElementById('genPrev')?.scrollIntoView({behavior:'smooth'}),50)">Skapa förslag</button>`;
+  if(g.prev){const P=g.prev;
+    h+=`<div id="genPrev" class="card glow" style="margin-top:14px"><div class="kt">Förslag</div><div style="font-size:17px;font-weight:700;margin-bottom:8px">${P.name}</div>
+     ${P.days.map((l,di)=>`<div class="wday"><div class="wd">${DAYN[di]}</div><div class="wsess">${l.length?l.map((x,si)=>`<div class="spill ${P.T[x.k].kind}">${ic(P.T[x.k].kind==='cardio'?'flame':'dumbbell')}<span>${l.length>1?SLOT_TXT[si]+': ':''}${P.T[x.k].n}</span></div>`).join(''):'<span class="muted" style="font-size:12.5px">Vila</span>'}</div></div>`).join('')}
+     <div class="kt" style="margin-top:14px">Därför ser det ut så här</div>${P.notes.map(n=>`<div class="tip">${n.t} ${srcTag(n.s)}</div>`).join('')}
+     <div class="kt" style="margin-top:14px">Passen</div>${Object.values(P.T).filter(t=>t.kind!=='cardio').map(t=>`<details class="acc"><summary>${t.n} · ${t.ex.length} övningar · ca ${t.est} min</summary><div class="acc-body">${t.ex.map(e=>`<div class="ex-meta" style="padding:4px 0"><b style="color:var(--t)">${EX[e.id].name}</b> – ${e.sets} × ${e.reps[0]}–${e.reps[1]} @ RPE ${e.rpe}${e.note?' · '+e.note:''}</div>`).join('')}</div></details>`).join('')}
+     <button class="btn p full" onclick="applyGen()">Använd programmet</button>
+     <p class="muted" style="font-size:11.5px;margin-top:8px">Allt kan ändras efteråt: flytta, byt övningar eller lägg till pass.</p></div>`;}
+  return{t:'Skapa program',s:'Efter mål, tid och utrustning',h};
+}
+const SPREAD={2:[0,3],3:[0,2,4],4:[0,1,3,4],5:[0,1,2,4,5],6:[0,1,2,3,4,5],7:[0,1,2,3,4,5,6]};
+const SPLITS={1:['FA'],2:['FA','FB'],3:['FA','FB','FC'],4:['U','L','U2','L2'],5:['U','L','PU','PL','LG'],6:['PU','PL','LG','PU2','PL2','LG2']};
+const STYPE={FA:['Helkropp A',[['squat','m'],['hpush','m'],['hpull','m'],['hinge','s'],['vpush','a'],['core','a']]],
+ FB:['Helkropp B',[['hinge','m'],['vpull','m'],['vpush','m'],['single','s'],['incline','a'],['reardelt','a']]],
+ FC:['Helkropp C',[['squat2','m'],['incline','m'],['hpull2','m'],['hamcurl','a'],['biceps','a'],['triceps','a']]],
+ U:['Överkropp A',[['hpush','m'],['hpull','m'],['vpush','s'],['vpull','s'],['lateral','a'],['biceps','a'],['triceps','a']]],
+ U2:['Överkropp B',[['incline','m'],['vpull','m'],['hpull2','s'],['vpush2','s'],['reardelt','a'],['biceps','a'],['triceps','a']]],
+ L:['Underkropp A',[['squat','m'],['hinge','s'],['single','s'],['hamcurl','a'],['calves','a'],['core','a']]],
+ L2:['Underkropp B',[['hinge','m'],['squat2','s'],['single','s'],['quadiso','a'],['calves','a'],['core','a']]],
+ PU:['Push A',[['hpush','m'],['vpush','s'],['incline','s'],['lateral','a'],['triceps','a']]],
+ PU2:['Push B',[['incline','m'],['vpush2','s'],['hpush2','s'],['lateral','a'],['triceps','a']]],
+ PL:['Pull A',[['vpull','m'],['hpull','s'],['reardelt','a'],['biceps','a'],['core','a']]],
+ PL2:['Pull B',[['hpull2','m'],['vpull2','s'],['reardelt','a'],['biceps','a']]],
+ LG:['Ben A',[['squat','m'],['hinge','s'],['single','s'],['hamcurl','a'],['calves','a']]],
+ LG2:['Ben B',[['hinge','m'],['squat2','s'],['single','s'],['quadiso','a'],['calves','a']]]};
+const PAT={squat:['back_squat','goblet_squat','bw_squat'],squat2:['front_squat','leg_press','bulgarian_split_squat','goblet_squat'],hinge:['rdl','db_rdl','single_leg_rdl'],single:['walking_lunge','bulgarian_split_squat','step_up'],
+ hpush:['bench_press','db_bench','push_up'],hpush2:['db_bench','push_up'],incline:['incline_bench','db_incline_press','bench_dip'],hpull:['barbell_row','db_row','inverted_row'],hpull2:['cable_row','chest_supported_row','inverted_row'],
+ vpull:['pullup','inverted_row'],vpull2:['lat_pulldown','chin_up','inverted_row'],vpush:['ohp','db_ohp','pike_push_up'],vpush2:['db_ohp','landmine_press','pike_push_up'],lateral:['lateral_raise'],reardelt:['face_pull','db_rear_fly'],
+ biceps:['barbell_curl','db_curl','chin_up'],triceps:['tricep_pushdown','overhead_tricep_ext','bench_dip'],hamcurl:['leg_curl','nordic_curl','glute_bridge'],quadiso:['leg_extension','step_up'],calves:['calf_raise'],core:['hanging_leg_raise','plank','dead_bug']};
+function pickEx(pat,G,used){
+  let opts=PAT[pat]||[];
+  if(pat==='hinge'&&G.goal==='strength'&&G.eq==='gym')opts=['deadlift',...opts];
+  if(pat==='hamcurl'&&G.exp!=='advanced')opts=opts.filter(x=>x!=='nordic_curl');
+  return opts.find(id=>EX[id]&&eqOk(id,G.eq)&&!used.has(id))||null;
+}
+function buildProgram(G){
+  const n=G.days,beg=G.exp==='beginner';
+  let s,cWant;
+  if(G.goal==='hypertrophy'){s=Math.min(n,6);cWant=n>=7?1:0;}
+  else if(G.goal==='strength'){s=Math.min(n,5);cWant=Math.max(0,n-5);}
+  else if(G.goal==='fat_loss'){s=Math.min(n,4);cWant=Math.max(2,n-4);}
+  else if(G.goal==='endurance'){s=n>=3?2:1;cWant=Math.max(2,n-s);}
+  else{s=Math.min(n,3);cWant=Math.max(2,n-s);}
+  if(beg&&s>4){s=4;}
+  const order=SPREAD[n];const sd=[];for(let j=0;j<s;j++){const d=order[Math.round(j*n/s)];if(!sd.includes(d))sd.push(d);}
+  const free=order.filter(d=>!sd.includes(d));
+  const T={},days=[[],[],[],[],[],[],[]],notes=[];
+  // --- styrka
+  const types=SPLITS[sd.length]||SPLITS[3];
+  const freqPer=sd.length>=4?2:sd.length;
+  const wk={hypertrophy:{beginner:10,intermediate:14,advanced:18},strength:{beginner:9,intermediate:11,advanced:13},fat_loss:{beginner:10,intermediate:12,advanced:14},endurance:{beginner:6,intermediate:6,advanced:8},health:{beginner:6,intermediate:8,advanced:8}}[G.goal][G.exp];
+  const R={strength:{m:[3,6],s:[5,8],a:[8,12],rest:{m:3,s:2.5,a:1.5}},hypertrophy:{m:[6,10],s:[8,12],a:[10,15],rest:{m:2.5,s:2,a:1.5}},fat_loss:{m:[6,10],s:[8,12],a:[10,15],rest:{m:2,s:1.5,a:1}},endurance:{m:[8,12],s:[10,15],a:[12,15],rest:{m:1.5,s:1.5,a:1}},health:{m:[8,12],s:[8,12],a:[10,15],rest:{m:2,s:1.5,a:1}}}[G.goal];
+  types.forEach((ty,i)=>{
+    const [nm,pats]=STYPE[ty];const used=new Set();const ex=[];
+    pats.forEach(([p,role])=>{const id=pickEx(p,G,used);if(!id)return;used.add(id);
+      let sets=role==='m'?Math.round(wk/freqPer*(G.goal==='strength'?0.6:0.5)):role==='s'?Math.round(wk/freqPer*0.35):(G.goal==='hypertrophy'&&!beg?3:2);
+      sets=Math.max(2,Math.min(role==='m'?5:4,sets));
+      let reps=R[role].slice();if(beg&&G.goal!=='strength'&&role!=='a')reps=[8,12];if(beg&&G.goal==='strength'&&role==='m')reps=[5,8];
+      if(['plank'].includes(id))reps=[30,60];
+      const rpe=beg?7.5:(role==='a'?8.5:8);
+      const note=(id==='pullup'||id==='chin_up')&&G.eq!=='gym'?'kräver räcke':id==='plank'?'sekunder':'';
+      ex.push({id,sets,reps,rpe,role,note});});
+    const est=()=>Math.round(8+ex.reduce((t,e)=>t+e.sets*(R.rest[e.role]+0.8),0));
+    let guard=0;while(est()>G.len&&guard++<40){
+      const acc=ex.map((e,i)=>[e,i]).filter(([e])=>e.role==='a');
+      if(acc.length>1&&est()-G.len>8){ex.splice(acc[acc.length-1][1],1);continue;}
+      const big=[...ex].sort((a,b)=>({a:0,s:1,m:2}[a.role]-{a:0,s:1,m:2}[b.role])).find(e=>e.sets>2);
+      if(big)big.sets--;else if(ex.length>3)ex.pop();else break;}
+    const k='g_'+ty+'_'+i;T[k]={n:nm,kind:'strength',gen:true,ex:ex.map(({role,...e})=>e),est:est()};
+    days[sd[i]].push({k});
+  });
+  // --- kondition
+  const cmin={fat_loss:40,endurance:45,health:Math.min(60,Math.max(30,Math.ceil(150/Math.max(1,cWant)/5)*5)),hypertrophy:30,strength:30}[G.goal];
+  const protos=[];
+  for(let j=0;j<cWant;j++){
+    let p='z2';
+    if(G.goal==='endurance'){if(j===0)p='int44';else if(j===2&&cWant>=4)p='int1515';}
+    else if(G.goal==='fat_loss'&&j===1&&!beg)p='int44';
+    else if((G.goal==='hypertrophy'||G.goal==='strength'))p='easy';
+    protos.push(p);
+  }
+  let cPlaced=0,cExtra=0;
+  protos.forEach((p,j)=>{
+    const k='g_c'+j;let min=p==='int44'||p==='int1515'?35:cmin;if(G.goal==='endurance'&&p==='z2'&&j===protos.length-1&&protos.length>=3)min=Math.min(90,G.len+15);
+    min=Math.min(min,Math.max(20,G.len));
+    T[k]={n:CARDIO[p].n+(p==='z2'||p==='easy'?' · '+min+' min':''),kind:'cardio',gen:true,cardio:{proto:p,min,mod:G.mod}};
+    if(cPlaced<free.length){days[free[cPlaced++]].push({k});}
+    else if(G.dbl){const cand=sd.filter(d=>days[d].length<2&&!/Under|Ben/.test(T[days[d][0].k].n));const d=(cand.length?cand:sd.filter(d=>days[d].length<2))[cExtra%Math.max(1,(cand.length||sd.length))];if(d!=null){days[d].push({k});cExtra++;}else delete T[k];}
+    else delete T[k];
+  });
+  // --- förklaringar
+  const nS=sd.length,cTot=Object.values(T).filter(t=>t.kind==='cardio').reduce((a,t)=>a+t.cardio.min,0);
+  notes.push({t:`${nS} styrkepass/vecka. Varje stor muskel tränas ca ${freqPer>=2?'2':'1'} gång${freqPer>=2?'er':''} per vecka – minst två gånger ger mer tillväxt än en.`,s:['sch_freq','acsm']});
+  if(G.goal==='hypertrophy'||G.goal==='fat_loss')notes.push({t:`Ca ${wk} set per muskel och vecka. Fler set ger mer muskeltillväxt; ≥10 gav bäst effekt i forskningen.${beg?' Som nybörjare räcker lägre volym i början.':''}`,s:['sch_vol']});
+  if(G.goal==='strength')notes.push({t:'Tunga baslyft med 3–6 reps och längre vila (ca 3 min). Tyngre vikter ger mest maxstyrka.',s:['currier','acsm','sch_rest']});
+  else if(G.goal==='hypertrophy')notes.push({t:'Vi blandar 6–15 reps. Muskler växer lika bra med tunga som lätta vikter när seten körs nära failure.',s:['currier','sch_load']});
+  if(beg)notes.push({t:'Nybörjare: 8–12 reps och 2–4 pass/vecka räcker långt. Öka vikten gradvis när du klarar reps-taket.',s:['acsm']});
+  notes.push({t:'Stanna 1–3 reps före failure (RPE 7–9). Att köra till failure gav ingen tydlig extra effekt.',s:['refalo']});
+  if(cTot)notes.push({t:`Kondition ${cTot} min/vecka${G.goal==='health'||G.goal==='fat_loss'?' – WHO rekommenderar 150–300 min måttlig aktivitet':''}.${protos.some(p=>p.startsWith('int'))?' Intervaller förbättrar konditionen (VO₂max) mer än lugn träning, men båda ger stora förbättringar.':''}`,s:protos.some(p=>p.startsWith('int'))?['who','milanovic','helgerud']:['who']});
+  if(cExtra)notes.push({t:`${cExtra} dubbelpass: konditionen ligger som pass 2 på överkroppsdagar. Lägg minst 3 timmar mellan passen.`,s:['schumann']});
+  else if(protos.length>Object.values(T).filter(t=>t.kind==='cardio').length)notes.push({t:'Alla konditionspass fick inte plats. Tillåt dubbelpass eller lägg till fler dagar för att få med dem.',s:[]});
+  if(n===7)notes.push({t:'Sju dagar: minst en dag är lätt återhämtning. Sömn och vila är när kroppen bygger upp sig.',s:['lamon']});
+  return{name:GOALS_T[G.goal][0]+' · '+n+' dagar',goal:G.goal,days,T,notes};
+}
+function applyGen(){
+  const P=GEN.prev;if(!P)return;
+  S.customT=Object.fromEntries(Object.entries(S.customT||{}).filter(([k])=>!k.startsWith('g_')));
+  Object.assign(S.customT,P.T);
+  S.plan={name:P.name,goal:P.goal,days:P.days};S.selSlot=0;S.override=null;S.exp=GEN.exp;
+  save();SH=[];tab('train',true);sub('train','schema');refresh();toast('Programmet är aktivt');
+}
 
 function renderProf(){pName.value=S.name;pBw.value=S.bw;pGoal.value=S.goal;pWeek.value=S.week;
   pSex.value=S.sex||'m';pAge.value=S.age||30;pH.value=S.height||178;pAct.value=String(S.act||1.55);

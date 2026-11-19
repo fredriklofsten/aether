@@ -6,13 +6,20 @@ Evidensbaserad träningsapp som anpassar passen efter din dagsform och räknar f
 
 ## Navigering
 - **Idag** – dagsform, dagens pass, snabbrutor för kost, fasta och vikt
-- **Träna** – Logga · Schema · Övningar (bibliotek med sök) · Period (säsong, faser)
+- **Träna** – Logga · Program · Övningar (50 övningar, filter för gym/hantlar/kroppsvikt) · Period (säsong, faser)
 - **Kost** – Idag (mål & måltider) · Fasta · Kropp & mål · Råd
 - **Framsteg** – vikt, rekord, beräknat max, historik
-- **Kunskap** – 23 artiklar om fasta, kost, träning, återhämtning, tillskott och myter, med evidensnivå och källor
+- **Kunskap** – 28 artiklar om fasta, kost, träning, återhämtning, tillskott och myter, med evidensnivå och källor
 - **Kugghjulet** (uppe till höger) – profil, guide, ordlista, evidens & källor, data/backup
 
 Alla `?`-knappar förklarar begrepp på enkel svenska.
+
+## Träningsprogram
+- **Programgenerator**: mål (muskler, styrka, fettminskning, kondition, hälsa), 2–7 dagar, tid per pass, utrustning, erfarenhet, konditionsform och dubbelpass – med förklaring och källor till varje val
+- **Eget veckoschema** för alla 7 dagar med upp till två pass per dag (dubbelpass)
+- Bygg egna styrkepass (välj övningar, set, reps, RPE) och konditionspass (Zon 2, 4×4, 15/15, återhämtning)
+- Idag-vyn följer veckodagen: växla mellan pass 1 och 2, vilodagar och "träna ändå"
+- Kontroll mot WHO:s rekommendationer och ≥10 set per muskel och vecka
 
 ## Kost & fasta
 - Fettprocent: ange själv eller mät med måttband (US Navy-metoden)
