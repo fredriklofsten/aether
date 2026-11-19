@@ -4,6 +4,9 @@ Evidensbaserad träningsapp som anpassar passen efter din dagsform och räknar f
 
 Öppna `index.html` (behåll mappen `images/`).
 
+## Hemskärm
+Hälsning, veckoring (pass klara/planerade), veckoremsa med dagens markering, snabb incheckning av dagsform (5 knappar), stort passkort med tid och muskler, rutor för kost, fasta, vikt och träningssvit samt "Dagens fakta" från kunskapsbanken.
+
 ## Navigering
 - **Idag** – dagsform, dagens pass, snabbrutor för kost, fasta och vikt
 - **Träna** – Logga · Program · Övningar (50 övningar, filter för gym/hantlar/kroppsvikt) · Period (säsong, faser)
@@ -16,7 +19,8 @@ Alla `?`-knappar förklarar begrepp på enkel svenska.
 
 ## Träningsprogram
 - **Programgenerator**: mål (muskler, styrka, fettminskning, kondition, hälsa), 2–7 dagar, tid per pass, utrustning, erfarenhet, konditionsform och dubbelpass – med förklaring och källor till varje val
-- **Eget veckoschema** för alla 7 dagar med upp till två pass per dag (dubbelpass)
+- **Program över flera veckor** (1–16 veckor) med progression per mål: mer volym (muskler), linjär eller varierad belastning (styrka), mer kondition (kondition/fett/hälsa) och valfri lättare vecka
+- **Eget veckoschema** för alla 7 dagar med upp till två pass per dag (dubbelpass), olika upplägg per vecka, kopiera vecka till alla
 - Bygg egna styrkepass (välj övningar, set, reps, RPE) och konditionspass (Zon 2, 4×4, 15/15, återhämtning)
 - Idag-vyn följer veckodagen: växla mellan pass 1 och 2, vilodagar och "träna ändå"
 - Kontroll mot WHO:s rekommendationer och ≥10 set per muskel och vecka
