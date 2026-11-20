@@ -16,6 +16,7 @@
     <p class="muted" style="margin-bottom:28px">Evidensbaserad träning, kost och fasta – anpassad efter dig</p>
     <button class="btn p full" onclick="start(false)">Kom igång</button>
     <button class="btn g full" onclick="start(true)">Fortsätt där jag var</button>
+    <div id="bkSplash" style="display:none;margin-top:16px"></div>
   </div>
 </section>
 
@@ -44,6 +45,8 @@
       </div>
 
       <div class="wstrip" id="weekStrip" data-hs="week"></div>
+
+      <div class="card bkcard" id="bkBanner" style="display:none"></div>
 
       <div class="card checkin" data-hs="checkin">
         <div class="row between"><div><div class="ct">Hur känns kroppen idag? <button class="q" onclick="help('dagsform')">?</button></div><p class="muted" id="hint" style="font-size:12px;margin-top:2px"></p></div><div class="score sm" id="sc">7</div></div>
@@ -495,12 +498,14 @@
     <div class="pad">
       
       <div class="card">
-        <p class="muted" style="margin-bottom:6px">All data sparas bara i den här webbläsaren. Exportera regelbundet om du vill ha en backup.</p>
-        <button class="btn o full" onclick="exportData()">Exportera (JSON-fil)</button>
-        <button class="btn o full" onclick="document.getElementById('impFile').click()">Importera JSON-fil</button>
+        <h4>Säkerhetskopiering</h4>
+        <p class="muted" style="margin-bottom:10px;font-size:12.5px">Din data sparas i den här webbläsaren. Appen gör en automatisk kopia varje dag, men den försvinner om du rensar webbläsaren eller byter telefon. Spara därför en backup-fil ibland – appen påminner dig var 7:e dag.</p>
+        <div id="bkStatus"></div>
+        <button class="btn p full" style="margin-top:10px" onclick="saveBackupFile()">Spara backup-fil</button>
+        <button class="btn o full" onclick="document.getElementById('impFile').click()">Återställ från backup-fil</button>
         <input type="file" id="impFile" accept="application/json,.json" style="display:none" onchange="importData(this)"/>
         <button class="btn o full" style="color:var(--d)" onclick="wipeAsk()">Radera all data</button>
-        <div id="wipeBox" style="display:none;margin-top:8px" class="coach">Säker? Allt försvinner. <button class="btn o sm" style="color:var(--d)" onclick="localStorage.removeItem('aether_v3');location.reload()">Ja, radera</button> <button class="btn o sm" onclick="wipeBox.style.display='none'">Avbryt</button></div>
+        <div id="wipeBox" style="display:none;margin-top:8px" class="coach">Säker? Allt försvinner, även de automatiska kopiorna. <button class="btn o sm" style="color:var(--d)" onclick="bkClear().then(()=>{localStorage.removeItem('aether_v3');location.reload()})">Ja, radera</button> <button class="btn o sm" onclick="wipeBox.style.display='none'">Avbryt</button></div>
       </div>
     </div>
   </div>
@@ -609,6 +614,7 @@
 <script src="js/profil.js"></script>
 <script src="js/maltider.js"></script>
 <script src="js/mat.js"></script>
+<script src="js/backup.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

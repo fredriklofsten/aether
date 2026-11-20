@@ -110,8 +110,3 @@ function saveProf(){const oldF=S.freq;S.name=pName.value;S.bw=+pBw.value||82;S.g
   S.limits=[...document.querySelectorAll('#pLim .chip.on')].map(c=>c.dataset.v);
   if(oldF!==S.freq){S.sIdx=0;S.sessionKey=rotation()[0].k;}
   save();renderProf();toast('Sparat');refresh();}
-function exportData(){
-  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='aether-export-'+new Date().toISOString().slice(0,10)+'.json';a.click();
-  toast('JSON exporterad');
-}
