@@ -18,6 +18,8 @@ async function bkSnapshot(){
     const all=await bkAll();for(const s of all.slice(BK_KEEP))await bkDel(s.key);
   }catch(e){}
 }
+/* Spara kopian direkt när appen läggs i bakgrunden eller stängs, så inget hinner gå förlorat */
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&bkTimer){clearTimeout(bkTimer);bkTimer=null;bkSnapshot();}});
 /* Koppla in i den vanliga save() */
 const _saveOrig=save;
 save=function(){_saveOrig();bkSchedule();};

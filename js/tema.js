@@ -16,7 +16,7 @@ function renderDials(){
   const lw=Math.min(logsThisWeek().length,plannedThisWeek()),pl=plannedThisWeek();
   const d=(pct,col,val,unit,lbl,sub,on)=>`<button class="dial" onclick="${on}"><div class="dring">${dialSvg(pct,col)}<div class="dv"><b>${val}</b><span>${unit}</span></div></div><div class="dl">${lbl}</div><div class="ds">${sub}</div></button>`;
   el.innerHTML=
-    d(r/10,ri.c,Math.round(r*10),'%','Dagsform',ri.t,"document.querySelector('.checkin').scrollIntoView({behavior:'smooth',block:'center'})")+
+    d(r/10,ri.c,Math.round(r*10),'%','Dagsform',ri.t,"const c=document.querySelector('.checkin');if(c&&c.offsetParent)c.scrollIntoView({behavior:'smooth',block:'center'})")+
     d(goal?eaten/goal:0,eaten>goal?'var(--d)':'var(--p)',eaten.toLocaleString('sv-SE'),'kcal','Kost',goal?'av '+goal.toLocaleString('sv-SE'):'',"goSub('kost','idag')")+
     d(pl?lw/pl:0,'var(--a)',lw+'/'+pl,'pass','Veckan',lw>=pl&&pl?'Klart!':(pl-lw)+' kvar',"goSub('train','schema')");
 }
