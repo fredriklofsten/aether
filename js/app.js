@@ -1,0 +1,5 @@
+/* Aether – Startar appen */
+S=migrate(load());
+applyTheme();paintIcons();backBtn.innerHTML=ic('back');renderAvatar();applyHomeLayout();
+try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(S.ui.theme==='auto')applyTheme();});}catch(e){}
+try{evLegend.innerHTML=Object.entries(EV_TXT).map(([k,v])=>`<span class="ev ${k}">${k}</span> ${v}`).join('<br>');}catch(e){}
