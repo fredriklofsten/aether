@@ -109,3 +109,21 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,v
 .mgbody{padding:0 12px 6px;border-top:1px solid var(--line)}
 .pfocus{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
 .pfocus span{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--p) 15%,transparent);color:var(--p)}
+
+/* ===== Profil: tydligare översikt och navigering ===== */
+.avbtn{width:auto!important;padding:3px 12px 3px 3px!important;border-radius:99px!important;gap:7px;display:inline-flex;align-items:center}
+.avbtn::after{content:"Profil";font-size:12.5px;font-weight:700;color:var(--t)}
+.kt-h{font-weight:500;text-transform:none;letter-spacing:0;color:var(--m);margin-left:6px;font-size:11px}
+.psec .mi{align-items:center}
+.psum{font-size:12px;color:var(--t2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pst{flex-shrink:0;font-size:11px;font-weight:700;border-radius:99px;display:inline-flex;align-items:center;justify-content:center}
+.pst.ok{width:24px;height:24px;background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.pst.ok .ico{width:14px;height:14px}
+.pst.todo{padding:4px 10px;background:color-mix(in srgb,var(--w) 16%,transparent);color:var(--w)}
+.pfoot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.pdots{display:flex;justify-content:center;gap:8px;margin-bottom:14px}
+.pdots i{width:8px;height:8px;border-radius:50%;background:var(--sf3);cursor:pointer;transition:all .2s}
+.pdots i.on{width:22px;border-radius:4px;background:var(--p)}
+.pfoot .btn.o{font-size:12.5px;padding:11px 8px}
+.pdone{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.pdone .ico{width:18px;height:18px}

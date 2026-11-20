@@ -46,6 +46,29 @@ function profChecks(){const P=S.prof||{};return[
 function profPct(){const c=profChecks();return Math.round(c.filter(x=>x[1]).length/c.length*100);}
 
 /* ---------- profilhubb ---------- */
+const PROF_ORDER=['about','body','goals','train','health','diet'];
+const PROF_META={about:['user','Om mig'],body:['scale','Kropp & mått'],goals:['target','Mål & motivation'],train:['dumbbell','Träning'],health:['moon','Hälsa & återhämtning'],diet:['food','Kost']};
+function profSummary(k){
+  const P=S.prof||{},j=a=>a.filter(Boolean).join(' · ')||'<span class="muted">Inte ifyllt än</span>';
+  const EXP={beginner:'Under 1 år',intermediate:'1–3 år',advanced:'Över 3 år'},EQ={gym:'Gym',db:'Hantlar',bw:'Kroppsvikt'},DIET={omni:'Allätare',flex:'Flexitarian',pesc:'Pescetarian',veg:'Vegetarian',vegan:'Vegan'},ST={low:'låg stress',mid:'medelstress',high:'hög stress'};
+  if(k==='about')return j([S.name&&S.name!=='Demo'?esc(S.name):'',S.sex==='f'?'Kvinna':S.sex==='m'?'Man':'',S.age?S.age+' år':'',S.height?S.height+' cm':'']);
+  if(k==='body'){const bc=bodyComp();return j([S.bw?S.bw+' kg':'',bc.bf!=null?'fett '+bc.bf+' %':'',S.waist?'midja '+S.waist+' cm':'']);}
+  if(k==='goals')return j([GOAL_LBL[S.goal]||'',S.goalW?'målvikt '+S.goalW+' kg':'',P.deadline?'till '+new Date(P.deadline).toLocaleDateString('sv-SE',{day:'numeric',month:'short'}):'']);
+  if(k==='train')return j([EXP[S.exp]||'',S.freq?S.freq+' dagar/v':'',P.len?P.len+' min':'',EQ[P.equip]||'',(P.focus||[]).length?'fokus: '+P.focus.map(f=>FOCUS_LBL[f]).join(', '):'']);
+  if(k==='health')return j([P.sleep?'sömn '+(P.sleep>=9?'9+':P.sleep)+' h':'',ST[P.stress]||'',(S.limits||[]).length?'känsligt: '+S.limits.join(', '):'']);
+  if(k==='diet')return j([DIET[P.diet]||'',P.meals?P.meals+' mål/dag':'',(P.allergies||[]).length?(P.allergies.length+' allergi'+(P.allergies.length>1?'er':'')):'']);
+  return '';
+}
+/* Botten på varje profilsida: steg, föregående/nästa och Klar */
+function profFooter(k){
+  const i=PROF_ORDER.indexOf(k);if(i<0)return `<button class="btn p full pdone" onclick="goBack()">${ic('check')}<span>Klar</span></button>`;
+  const prev=PROF_ORDER[i-1],next=PROF_ORDER[i+1];
+  return `<div class="pfoot"><div class="pdots">${PROF_ORDER.map((x,n)=>`<i class="${n===i?'on':''}" onclick="profGo('${x}')"></i>`).join('')}</div>
+    <div class="row" style="gap:8px">${prev?`<button class="btn o" style="flex:1" onclick="profGo('${prev}')">← ${PROF_META[prev][1]}</button>`:''}${next?`<button class="btn o" style="flex:1" onclick="profGo('${next}')">${PROF_META[next][1]} →</button>`:''}</div>
+    <button class="btn p full pdone" onclick="goBack()">${ic('check')}<span>Klar – tillbaka till profilen</span></button><p class="muted" style="text-align:center;font-size:11.5px;margin-top:8px">Allt sparas automatiskt när du ändrar något.</p></div>`;
+}
+function profSheet(k){return()=>{const r=PROF_SHEETS[k]();const i=PROF_ORDER.indexOf(k);return{...r,s:(i>=0?'Steg '+(i+1)+' av '+PROF_ORDER.length+' · ':'')+(r.s||''),h:r.h+profFooter(k)};};}
+function profGo(k){RR=()=>renderSheet();if(curTab==='sheet'&&SH.length){SH[SH.length-1]=profSheet(k);renderSheet();window.scrollTo(0,0);}else openProf(k);}
 const GOAL_LBL={fat_loss:'Gå ner i fett',hypertrophy:'Bygga muskler',recomp:'Båda samtidigt',strength:'Bli starkare',maintain:'Behålla',endurance:'Bättre kondition'};
 function renderProfileHub(){
   const P=S.prof||{},pct=profPct(),miss=profChecks().filter(x=>!x[1]),bc=bodyComp();
@@ -56,15 +79,16 @@ function renderProfileHub(){
     <div class="pstats" style="margin-bottom:0">${[['Vikt',S.bw?S.bw+' kg':'—'],['Längd',S.height?S.height+' cm':'—'],['Ålder',S.age||'—'],['Fett',bc.bf!=null?bc.bf+' %':'—']].map(([l,v])=>`<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
     ${miss.length?`<div class="pmiss" onclick="openProf('${miss[0][2]}')">${ic('info')}<span>Fyll i <b>${miss[0][0].toLowerCase()}</b>${miss.length>1?` och ${miss.length-1} till`:''} för mer personliga råd</span>${ic('chev')}</div>`:`<div class="pmiss done">${ic('check')}<span>Profilen är komplett – råden är anpassade efter dig</span></div>`}
   </div>
-  <div class="kt">Om dig</div>
-  <div class="mlist">${[['about','user','Om mig','Namn, kön, ålder, längd'],['body','scale','Kropp & mått','Vikt, fettprocent, kroppsmått'],['goals','target','Mål & motivation','Mål, målvikt, måldatum, ditt varför'],['train','dumbbell','Träning','Erfarenhet, dagar, tid, fokusområden'],['health','moon','Hälsa & återhämtning','Begränsningar, sömn, stress, aktivitet'],['diet','food','Kost','Kosthållning och måltider']].map(([k,i,t,d])=>`<div class="mi" onclick="openProf('${k}')"><span class="mic">${ic(i)}</span><div><b>${t}</b><div class="muted">${d}</div></div><span class="chev">${ic('chev')}</span></div>`).join('')}</div>
+  <div class="kt">Din profil <span class="kt-h">tryck på en rad för att ändra</span></div>
+  <div class="mlist psec">${PROF_ORDER.map((k,n)=>{const [ic_,t_]=PROF_META[k],sum=profSummary(k),ok=profChecks().filter(x=>x[2]===k).every(x=>x[1]);
+    return `<div class="mi" onclick="openProf('${k}')"><span class="mic">${ic(ic_)}</span><div style="min-width:0;flex:1"><b>${t_}</b><div class="psum">${sum}</div></div><span class="pst ${ok?'ok':'todo'}">${ok?ic('check'):'Fyll i'}</span></div>`;}).join('')}</div>
   <div class="kt" style="margin-top:16px">Anpassa appen</div>
   <div class="mlist">${[['look','compass','Utseende','Ljust/mörkt tema, färg, textstorlek'],['home','home','Hemskärm','Välj och sortera korten']].map(([k,i,t,d])=>`<div class="mi" onclick="openProf('${k}')"><span class="mic">${ic(i)}</span><div><b>${t}</b><div class="muted">${d}</div></div><span class="chev">${ic('chev')}</span></div>`).join('')}</div>
   <div class="kt" style="margin-top:16px">Hjälp & data</div>
   <div class="mlist">${[['m-guide','compass','Så funkar appen'],['m-ord','chat','Ordlista'],['m-src','flask','Evidens & källor'],['m-data','database','Data & backup']].map(([k,i,t])=>`<div class="mi" onclick="tab('${k}')"><span class="mic">${ic(i)}</span><div><b>${t}</b></div><span class="chev">${ic('chev')}</span></div>`).join('')}</div>
   <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Aether v9 · All data sparas bara på din enhet · Ersätter inte råd från vården</p>`;
 }
-function openProf(k){RR=()=>renderSheet();openSheet(PROF_SHEETS[k]);}
+function openProf(k){RR=()=>renderSheet();openSheet(profSheet(k));}
 const PROF_SHEETS={
  about:()=>({t:'Om mig',s:'Grunduppgifter',h:SAVED+F.text('Namn','name',{ph:'Ditt namn'})+F.chips('Kön','sex',[['m','Man'],['f','Kvinna']],{help:'Används i formler för energibehov och fettprocent.'})+`<div class="g3">${F.num('Ålder','age',{unit:'år',min:13,max:99})}${F.num('Längd','height',{unit:'cm',min:120,max:230})}${F.num('Vikt','bw',{unit:'kg',step:.1,rr:true})}</div>`}),
  body:()=>{const bc=bodyComp(),ml=(S.measLog||[]).slice(-4).reverse();return{t:'Kropp & mått',s:'Uppdateras i dina beräkningar direkt',h:SAVED+
