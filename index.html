@@ -319,6 +319,8 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .mprots button.on{background:color-mix(in srgb,var(--p) 14%,transparent);border-color:var(--p);color:var(--p)}
 .allerg{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:var(--t2);background:color-mix(in srgb,var(--w) 10%,transparent);border:1px solid color-mix(in srgb,var(--w) 30%,transparent);border-radius:11px;padding:9px 11px;margin-bottom:8px}
 .allerg .ico{width:16px;height:16px;color:var(--w);flex-shrink:0;margin-top:1px}
+.msum{display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;font-size:12.5px;padding:9px 11px;border-radius:11px;background:var(--sf2);margin-bottom:4px}
+.btn.sm .ico{width:13px;height:13px}
 </style>
 </head>
 <body>
@@ -599,7 +601,7 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           <div id="meals" style="margin-top:8px"></div>
         </div>
         <div class="card"><div class="row between"><h4 style="margin:0">Måltidsförslag</h4><button class="btn o sm" onclick="openProf('diet')">Allergier & val</button></div>
-          <p class="muted" style="font-size:12px;margin:6px 0 8px">Välj protein i varje måltid – tryck på ett alternativ för att byta.</p>
+          <p class="muted" style="font-size:12px;margin:6px 0 8px">En meny för dagen. Byt rätt eller tryck på ett protein för att byta.</p>
           <div class="chips" id="mealFilt" style="margin-bottom:8px"></div>
           <div id="mealAllergy"></div>
           <div id="mealEx"></div>
@@ -2730,6 +2732,12 @@ function buildMeal(t){
   const P=PROT[pid];
   return{id:t.id,when:t.when,pid,opts,d:(x=>x.charAt(0).toUpperCase()+x.slice(1))(P.n.replace(/ \d.*$/,'').replace(/^\d+ /,''))+' + '+base.n,portion:P.n,k:P.k+base.k,p:P.p+base.p,c:P.c+base.c,f:P.f+base.f};
 }
+const SLOTS=['Frukost','Lunch','Middag','Mellanmål','Runt passet'];
+function daySlots(){const n=Math.max(2,Math.min(6,(S.prof||{}).meals||4));if(n===2)return['Lunch','Middag'];return SLOTS.slice(0,Math.min(5,n));}
+function slotMeals(when){return MEAL_T.filter(t=>t.when===when).map(buildMeal).filter(Boolean);}
+function slotPick(when){const l=slotMeals(when);if(!l.length)return null;const id=(S.mealAlt||{})[when];return l.find(m=>m.id===id)||l[0];}
+function nextDish(when){const l=slotMeals(when);if(l.length<2)return;const cur=slotPick(when),i=(l.findIndex(m=>m.id===cur.id)+1)%l.length;S.mealAlt=S.mealAlt||{};S.mealAlt[when]=l[i].id;save();renderKost();}
+function dayMenu(){return daySlots().map(w=>({w,m:slotPick(w),n:slotMeals(w).length}));}
 function swapMeal(id,dir){const t=MEAL_T.find(x=>x.id===id),m=buildMeal(t);if(!m||m.opts.length<2)return;const i=(m.opts.indexOf(m.pid)+(dir||1)+m.opts.length)%m.opts.length;S.mealPick=S.mealPick||{};S.mealPick[id]=m.opts[i];save();renderKost();}
 function pickMealProt(id,pid){S.mealPick=S.mealPick||{};S.mealPick[id]=pid;save();renderKost();}
 function logMeal(id){const m=buildMeal(MEAL_T.find(x=>x.id===id));if(!m)return;S.meals.push({d:m.d,k:m.k,p:m.p});S.loggedKcal+=m.k;save();renderKost();refresh();toast('+'+m.k+' kcal · '+m.p+' g protein');}
@@ -2737,18 +2745,20 @@ const GLYPH={kyckling:'🍗',kött:'🥩',fisk:'🐟',skaldjur:'🦐',ägg:'🥚
 function renderMeals(){
   const fl=[['alla','Alla'],['kyckling','Kyckling'],['kött','Kött'],['fisk','Fisk'],['veg','Vegetariskt']].filter(([k])=>k==='alla'||(k==='veg'?true:!((DIET_BLOCK[(S.prof||{}).diet]||[]).includes(k)||((S.prof||{}).noProt||[]).includes(k))));
   mealFilt.innerHTML=fl.map(([k,l])=>`<div class="chip ${(S.mealFilter||'alla')===k?'on':''}" onclick="S.mealFilter='${k}';save();renderKost()">${l}</div>`).join('');
-  const list=MEAL_T.map(buildMeal).filter(Boolean);
-  mealEx.innerHTML=list.length?list.map(m=>`<div class="meal">
-    <div class="row between"><span class="mw">${m.when}</span><span class="muted" style="font-size:11.5px">${m.k} kcal · ${m.p} g protein</span></div>
-    <div class="md">${m.d}</div>
+  const menu=dayMenu(),got=menu.filter(x=>x.m);
+  const tk=got.reduce((t,x)=>t+x.m.k,0),tp=got.reduce((t,x)=>t+x.m.p,0),tgt=macros();
+  mealEx.innerHTML=(got.length?`<div class="msum"><span>Dagens meny: <b>${tk} kcal</b> · <b>${tp} g protein</b></span><span class="muted">mål ${tgt.cal} kcal · ${tgt.protein} g</span>${tk<tgt.cal*0.85?`<span class="fh" style="width:100%;margin:2px 0 0">Ca ${Math.round((tgt.cal-tk)/10)*10} kcal kvar till målet – ta större portioner kolhydrater (ris, potatis, pasta, havre), lägg till ett mellanmål eller öka måltider per dag.</span>`:tk>tgt.cal*1.1?`<span class="fh" style="width:100%;margin:2px 0 0">Menyn ligger över målet – ta mindre portioner av kolhydrater och fett.</span>`:''}</div>`:'')+menu.map(({w,m,n})=>m?`<div class="meal">
+    <div class="row between"><span class="mw">${w}</span><span class="muted" style="font-size:11.5px">${m.k} kcal · ${m.p} g protein</span></div>
+    <div class="row between" style="gap:8px;align-items:flex-start"><div class="md">${m.d}</div>${n>1?`<button class="btn o sm" style="flex-shrink:0" onclick="nextDish('${w}')">${ic('refresh')} Byt rätt</button>`:''}</div>
     <div class="mprots">${m.opts.map(o=>`<button class="${o===m.pid?'on':''}" onclick="pickMealProt('${m.id}','${o}')" title="${PROT[o].n}">${(x=>x.charAt(0).toUpperCase()+x.slice(1))(PROT[o].n.replace(/ \d.*$/,'').replace(/^\d+ /,''))}</button>`).join('')}</div>
-    <div class="row between" style="margin-top:8px"><span class="muted" style="font-size:11px">${m.portion}</span><button class="btn p sm" onclick="logMeal('${m.id}')">+ Logga</button></div></div>`).join('')
-    :'<div class="empty">Inga förslag matchar dina val. Ändra filter eller dina proteinkällor under Profil → Kost.</div>';
+    <div class="row between" style="margin-top:8px"><span class="muted" style="font-size:11px">${m.portion}</span><button class="btn p sm" onclick="logMeal('${m.id}')">+ Logga</button></div></div>`
+    :`<div class="meal"><span class="mw">${w}</span><div class="muted" style="font-size:12.5px;margin-top:4px">Inget förslag matchar dina val${(S.mealFilter||'alla')!=='alla'?' och filtret':''}.</div></div>`).join('')+
+    `<p class="fh" style="margin-top:6px">${daySlots().length} måltider per dag – ändra under Profil → Kost.</p>`;
   const al=allergies(),oth=((S.prof||{}).allergyOther||'').trim();
   mealAllergy.innerHTML=(al.length||oth)?`<div class="allerg">${ic('alert')}<span>Filtrerat för: <b>${[...al.map(a=>(ALLERGENS.find(x=>x[0]===a)||[a,a])[1].toLowerCase()),oth].filter(Boolean).join(', ')}</b>. Läs alltid innehållsförteckningen – förslagen kan inte garantera att en produkt saknar spår av allergener.${oth?' Annan allergi filtreras inte automatiskt.':''}</span></div>`:'';
 }
 function shopItems(){
-  const list=MEAL_T.map(buildMeal).filter(Boolean),out=new Map();
+  const list=dayMenu().map(x=>x.m).filter(Boolean),out=new Map();
   list.forEach(m=>{const x=PROT[m.pid].n.replace(/ \d.*$/,'').replace(/^\d+ /,'');out.set(x.charAt(0).toUpperCase()+x.slice(1),1);});
   const al=allergies();
   Object.keys(BASES).forEach(k=>{const b=baseFor(k);if(b&&list.some(m=>MEAL_T.find(t=>t.id===m.id).base===k))b.n.split(' + ').forEach(x=>out.set(x.charAt(0).toUpperCase()+x.slice(1),1));});
