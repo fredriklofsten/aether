@@ -1,0 +1,92 @@
+/* Aether – tema 2.0
+   Inspiration: WHOOP (mörk bas, stora siffror, mätare), Hevy (ren, snabb loggning),
+   iOS Liquid Glass / Material 3 (svävande glasmeny, mjuka ytor). Laddas sist och skriver över style.css. */
+
+:root{--ok:#4ade80;--r-card:20px;--r-ctl:14px;--ease:cubic-bezier(.2,.8,.2,1)}
+:root[data-theme=dark]{--bg:#050608;--sf:#0d1015;--sf2:#151920;--sf3:#222833;--t:#f4f6fa;--t2:#b9c1cf;--m:#7b8597;--line:rgba(255,255,255,.065);--hdrbg:rgba(5,6,8,.78);--navbg:rgba(18,21,28,.72)}
+:root[data-theme=light]{--ok:#16a34a;--bg:#f2f4f8;--sf:#ffffff;--sf2:#eef1f6;--sf3:#dde3ec;--hdrbg:rgba(242,244,248,.8);--navbg:rgba(255,255,255,.78)}
+
+/* Bakgrund med svagt ljus uppifrån i accentfärgen */
+body{background:radial-gradient(120% 60% at 50% -12%,color-mix(in srgb,var(--p) 9%,transparent),transparent 55%) fixed,var(--bg)}
+:root[data-theme=light] body{background:radial-gradient(120% 60% at 50% -12%,color-mix(in srgb,var(--p) 10%,transparent),transparent 55%) fixed,var(--bg)}
+
+/* Siffror: tunga, täta och lika breda (som i WHOOP) */
+.score,#kcal,.tv,.dbc b,.fmk b,.hi,.dv b,.ring b,.wn{font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+#kcal{font-size:34px!important;font-weight:800}
+
+/* Kort */
+.card{border-radius:var(--r-card);background:linear-gradient(180deg,color-mix(in srgb,var(--sf) 92%,#fff 8%) 0,var(--sf) 46px);box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 30px -12px rgba(0,0,0,.55);border:1px solid var(--line)}
+:root[data-theme=light] .card{background:var(--sf);box-shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px -14px rgba(15,23,42,.18)}
+.card h4,.kt{letter-spacing:.08em}
+.tile{border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.hero{border-radius:24px}
+
+/* Knappar: tydlig tryckkänsla */
+.btn,.chip,.tile,.seg button,.ni,.feel button,.wsd,.frow,.dial,.iconbtn{transition:transform .14s var(--ease),background-color .2s,border-color .2s,color .2s}
+.btn:active,.chip:active,.tile:active,.feel button:active,.wsd:active,.dial:active{transform:scale(.965)}
+.btn.p{border-radius:16px;font-weight:700;letter-spacing:.01em}
+.btn.p:active{filter:brightness(.95)}
+.chip{border-radius:999px;padding:7px 13px}
+.chip.on{box-shadow:0 0 0 1px var(--p) inset}
+
+/* Flikar i sidan: segmenterad kontroll */
+.seg{gap:6px;padding:8px 14px 10px}
+.seg button{background:transparent;border:1px solid transparent;color:var(--m);border-radius:999px;font-weight:650}
+.seg button.on{background:var(--sf2);border-color:var(--sf3);color:var(--t);box-shadow:0 1px 0 rgba(255,255,255,.04) inset}
+.seg button.on::after{content:"";display:block;width:16px;height:3px;border-radius:2px;background:var(--p);margin:4px auto -4px}
+
+/* Svävande glasmeny i botten */
+.screen{padding-bottom:118px}
+.bnav{bottom:max(10px,env(safe-area-inset-bottom));width:calc(100% - 20px);max-width:410px;border-radius:28px;border:1px solid var(--line);background:var(--navbg);backdrop-filter:blur(22px) saturate(1.7);-webkit-backdrop-filter:blur(22px) saturate(1.7);padding:6px!important;box-shadow:0 12px 40px -8px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06)}
+:root[data-theme=light] .bnav{box-shadow:0 12px 32px -10px rgba(15,23,42,.25)}
+.ni{border-radius:22px;padding:7px 2px 6px}
+.ni.active{background:color-mix(in srgb,var(--p) 15%,transparent);color:var(--p)}
+.ni.active::before{display:none}
+.ni.active .ico{transform:translateY(-1px) scale(1.06)}
+.ni .ico{transition:transform .2s var(--ease)}
+
+/* Rubrikrad */
+.hdr{background:var(--hdrbg);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6)}
+.ptitle{font-weight:800;letter-spacing:-.025em}
+
+/* Mjuk övergång när man byter flik */
+.tp{animation:tpin .26s var(--ease)}
+@keyframes tpin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.tp,.screen.active{animation:none}.btn:active,.chip:active,.tile:active{transform:none}}
+
+/* ===== Hemskärmen: tre mätare ===== */
+.hhead .ring{display:none}
+.dials{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 12px}
+.dial{background:var(--sf);border:1px solid var(--line);border-radius:20px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;cursor:pointer;font-family:inherit;color:var(--t);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.dring{position:relative;width:84px;height:84px}
+.dring svg{width:100%;height:100%}
+.dring circle{fill:none;stroke-width:8;stroke-linecap:round}
+.dtrack{stroke:var(--sf2)}
+.dval{transition:stroke-dasharray .8s var(--ease);filter:drop-shadow(0 0 6px color-mix(in srgb,currentColor 30%,transparent))}
+.dv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:2px}
+.dv b{font-size:20px;font-weight:800;line-height:1}
+.dv span{font-size:9.5px;color:var(--m);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.dl{font-size:12.5px;font-weight:700;margin-top:-6px}
+.ds{font-size:11px;color:var(--m);margin-top:1px;white-space:nowrap}
+
+/* Veckoremsan lite luftigare */
+.wsd{border-radius:16px}
+.wsd.today{box-shadow:0 0 0 1.5px var(--p) inset,0 6px 18px -8px color-mix(in srgb,var(--p) 60%,transparent)}
+
+/* Inputfält */
+input,select,textarea{border-radius:var(--r-ctl)!important}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--p) 22%,transparent)}
+
+/* Modaler som bottenark */
+.modal{background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+.modal.on .modal-c{animation:sheet .3s var(--ease)}
+.modal-c{border-radius:26px 26px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,.4)}
+.modal-c::before{content:"";display:block;width:38px;height:5px;border-radius:3px;background:var(--sf3);margin:-6px auto 12px}
+@keyframes sheet{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+
+/* Startskärm */
+#splash .brand{font-size:48px!important;letter-spacing:10px!important}
+
+/* Matdagbok: veckostaplar */
+.wkbars{margin-top:12px;height:96px}
+.wkbars .goal::after{content:"mål";position:absolute;left:0;top:-14px;font-size:9.5px;color:var(--p);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
