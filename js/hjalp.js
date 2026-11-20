@@ -26,14 +26,37 @@ function renderGuide(){
   '<div class="card"><h4>Tips</h4><div class="tip">Ser du en <button class="q">?</button> – tryck för förklaring.</div><div class="tip">Profil, mål och data hittar du under kugghjulet uppe till höger.</div><div class="tip">Datan sparas bara i din webbläsare – exportera en backup ibland.</div></div>';
 }
 let libMus='Alla',libEq='alla';
+/* Muskelgrupper i kroppsordning, med svenska namn */
+const MG_GROUPS=[
+  ['Ben','Quadriceps','Framsida lår'],['Ben','Hamstrings','Baksida lår'],['Ben','Glutes','Säte'],['Ben','Calves','Vader'],
+  ['Överkropp','Chest','Bröst'],['Överkropp','Upper Back','Övre rygg'],['Överkropp','Lats','Breda ryggmuskeln (lats)'],['Överkropp','Shoulders','Axlar'],['Överkropp','Rear Delts','Bakre axlar'],
+  ['Armar','Biceps','Biceps'],['Armar','Triceps','Triceps'],
+  ['Bål','Core','Bål och mage']];
+const MG_ALIAS={'Back':'Upper Back','Lower Back':'Upper Back'};
+const mgOf=e=>[...new Set(e.m.map(m=>MG_ALIAS[m]||m))];
+let libOpen=new Set();
+function exItem(k,e,sec){
+  const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_THUMB(k)}" alt="" loading="lazy"/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
+  return `<div class="ex" onclick="openLib('${k}')"><div class="ex-row">${th}<div class="ex-body"><div class="ex-name">${e.name}${sec?' <span class="ftag">tränar även</span>':''}</div><div class="ex-meta">${e.cue}</div><div class="tags">${e.m.map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;
+}
+function toggleMg(id,el){if(el.open)libOpen.add(id);else libOpen.delete(id);}
 function renderLib(){
-  const mus=['Alla',...new Set(Object.values(EX).flatMap(e=>e.m))];
-  libMus=mus.includes(libMus)?libMus:'Alla';
-  document.getElementById('libMus').innerHTML=mus.map(m=>`<div class="chip ${m===libMus?'on':''}" onclick="libMus='${m}';renderLib()">${m}</div>`).join('');
+  const present=new Set(Object.values(EX).flatMap(mgOf));
+  const groups=MG_GROUPS.filter(g=>present.has(g[1]));
+  if(libMus!=='Alla'&&!groups.some(g=>g[1]===libMus))libMus='Alla';
+  document.getElementById('libMus').innerHTML=[['Alla','Alla'],...groups.map(g=>[g[1],g[2].replace(/ \(.*\)/,'')])].map(([k,l])=>`<div class="chip ${k===libMus?'on':''}" onclick="libMus='${k}';libOpen=new Set(['${k}']);renderLib()">${l}</div>`).join('');
   libEqChips.innerHTML=[['alla','All utrustning'],['gym','Gym'],['db','Hantlar'],['bw','Kroppsvikt']].map(([k,l])=>`<div class="chip ${libEq===k?'on':''}" onclick="libEq='${k}';renderLib()">${l}</div>`).join('');
   const q=(libQ.value||'').toLowerCase();
-  const list=Object.entries(EX).filter(([k,e])=>(libEq==='alla'||eqOk(k,libEq))&&(libMus==='Alla'||e.m.includes(libMus))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
-  libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_THUMB(k)}" alt="" loading="lazy"/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
-    return `<div class="ex" onclick="openLib('${k}')"><div class="ex-row">${th}<div class="ex-body"><div class="ex-name">${e.name}</div><div class="ex-meta">${e.cue}</div><div class="tags">${e.m.map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;}).join('')||'<div class="empty">Ingen övning hittades.</div>';
+  const all=Object.entries(EX).filter(([k,e])=>(libEq==='alla'||eqOk(k,libEq))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
+  if(q){libList.innerHTML=all.map(([k,e])=>exItem(k,e)).join('')||'<div class="empty">Ingen övning hittades.</div>';return;}
+  let region='';
+  libList.innerHTML=groups.filter(g=>libMus==='Alla'||g[1]===libMus).map(([reg,id,name])=>{
+    const prim=all.filter(([k,e])=>mgOf(e)[0]===id),sec=all.filter(([k,e])=>mgOf(e).indexOf(id)>0);
+    const n=prim.length+sec.length;if(!n)return'';
+    const head=reg!==region?`<div class="mgreg">${(region=reg)}</div>`:'';
+    const open=libMus!=='Alla'||libOpen.has(id);
+    return head+`<details class="mgcat" ${open?'open':''} ontoggle="toggleMg('${id}',this)"><summary><span class="mgn">${name}</span><span class="mgc">${n}</span></summary>
+      <div class="mgbody">${prim.map(([k,e])=>exItem(k,e)).join('')}${sec.map(([k,e])=>exItem(k,e,true)).join('')}</div></details>`;
+  }).join('')||'<div class="empty">Ingen övning hittades.</div>';
 }
 function openLib(k){openEx(k,'','','',k);mMeta.textContent='Övningsbibliotek';document.getElementById('mSwapWrap').style.display='none';}

@@ -96,3 +96,14 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,v
 .exdemo.small{aspect-ratio:auto;height:120px;margin-top:0}
 .exdemo.small .exdemo-lbl::after{content:" · rörelsen"}
 .ex-thumb{object-position:center 30%}
+
+/* Övningsbibliotek i muskelgrupper */
+.mgreg{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--m);margin:16px 4px 6px}
+.mgcat{background:var(--sf);border:1px solid var(--line);border-radius:18px;margin-bottom:8px;overflow:hidden}
+.mgcat summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
+.mgcat summary::-webkit-details-marker{display:none}
+.mgcat summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--m);border-bottom:2px solid var(--m);transform:rotate(45deg);transition:transform .2s;margin-left:4px}
+.mgcat[open] summary::after{transform:rotate(225deg)}
+.mgn{flex:1;font-weight:700;font-size:15px}
+.mgc{font-size:12px;font-weight:700;color:var(--p);background:color-mix(in srgb,var(--p) 14%,transparent);padding:2px 9px;border-radius:99px;font-variant-numeric:tabular-nums}
+.mgbody{padding:0 12px 6px;border-top:1px solid var(--line)}
