@@ -311,6 +311,14 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
 .obt{font-size:24px;font-weight:800;letter-spacing:-.03em;margin-top:6px}.obp{color:var(--t2);font-size:13.5px;margin:4px 0 6px}
 .obnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;justify-content:space-between;gap:10px;padding:12px 16px max(14px,env(safe-area-inset-bottom));background:var(--navbg);border-top:1px solid var(--line);backdrop-filter:blur(14px)}
 .obnav .btn{flex:1;margin:0;padding:14px}.obnav .btn.o{flex:.6;font-size:14px;padding:14px;border-radius:14px}
+.meal{padding:11px 0;border-bottom:1px solid var(--line)}.meal:last-child{border-bottom:none}
+.mw{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--p)}
+.md{font-size:14.5px;font-weight:650;margin:4px 0 8px;line-height:1.3}
+.mprots{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.mprots::-webkit-scrollbar{display:none}
+.mprots button{flex-shrink:0;background:var(--sf2);border:1px solid var(--line);color:var(--t2);border-radius:9px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap}
+.mprots button.on{background:color-mix(in srgb,var(--p) 14%,transparent);border-color:var(--p);color:var(--p)}
+.allerg{display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.45;color:var(--t2);background:color-mix(in srgb,var(--w) 10%,transparent);border:1px solid color-mix(in srgb,var(--w) 30%,transparent);border-radius:11px;padding:9px 11px;margin-bottom:8px}
+.allerg .ico{width:16px;height:16px;color:var(--w);flex-shrink:0;margin-top:1px}
 </style>
 </head>
 <body>
@@ -590,7 +598,12 @@ input[type=range]{accent-color:var(--p);padding:0;border:none;background:transpa
           </div>
           <div id="meals" style="margin-top:8px"></div>
         </div>
-        <div class="card"><h4>Snabbval – tryck för att logga</h4><div id="mealEx"></div></div>
+        <div class="card"><div class="row between"><h4 style="margin:0">Måltidsförslag</h4><button class="btn o sm" onclick="openProf('diet')">Allergier & val</button></div>
+          <p class="muted" style="font-size:12px;margin:6px 0 8px">Välj protein i varje måltid – tryck på ett alternativ för att byta.</p>
+          <div class="chips" id="mealFilt" style="margin-bottom:8px"></div>
+          <div id="mealAllergy"></div>
+          <div id="mealEx"></div>
+          <p class="fh" style="margin-top:8px">Näringsvärdena är ungefärliga typvärden per portion.</p></div>
       </div>
 
       <!-- Fasta -->
@@ -968,7 +981,7 @@ function defaults(){return{
   week:2,readiness:7,rAvg:6.8,hrv:68,hrvBase:72,
   split:'ul',sessionKey:'lower_heavy',season:'normal',fast:'none',fastedTrain:'no',winStart:12,trainHour:17,fastDays:[],adfOff:0,bfMode:'none',bf:null,waist:null,neck:null,hip:null,exp:'beginner',rate:'std',goalW:null,timeBudget:'full',context:[],trainingDay:true,
   logs:[],meals:[],loggedKcal:0,mealDate:'',readinessLog:[],e1Log:[],decisions:[],feedback:[],bwLog:[],prs:{},e1View:'squat',
-  e1Hist:{squat:[],bench:[],rdl:[]},plan:null,customT:{},measLog:[],onboarded:false,prof:{diet:null,meals:null,len:60,equip:'gym',likes:[],sleep:null,stress:null,why:'',deadline:'',chest:null,arm:null,thigh:null},ui:{theme:'dark',accent:'teal',font:'normal',home:defaultHome()},selSlot:0,override:null,done:null,weekStamp:null,
+  e1Hist:{squat:[],bench:[],rdl:[]},plan:null,customT:{},measLog:[],onboarded:false,prof:{diet:null,meals:null,allergies:[],allergyOther:'',noProt:[],favProt:null,len:60,equip:'gym',likes:[],sleep:null,stress:null,why:'',deadline:'',chest:null,arm:null,thigh:null},ui:{theme:'dark',accent:'teal',font:'normal',home:defaultHome()},selSlot:0,override:null,done:null,weekStamp:null,
   prev:{back_squat:{w:120,reps:5,rpe:8},bench_press:{w:90,reps:5,rpe:8},rdl:{w:100,reps:7,rpe:7.5}},
   e1:{squat:null,bench:null,rdl:null}
 };}
@@ -1724,8 +1737,7 @@ function renderKost(){
   if(S.mealDate!==today){S.meals=[];S.loggedKcal=0;S.mealDate=today;save();}
   const lp=S.meals.reduce((s,x)=>s+(x.p||0),0);
   loggedK.textContent=S.loggedKcal+' kcal · '+lp+' g protein';kb.style.width=Math.min(100,S.loggedKcal/m.cal*100)+'%';
-  mealEx.innerHTML=MEALS.map((x,i)=>!dietOk(x.t)?'':`<div class="row between" style="padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer" onclick="quickMeal(${i})">
-    <span>${x.d}<br><span class="muted" style="font-size:11px">${x.when||''} · protein ${x.p} g</span></span><span class="muted">${x.k} kcal</span></div>`).join('');
+  renderMeals();
   meals.innerHTML=S.meals.map((x,i)=>`<div class="row between" style="padding:6px 0;font-size:13px"><span>${x.d}</span><span>${x.k} kcal${x.p?' · '+x.p+' g':''} <button class="btn g sm" onclick="delMeal(${i})">✕</button></span></div>`).join('');
   // Fasta
   const st=fastState();
@@ -1764,7 +1776,7 @@ function renderKost(){
   // Råd
   nAdvice.innerHTML=coach.tips.map(t=>`<div class="tip">${t.t} ${srcTag(t.s)}</div>`).join('');
   periBox.innerHTML=`<div class="coach">${coach.peri}</div>`+coach.supplements.map(s=>`<div class="tip">• ${s[0]} ${srcTag(s[1])}</div>`).join('');
-  shopList.innerHTML=SHOP.filter(x=>dietOk(x[1])).map(x=>'• '+x[0]).join('<br>')+((S.prof||{}).diet==='vegan'?`<p class="fh" style="margin-top:8px">Vegan: tänk på B12 och kombinera proteinkällor (baljväxter + spannmål) för att nå proteinmålet.</p>`:'');
+  shopList.innerHTML=shopItems().map(x=>'• '+x).join('<br>')+((S.prof||{}).diet==='vegan'?`<p class="fh" style="margin-top:8px">Vegan: tänk på B12 och kombinera proteinkällor (baljväxter + spannmål) för att nå proteinmålet.</p>`:'');
   fastLearn.innerHTML=artLinks('fasta',6);radLearn.innerHTML=`<div class="mlist">${['kost-protein','kost-takt','kost-kolhydrat','till-kreatin','till-d','myter'].map(id=>artCard(ARTS.find(a=>a.id===id))).join('')}</div>`;
   nutWhy.innerHTML=`<div class="tip">Underhållsbehov = vilometabolism × aktivitetsnivå (${S.act||1.55}). ${srcTag([m.ep.bmrSrc])}</div>
     <div class="tip">Mål-kalorier = underhåll ${m.ep.delta>=0?'+':''}${m.ep.delta} (mål) ${m.dayMod>=0?'+':''}${m.dayMod} (dagens träning)${m.low?' → lågdag 25 %':''}.</div>
@@ -2579,6 +2591,11 @@ const PROF_SHEETS={
    `<p class="fh" style="margin-top:10px">${ic('info')} Har du en skada eller sjukdom – rådgör med vården innan du ändrar träning eller kost.</p>`}),
  diet:()=>({t:'Kost',s:'Påverkar måltidsförslag och inköpslista',h:SAVED+
    F.chips('Kosthållning','prof.diet',[['omni','Allätare'],['flex','Flexitarian'],['pesc','Pescetarian'],['veg','Vegetarian'],['vegan','Vegan']])+
+   (()=>{const no=(S.prof.noProt||[]),blk=DIET_BLOCK[S.prof.diet]||[];return `<div class="fld"><label class="f">Proteinkällor jag äter</label><div class="chips">${PGROUPS.filter(([g])=>!blk.includes(g)).map(([g,l])=>`<div class="chip ${no.includes(g)?'':'on'}" onclick="ptoggle('prof.noProt','${g}')">${l}</div>`).join('')}</div><p class="fh">Avmarkera det du inte äter – det försvinner ur förslag och inköpslista.</p></div>`;})()+
+   F.chips('Föredrar helst','prof.favProt',[[null,'Blandat'],['kyckling','Kyckling'],['kött','Kött'],['fisk','Fisk'],['växt','Vegetariskt']])+
+   F.chips('Allergier & intoleranser','prof.allergies',ALLERGENS,{multi:true,help:'Måltider och baser med allergenet tas bort eller byts mot ett alternativ (t.ex. glutenfri pasta).'})+
+   F.text('Annan allergi eller sådant du undviker','prof.allergyOther',{ph:'T.ex. selleri, senap, kiwi'})+
+   `<p class="fh">${ic('alert')} Vid svår allergi: följ råd från vården eller dietist och läs alltid innehållsförteckningen.</p>`+
    F.chips('Måltider per dag','prof.meals',[[2,'2'],[3,'3'],[4,'4'],[5,'5'],[6,'6']],{help:'Används för att fördela proteinet. 3–4 mål är bra för muskeluppbyggnad.'})+
    `<button class="btn o full" onclick="SH=[];goSub('kost','fasta')">Ställ in fasta</button><button class="btn o full" onclick="SH=[];goSub('kost','kropp')">Se din kostplan</button>`}),
  look:()=>({t:'Utseende',s:'Gör appen till din',h:SAVED+
@@ -2621,7 +2638,7 @@ function renderOB(){
    ()=>`<h2 class="obt">Om dig</h2><p class="obp">Används för att räkna ut ditt energibehov.</p>`+F.chips('Kön','sex',[['m','Man'],['f','Kvinna']])+`<div class="g3">${F.num('Ålder','age',{unit:'år'})}${F.num('Längd','height',{unit:'cm'})}${F.num('Vikt','bw',{unit:'kg',step:.1})}</div>`+F.chips('Aktivitet utanför träningen','act',[[1.4,'Stillasittande'],[1.55,'Måttligt aktiv'],[1.7,'Fysiskt jobb']]),
    ()=>`<h2 class="obt">Ditt mål</h2><p class="obp">Vad vill du främst uppnå?</p>`+F.cards('','goal',[['fat_loss','Gå ner i fett','flame'],['hypertrophy','Bygga muskler','dumbbell'],['recomp','Båda samtidigt','refresh'],['strength','Bli starkare','zap'],['maintain','Behålla & må bra','target']])+`<div class="g2c">${F.num('Målvikt (valfritt)','goalW',{unit:'kg',step:.5})}${F.text('Måldatum (valfritt)','prof.deadline',{type:'date'})}</div>`+F.text('Ditt varför (valfritt)','prof.why',{area:true,ph:'Varför är det här viktigt för dig?'}),
    ()=>`<h2 class="obt">Träning</h2><p class="obp">Så bygger vi ett program som passar din vardag.</p>`+F.chips('Erfarenhet','exp',[['beginner','Under 1 år'],['intermediate','1–3 år'],['advanced','Över 3 år']])+F.chips('Dagar per vecka','freq',[2,3,4,5,6,7].map(n=>[n,String(n)]))+F.chips('Tid per pass','prof.len',[[30,'30 min'],[45,'45 min'],[60,'60 min'],[75,'75 min']])+F.chips('Utrustning','prof.equip',[['gym','Gym'],['db','Hantlar hemma'],['bw','Bara kroppsvikt']])+F.chips('Gillar du även…','prof.likes',[['löpning','Löpning'],['cykel','Cykel'],['simning','Simning'],['rodd','Rodd'],['promenad','Promenader']],{multi:true}),
-   ()=>`<h2 class="obt">Hälsa & kost</h2><p class="obp">Så anpassar vi övningar och måltider.</p>`+F.chips('Känsliga områden','limits',[['axel','Axel'],['knä','Knä'],['ländrygg','Ländrygg'],['armbåge','Armbåge']],{multi:true})+F.chips('Sömn en vanlig natt','prof.sleep',[[5,'≤5 h'],[6,'6 h'],[7,'7 h'],[8,'8 h'],[9,'9+ h']])+F.chips('Kosthållning','prof.diet',[['omni','Allätare'],['flex','Flexitarian'],['pesc','Pescetarian'],['veg','Vegetarian'],['vegan','Vegan']]),
+   ()=>`<h2 class="obt">Hälsa & kost</h2><p class="obp">Så anpassar vi övningar och måltider.</p>`+F.chips('Känsliga områden','limits',[['axel','Axel'],['knä','Knä'],['ländrygg','Ländrygg'],['armbåge','Armbåge']],{multi:true})+F.chips('Sömn en vanlig natt','prof.sleep',[[5,'≤5 h'],[6,'6 h'],[7,'7 h'],[8,'8 h'],[9,'9+ h']])+F.chips('Kosthållning','prof.diet',[['omni','Allätare'],['flex','Flexitarian'],['pesc','Pescetarian'],['veg','Vegetarian'],['vegan','Vegan']])+F.chips('Allergier & intoleranser','prof.allergies',ALLERGENS,{multi:true}),
    ()=>{const G=genFromProfile();const Pg=buildProgram(G);return `<div class="obhero"><div class="av xl">${ic('check')}</div><h1>Klart, ${esc(S.name||'')}!</h1><p>Det här har vi byggt åt dig:</p></div>
      <div class="card"><div class="plan-row"><span class="muted">Program</span><b>${Pg.name}</b></div><div class="plan-row"><span class="muted">Pass i veckan</span><b>${Pg.weeks[0].days.reduce((a,l)=>a+l.length,0)}</b></div><div class="plan-row"><span class="muted">Energibehov</span><b>${energyPlan().tdee} kcal/dag</b></div><div class="plan-row"><span class="muted">Protein</span><b>${macros().protein} g/dag</b></div></div>
      <p class="fh">Allt kan ändras under din profil (cirkeln uppe till höger).</p>`;}
@@ -2643,6 +2660,101 @@ function obFinish(withPlan){
 /* ---------- kost efter kosthållning ---------- */
 const DIET_EX={omni:[],flex:[],pesc:['m'],veg:['m','f'],vegan:['m','f','d','e']};
 function dietOk(tags){const ex=DIET_EX[(S.prof||{}).diet]||[];return !(tags||[]).some(t=>ex.includes(t));}
+
+/* ===================== MÅLTIDER: välj protein + allergifilter ===================== */
+// Ungefärliga näringsvärden per portion (avrundade typvärden, jfr Livsmedelsverkets livsmedelsdatabas)
+const PROT={
+  kyckling:{n:'Kycklingfilé 150 g',g:'kyckling',k:165,p:34,c:0,f:3,a:[]},
+  kalkon:{n:'Kalkonfilé 150 g',g:'kyckling',k:160,p:35,c:0,f:2,a:[]},
+  notfars:{n:'Nötfärs 10 % 150 g',g:'kött',k:260,p:30,c:0,f:15,a:[]},
+  flask:{n:'Fläskfilé 150 g',g:'kött',k:190,p:33,c:0,f:6,a:[]},
+  lax:{n:'Lax 150 g',g:'fisk',k:300,p:30,c:0,f:20,a:['fisk']},
+  torsk:{n:'Torsk 150 g',g:'fisk',k:120,p:27,c:0,f:1,a:['fisk']},
+  tonfisk:{n:'Tonfisk i vatten 1 burk',g:'fisk',k:110,p:25,c:0,f:1,a:['fisk']},
+  rakor:{n:'Räkor 150 g',g:'skaldjur',k:130,p:28,c:0,f:2,a:['skaldjur']},
+  agg:{n:'3 ägg',g:'ägg',k:210,p:18,c:1,f:15,a:['ägg']},
+  kvarg:{n:'Kvarg 250 g',g:'mejeri',k:160,p:30,c:10,f:1,a:['mjölk','laktos']},
+  keso:{n:'Keso 200 g',g:'mejeri',k:160,p:26,c:6,f:4,a:['mjölk','laktos']},
+  laktosfrikvarg:{n:'Laktosfri kvarg 250 g',g:'mejeri',k:160,p:30,c:10,f:1,a:['mjölk']},
+  whey:{n:'Whey 30 g',g:'mejeri',k:120,p:24,c:2,f:2,a:['mjölk','laktos']},
+  artprotein:{n:'Ärtproteinpulver 30 g',g:'växt',k:115,p:24,c:1,f:2,a:[]},
+  tofu:{n:'Tofu 200 g',g:'växt',k:240,p:26,c:4,f:14,a:['soja']},
+  tempeh:{n:'Tempeh 150 g',g:'växt',k:290,p:30,c:14,f:16,a:['soja']},
+  bonor:{n:'Bönor/linser 250 g (kokta)',g:'växt',k:280,p:20,c:45,f:1,a:[]},
+  sojayog:{n:'Sojayoghurt 250 g',g:'växt',k:130,p:9,c:6,f:6,a:['soja']}
+};
+const BASES={
+  ris:{n:'ris + broccoli',k:260,p:6,c:55,f:1,a:[]},
+  potatis:{n:'potatis + sallad',k:220,p:5,c:45,f:3,a:[]},
+  pasta:{n:'pasta + tomatsås',k:330,p:11,c:64,f:3,a:['gluten'],gf:'glutenfri pasta + tomatsås'},
+  quinoa:{n:'quinoa + spenat',k:250,p:9,c:42,f:4,a:[]},
+  bulgur:{n:'bulgur + ugnsrotsaker',k:290,p:9,c:58,f:2,a:['gluten'],gf:'hirs + ugnsrotsaker'},
+  wok:{n:'nudlar + wokgrönsaker',k:300,p:9,c:55,f:5,a:['gluten','soja'],gf:'risnudlar + wokgrönsaker (glutenfri soja)'},
+  havre:{n:'havregryn + bär',k:230,p:7,c:38,f:4,a:['gluten'],gf:'glutenfri havre + bär'},
+  frukt:{n:'banan + bär',k:150,p:2,c:35,f:1,a:[]},
+  notter:{n:'frukt + nötter',k:260,p:6,c:22,f:16,a:['nötter'],alt:'frukt + pumpafrön'},
+  sallad:{n:'stor sallad + bröd',k:250,p:8,c:35,f:8,a:['gluten'],gf:'stor sallad + glutenfritt bröd'}
+};
+const MEAL_T=[
+  {id:'f1',when:'Frukost',base:'havre',opts:['kvarg','laktosfrikvarg','sojayog','agg','whey','artprotein']},
+  {id:'f2',when:'Frukost',base:'frukt',opts:['agg','keso','kvarg','tofu','sojayog']},
+  {id:'l1',when:'Lunch',base:'ris',opts:['kyckling','notfars','lax','tofu','rakor','bonor']},
+  {id:'l2',when:'Lunch',base:'sallad',opts:['kyckling','tonfisk','agg','bonor','rakor','tofu']},
+  {id:'m1',when:'Middag',base:'potatis',opts:['lax','flask','kyckling','torsk','bonor','tofu']},
+  {id:'m2',when:'Middag',base:'pasta',opts:['notfars','kalkon','rakor','bonor','tofu','kyckling']},
+  {id:'m3',when:'Middag',base:'wok',opts:['kyckling','rakor','flask','tempeh','tofu']},
+  {id:'m4',when:'Middag',base:'bulgur',opts:['torsk','kyckling','notfars','bonor','tempeh']},
+  {id:'s1',when:'Mellanmål',base:'notter',opts:['kvarg','laktosfrikvarg','keso','sojayog','artprotein']},
+  {id:'p1',when:'Runt passet',base:'frukt',opts:['whey','artprotein','kvarg','sojayog']}
+];
+const ALLERGENS=[['mjölk','Mjölkprotein'],['laktos','Laktos'],['ägg','Ägg'],['fisk','Fisk'],['skaldjur','Skaldjur'],['nötter','Nötter'],['jordnötter','Jordnötter'],['gluten','Gluten'],['soja','Soja'],['sesam','Sesam']];
+const PGROUPS=[['kyckling','Kyckling/kalkon'],['kött','Kött'],['fisk','Fisk'],['skaldjur','Skaldjur'],['ägg','Ägg'],['mejeri','Mejeri'],['växt','Vegetariskt (baljväxter, soja)']];
+const DIET_BLOCK={omni:[],flex:[],pesc:['kyckling','kött'],veg:['kyckling','kött','fisk','skaldjur'],vegan:['kyckling','kött','fisk','skaldjur','ägg','mejeri']};
+function allergies(){return(S.prof||{}).allergies||[];}
+function protOk(id){const P=PROT[id],pr=S.prof||{};if(!P)return false;
+  if((DIET_BLOCK[pr.diet]||[]).includes(P.g))return false;
+  if((pr.noProt||[]).includes(P.g))return false;
+  return !P.a.some(x=>allergies().includes(x));}
+function baseFor(id){const b=BASES[id],al=allergies();let n=b.n,a=b.a;
+  if(a.includes('gluten')&&al.includes('gluten')){if(!b.gf)return null;n=b.gf;a=a.filter(x=>x!=='gluten');if(id==='wok')a=a.filter(x=>x!=='soja'||!al.includes('soja'));}
+  if(a.includes('nötter')&&(al.includes('nötter')||al.includes('jordnötter'))){if(!b.alt)return null;n=b.alt;a=a.filter(x=>x!=='nötter');}
+  if(a.some(x=>al.includes(x)))return null;return{...b,n,a};}
+function mealOptions(t){return t.opts.filter(protOk);}
+function mealFilterOk(pid){const f=S.mealFilter||'alla';if(f==='alla')return true;const g=PROT[pid].g;return f==='veg'?(g==='växt'||g==='ägg'||g==='mejeri'):g===f;}
+function buildMeal(t){
+  const base=baseFor(t.base);if(!base)return null;
+  let opts=mealOptions(t);if(!opts.length)return null;
+  const f=S.mealFilter||'alla';if(f!=='alla'){const fo=opts.filter(mealFilterOk);if(!fo.length)return null;opts=fo;}
+  const fav=(S.prof||{}).favProt;
+  let pid=(S.mealPick||{})[t.id];if(!opts.includes(pid))pid=(fav&&opts.find(o=>PROT[o].g===fav))||opts[0];
+  const P=PROT[pid];
+  return{id:t.id,when:t.when,pid,opts,d:(x=>x.charAt(0).toUpperCase()+x.slice(1))(P.n.replace(/ \d.*$/,'').replace(/^\d+ /,''))+' + '+base.n,portion:P.n,k:P.k+base.k,p:P.p+base.p,c:P.c+base.c,f:P.f+base.f};
+}
+function swapMeal(id,dir){const t=MEAL_T.find(x=>x.id===id),m=buildMeal(t);if(!m||m.opts.length<2)return;const i=(m.opts.indexOf(m.pid)+(dir||1)+m.opts.length)%m.opts.length;S.mealPick=S.mealPick||{};S.mealPick[id]=m.opts[i];save();renderKost();}
+function pickMealProt(id,pid){S.mealPick=S.mealPick||{};S.mealPick[id]=pid;save();renderKost();}
+function logMeal(id){const m=buildMeal(MEAL_T.find(x=>x.id===id));if(!m)return;S.meals.push({d:m.d,k:m.k,p:m.p});S.loggedKcal+=m.k;save();renderKost();refresh();toast('+'+m.k+' kcal · '+m.p+' g protein');}
+const GLYPH={kyckling:'🍗',kött:'🥩',fisk:'🐟',skaldjur:'🦐',ägg:'🥚',mejeri:'🥛',växt:'🌱'};
+function renderMeals(){
+  const fl=[['alla','Alla'],['kyckling','Kyckling'],['kött','Kött'],['fisk','Fisk'],['veg','Vegetariskt']].filter(([k])=>k==='alla'||(k==='veg'?true:!((DIET_BLOCK[(S.prof||{}).diet]||[]).includes(k)||((S.prof||{}).noProt||[]).includes(k))));
+  mealFilt.innerHTML=fl.map(([k,l])=>`<div class="chip ${(S.mealFilter||'alla')===k?'on':''}" onclick="S.mealFilter='${k}';save();renderKost()">${l}</div>`).join('');
+  const list=MEAL_T.map(buildMeal).filter(Boolean);
+  mealEx.innerHTML=list.length?list.map(m=>`<div class="meal">
+    <div class="row between"><span class="mw">${m.when}</span><span class="muted" style="font-size:11.5px">${m.k} kcal · ${m.p} g protein</span></div>
+    <div class="md">${m.d}</div>
+    <div class="mprots">${m.opts.map(o=>`<button class="${o===m.pid?'on':''}" onclick="pickMealProt('${m.id}','${o}')" title="${PROT[o].n}">${(x=>x.charAt(0).toUpperCase()+x.slice(1))(PROT[o].n.replace(/ \d.*$/,'').replace(/^\d+ /,''))}</button>`).join('')}</div>
+    <div class="row between" style="margin-top:8px"><span class="muted" style="font-size:11px">${m.portion}</span><button class="btn p sm" onclick="logMeal('${m.id}')">+ Logga</button></div></div>`).join('')
+    :'<div class="empty">Inga förslag matchar dina val. Ändra filter eller dina proteinkällor under Profil → Kost.</div>';
+  const al=allergies(),oth=((S.prof||{}).allergyOther||'').trim();
+  mealAllergy.innerHTML=(al.length||oth)?`<div class="allerg">${ic('alert')}<span>Filtrerat för: <b>${[...al.map(a=>(ALLERGENS.find(x=>x[0]===a)||[a,a])[1].toLowerCase()),oth].filter(Boolean).join(', ')}</b>. Läs alltid innehållsförteckningen – förslagen kan inte garantera att en produkt saknar spår av allergener.${oth?' Annan allergi filtreras inte automatiskt.':''}</span></div>`:'';
+}
+function shopItems(){
+  const list=MEAL_T.map(buildMeal).filter(Boolean),out=new Map();
+  list.forEach(m=>{const x=PROT[m.pid].n.replace(/ \d.*$/,'').replace(/^\d+ /,'');out.set(x.charAt(0).toUpperCase()+x.slice(1),1);});
+  const al=allergies();
+  Object.keys(BASES).forEach(k=>{const b=baseFor(k);if(b&&list.some(m=>MEAL_T.find(t=>t.id===m.id).base===k))b.n.split(' + ').forEach(x=>out.set(x.charAt(0).toUpperCase()+x.slice(1),1));});
+  ['Olivolja','Frysta grönsaker','Kreatin monohydrat'].forEach(x=>out.set(x,1));
+  return[...out.keys()];
+}
 
 function renderProf(){pName.value=S.name;pBw.value=S.bw;pGoal.value=S.goal;pWeek.value=S.week;
   pSex.value=S.sex||'m';pAge.value=S.age||30;pH.value=S.height||178;pAct.value=String(S.act||1.55);

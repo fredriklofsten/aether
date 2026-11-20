@@ -11,6 +11,8 @@ Evidensbaserad träningsapp som anpassar passen efter din dagsform och räknar f
 - **Utseende**: mörkt, ljust eller följ telefonen, 7 accentfärger, större text
 - **Hemskärm**: välj vilka kort som visas och i vilken ordning
 - Kosthållning (allätare–vegan) styr måltidsförslag och inköpslista
+- **Välj protein i varje måltid** (kyckling, kött, fisk, skaldjur, ägg, mejeri, vegetariskt) och filtrera förslagen
+- **Allergier & intoleranser** (mjölk, laktos, ägg, fisk, skaldjur, nötter, jordnötter, gluten, soja, sesam) filtrerar eller byter ut ingredienser, t.ex. glutenfri pasta
 
 ## Hemskärm
 Hälsning, veckoring (pass klara/planerade), veckoremsa med dagens markering, snabb incheckning av dagsform (5 knappar), stort passkort med tid och muskler, rutor för kost, fasta, vikt och träningssvit samt "Dagens fakta" från kunskapsbanken.
