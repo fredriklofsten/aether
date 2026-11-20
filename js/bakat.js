@@ -1,37 +1,56 @@
 /* Aether – telefonens bakåtknapp
-   Appen lägger en extra post i webbläsarens historik. När man trycker bakåt fångar vi det
-   och gör ett steg bakåt i appen i stället för att stänga den:
-   öppet fönster → stängs · undersida → föregående sida · annan flik → Idag · Idag → "tryck igen för att stänga" */
+   Webbläsarens historik speglar hur man rör sig i appen: varje sida man öppnar och varje fönster
+   (bottenark) blir en post. Bakåt går då ett steg tillbaka i appen i stället för att stänga den.
 
-let backExitArmed=0;
-function backTrap(){try{history.pushState({aether:'trap'},'');}catch(e){}}
-function backInit(){
-  try{history.replaceState({aether:'root'},'');}catch(e){}
-  backTrap();
-  window.addEventListener('popstate',onBack);
-  /* Chrome på Android hoppar över historikposter som skapats utan att man rört skärmen.
-     Därför läggs fällan dit igen vid första tryckningen om den saknas. */
-  const rearm=()=>{if(!history.state||history.state.aether!=='trap')backTrap();};
-  window.addEventListener('pointerdown',rearm,{capture:true,passive:true});
-  window.addEventListener('keydown',rearm,{capture:true});
-}
-function onBack(){
-  // 1. Stäng öppna fönster (bottenark)
-  const open=[...document.querySelectorAll('.modal.on')];
-  if(open.length){
-    open.forEach(m=>{if(m.id==='scanModal'&&typeof closeScan==='function')closeScan();else m.classList.remove('on');});
-    return backTrap();
+   Viktigt för Chrome på Android: poster som skapas utan att man rört skärmen hoppas över när man
+   trycker bakåt. Därför skapas nya poster bara direkt efter en tryckning (userActivation). */
+
+let backBusy=false;
+const hasTap=()=>!navigator.userActivation||navigator.userActivation.isActive;
+function histPush(st){try{if(hasTap())history.pushState(st,'');else history.replaceState(st,'');}catch(e){}}
+function anyModal(){return document.querySelector('.modal.on');}
+
+/* Sidbyten */
+const _tabBack=tab;
+tab=function(t){
+  const before=curTab;
+  _tabBack.apply(this,arguments);
+  if(backBusy||!main.classList.contains('active')||curTab===before)return;
+  histPush({aether:1,t:curTab});
+};
+
+/* Fönster som öppnas och stängs */
+const modalObs=new MutationObserver(list=>{
+  if(backBusy)return;
+  for(const m of list){
+    const el=m.target,on=el.classList.contains('on'),was=(m.oldValue||'').split(/\s+/).includes('on');
+    if(on&&!was)histPush({aether:1,t:curTab,m:el.id});
+    else if(!on&&was&&history.state&&history.state.m===el.id){backBusy=true;history.back();setTimeout(()=>backBusy=false,400);}
   }
-  // 2. Startguiden: föregående steg
-  if(onboard.classList.contains('active')&&typeof OBS!=='undefined'&&OBS>0){OBS--;renderOB();scrollTo(0,0);return backTrap();}
-  // 3. Inne i appen
-  if(main.classList.contains('active')){
-    const isSub=curTab.startsWith('m-')||curTab==='art'||curTab==='sheet'||curTab==='menu';
-    if(isSub){if(curTab==='menu')tab('today');else goBack();return backTrap();}
-    if(curTab!=='today'){tab('today');return backTrap();}
-  }
-  // 4. På Idag (eller startskärmen): tryck två gånger för att stänga
-  if(Date.now()-backExitArmed<2500){history.back();return;}
-  backExitArmed=Date.now();toast('Tryck bakåt igen för att stänga');backTrap();
-}
-backInit();
+});
+document.querySelectorAll('.modal').forEach(el=>modalObs.observe(el,{attributes:true,attributeFilter:['class'],attributeOldValue:true}));
+
+/* Bakåt trycktes */
+window.addEventListener('popstate',e=>{
+  if(backBusy)return;   // vi backade själva när ett fönster stängdes med knapp
+  backBusy=true;
+  try{
+    const open=anyModal();
+    if(open){if(open.id==='scanModal'&&typeof closeScan==='function')closeScan();document.querySelectorAll('.modal.on').forEach(m=>m.classList.remove('on'));}
+    else if(onboard.classList.contains('active')&&typeof OBS!=='undefined'&&OBS>0){OBS--;renderOB();scrollTo(0,0);}
+    const st=e.state||{};
+    if(main.classList.contains('active')){
+      const target=st.t||'today';
+      if(target!==curTab)tab(target,true);
+      if(st.root&&!open)toast('Tryck bakåt igen för att stänga appen');
+    }
+  }finally{setTimeout(()=>backBusy=false,50);}
+});
+
+/* Startpunkt: Idag är botten. Vid första tryckningen läggs ett skydd ovanpå,
+   så att bakåt på Idag först bara visar "tryck igen" i stället för att stänga. */
+try{history.replaceState({aether:1,t:'today',root:1},'');}catch(e){}
+window.addEventListener('pointerdown',()=>{
+  const s=history.state;
+  if(s&&s.root&&main.classList.contains('active'))try{history.pushState({aether:1,t:curTab},'');}catch(e){}
+},{capture:true,passive:true});
