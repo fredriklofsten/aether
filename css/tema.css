@@ -107,3 +107,5 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,v
 .mgn{flex:1;font-weight:700;font-size:15px}
 .mgc{font-size:12px;font-weight:700;color:var(--p);background:color-mix(in srgb,var(--p) 14%,transparent);padding:2px 9px;border-radius:99px;font-variant-numeric:tabular-nums}
 .mgbody{padding:0 12px 6px;border-top:1px solid var(--line)}
+.pfocus{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.pfocus span{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--p) 15%,transparent);color:var(--p)}

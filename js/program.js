@@ -220,6 +220,7 @@ function openGen(){
   GEN=genFromProfile();
   openSheet(genSheet);
 }
+function gFocus(k){const a=(GEN.focus||[]).slice(),i=a.indexOf(k);if(i>=0)a.splice(i,1);else{a.push(k);if(a.length>3)a.shift();}GEN.focus=a;GEN.prev=null;S.prof=S.prof||{};S.prof.focus=a.slice();save();renderSheet();}
 function gset(k,v){GEN[k]=v;GEN.prev=null;renderSheet();}
 function genSheet(){
   const g=GEN,ch=(k,opts)=>`<div class="chips">${opts.map(([v,l])=>`<div class="chip ${g[k]===v?'on':''}" onclick="gset('${k}',${typeof v==='string'?`'${v}'`:v})">${l}</div>`).join('')}</div>`;
@@ -228,6 +229,7 @@ function genSheet(){
    <label class="f">Tid per pass</label>${ch('len',[[30,'30 min'],[45,'45 min'],[60,'60 min'],[75,'75 min'],[90,'90 min']])}
    <label class="f">Utrustning</label>${ch('eq',[['gym','Gym'],['db','Hantlar hemma'],['bw','Bara kroppsvikt']])}
    <label class="f">Erfarenhet</label>${ch('exp',[['beginner','Under 1 år'],['intermediate','1–3 år'],['advanced','Över 3 år']])}
+   <label class="f">Fokusområden (upp till 3)</label><div class="chips">${Object.entries(FOCUS_LBL).map(([k,l])=>`<div class="chip ${(g.focus||[]).includes(k)?'on':''}" onclick="gFocus('${k}')">${l}</div>`).join('')}</div>
    <label class="f">Konditionsform</label>${ch('mod',MODS.map(m=>[m,m]))}
    <label class="f">Dubbelpass (två pass samma dag)</label>${ch('dbl',[[false,'Nej'],[true,'Ja, tillåt']])}
    <label class="f">Programlängd</label>${ch('weeks',[[1,'1 vecka'],[4,'4 veckor'],[6,'6 veckor'],[8,'8 veckor'],[12,'12 veckor']])}
@@ -268,6 +270,8 @@ function pickEx(pat,G,used){
   if(pat==='hamcurl'&&G.exp!=='advanced')opts=opts.filter(x=>x!=='nordic_curl');
   return opts.find(id=>EX[id]&&eqOk(id,G.eq)&&!used.has(id))||null;
 }
+const FOCUS_MUS={chest:['Chest'],back:['Upper Back','Lats','Back'],shoulders:['Shoulders','Rear Delts'],arms:['Biceps','Triceps'],legs:['Quadriceps','Hamstrings','Calves'],glutes:['Glutes'],core:['Core']};
+const FOCUS_LBL={chest:'Bröst',back:'Rygg',shoulders:'Axlar',arms:'Armar',legs:'Ben',glutes:'Säte',core:'Bål/mage'};
 function buildProgram(G){
   const n=G.days,beg=G.exp==='beginner';
   let s,cWant;
@@ -295,15 +299,43 @@ function buildProgram(G){
       const rpe=beg?7.5:(role==='a'?8.5:8);
       const note=(id==='pullup'||id==='chin_up')&&G.eq!=='gym'?'kräver räcke':id==='plank'?'sekunder':'';
       ex.push({id,sets,reps,rpe,role,note});});
-    const est=()=>Math.round(8+ex.reduce((t,e)=>t+e.sets*(R.rest[e.role]+0.8),0));
-    let guard=0;while(est()>G.len&&guard++<40){
-      const acc=ex.map((e,i)=>[e,i]).filter(([e])=>e.role==='a');
-      if(acc.length>1&&est()-G.len>8){ex.splice(acc[acc.length-1][1],1);continue;}
-      const big=[...ex].sort((a,b)=>({a:0,s:1,m:2}[a.role]-{a:0,s:1,m:2}[b.role])).find(e=>e.sets>2);
-      if(big)big.sets--;else if(ex.length>3)ex.pop();else break;}
-    const k='g_'+ty+'_'+i;T[k]={n:nm,kind:'strength',gen:true,ex:ex.map(e=>({...e})),est:est()};
+    const k='g_'+ty+'_'+i;T[k]={n:nm,kind:'strength',gen:true,ex};
     days[sd[i]].push({k});
   });
+  // --- fokusområden: extra övning för de muskelgrupper man vill prioritera
+  const sKeys=Object.keys(T);
+  const focus=(G.focus||[]).filter(f=>FOCUS_MUS[f]).slice(0,3);
+  focus.forEach(f=>{
+    const mus=FOCUS_MUS[f],inG=e=>mus.includes((EX[e.id]?.m||[])[0]);
+    const hits=s=>T[s].ex.some(e=>(EX[e.id]?.m||[]).some(m=>mus.includes(m)));
+    let targets=sKeys.filter(hits);if(!targets.length)targets=sKeys.slice();
+    targets.slice(0,Math.max(2,freqPer)).forEach(s=>{
+      const ex=T[s].ex,own=ex.filter(inG);
+      // 1) befintliga övningar för muskelgruppen: +1 set och skyddas när passet kortas
+      own.forEach(e=>{e.focus=true;if(e.role!=='m'&&e.sets<4)e.sets++;});
+      // 2) saknas en egen övning för gruppen i passet: lägg till en
+      if(own.filter(e=>e.role!=='m').length<(f==='arms'?2:1)){
+        const used=new Set(ex.map(e=>e.id));
+        const pick=m0=>Object.keys(EX).filter(x=>!used.has(x)&&eqOk(x,G.eq)&&(EX[x].m||[])[0]===m0).sort((a,b)=>(EX[b].priority||3)-(EX[a].priority||3))[0];
+        const want=f==='arms'?['Biceps','Triceps'].filter(m=>!own.some(e=>EX[e.id].m[0]===m)):[mus.find(m=>pick(m))];
+        want.forEach(m0=>{const id=m0&&pick(m0);if(!id)return;used.add(id);
+          const item={id,sets:3,reps:R.a.slice(),rpe:beg?7.5:8.5,role:'a',note:id==='plank'?'fokus · sekunder':'fokus',focus:true};
+          if(id==='plank')item.reps=[30,60];
+          const at=ex.findIndex(e=>e.role==='a');if(at<0)ex.push(item);else ex.splice(at,0,item);});
+      }
+    });
+  });
+  if(focus.length)notes.unshift({t:'Extra volym för '+focus.map(f=>FOCUS_LBL[f].toLowerCase()).join(', ')+' – dina fokusområden får fler set och skyddas när passen kortas till din tid.',s:[]});
+  // --- passlängd: korta ner tills passet ryms i vald tid (fokusövningar tas bort sist)
+  sKeys.forEach(s=>{const ex=T[s].ex;
+    const est=()=>Math.round(8+ex.reduce((t,e)=>t+e.sets*(R.rest[e.role]+0.8),0));
+    let guard=0;while(est()>G.len&&guard++<40){
+      const acc=ex.map((e,i)=>[e,i]).filter(([e])=>e.role==='a'),plain=acc.filter(([e])=>!e.focus);
+      if(plain.length&&acc.length>1&&est()-G.len>8){ex.splice(plain.pop()[1],1);continue;}
+      const big=[...ex].sort((a,b)=>(a.focus?1:0)-(b.focus?1:0)||({a:0,s:1,m:2}[a.role]-{a:0,s:1,m:2}[b.role])).find(e=>e.sets>2);
+      if(big){big.sets--;continue;}
+      if(ex.length>3){const drop=[...ex.keys()].reverse().find(i=>!ex[i].focus&&ex[i].role!=='m');ex.splice(drop!=null?drop:ex.length-1,1);}else break;}
+    T[s].ex=ex.map(e=>{const c={...e};delete c.focus;return c;});T[s].est=est();});
   // --- kondition
   const cmin={fat_loss:40,endurance:45,health:Math.min(60,Math.max(30,Math.ceil(150/Math.max(1,cWant)/5)*5)),hypertrophy:30,strength:30}[G.goal];
   const protos=[];
