@@ -33,7 +33,7 @@ function renderLib(){
   libEqChips.innerHTML=[['alla','All utrustning'],['gym','Gym'],['db','Hantlar'],['bw','Kroppsvikt']].map(([k,l])=>`<div class="chip ${libEq===k?'on':''}" onclick="libEq='${k}';renderLib()">${l}</div>`).join('');
   const q=(libQ.value||'').toLowerCase();
   const list=Object.entries(EX).filter(([k,e])=>(libEq==='alla'||eqOk(k,libEq))&&(libMus==='Alla'||e.m.includes(libMus))&&(!q||(e.name+' '+e.m.join(' ')+' '+(e.sec||[]).join(' ')).toLowerCase().includes(q)));
-  libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_IMG[k]}" alt="" loading="lazy"/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
+  libList.innerHTML=list.map(([k,e])=>{const th=EX_IMG[k]?`<img class="ex-thumb" src="${EX_THUMB(k)}" alt="" loading="lazy"/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
     return `<div class="ex" onclick="openLib('${k}')"><div class="ex-row">${th}<div class="ex-body"><div class="ex-name">${e.name}</div><div class="ex-meta">${e.cue}</div><div class="tags">${e.m.map(m=>`<span class="tag hot">${m}</span>`).join('')}</div></div></div></div>`;}).join('')||'<div class="empty">Ingen övning hittades.</div>';
 }
 function openLib(k){openEx(k,'','','',k);mMeta.textContent='Övningsbibliotek';document.getElementById('mSwapWrap').style.display='none';}

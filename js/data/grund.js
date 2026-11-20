@@ -77,6 +77,9 @@ const MUSCLE_MAP={'Quadriceps':'quads','Glutes':'glutes','Hamstrings':'hams','Ch
 /* Övningsbilder: Free Exercise DB (public domain, github.com/yuhonas/free-exercise-db). _0 = startläge, _1 = slutläge */
 const EX_IMG=Object.fromEntries(["back_extension", "back_squat", "barbell_curl", "barbell_row", "bench_dip", "bench_press", "box_squat", "bulgarian_split_squat", "bw_squat", "cable_fly", "cable_row", "calf_raise", "chest_supported_row", "chin_up", "db_bench", "db_curl", "db_incline_press", "db_ohp", "db_rdl", "db_rear_fly", "db_row", "dead_bug", "deadlift", "face_pull", "front_squat", "glute_bridge", "goblet_squat", "hammer_curl", "hanging_leg_raise", "hip_thrust", "incline_bench", "inverted_row", "kettlebell_swing", "landmine_press", "lat_pulldown", "lateral_raise", "leg_curl", "leg_extension", "leg_press", "nordic_curl", "ohp", "overhead_tricep_ext", "pike_push_up", "plank", "pullup", "push_up", "rdl", "single_leg_rdl", "step_up", "tricep_pushdown", "walking_lunge"].map(k=>[k,'images/ex/'+k+'_0.jpg']));
 const EX_IMG2=k=>EX_IMG[k]?EX_IMG[k].replace('_0.jpg','_1.jpg'):null;
+/* Fotorealistiska huvudbilder (images/foto/). Övningar som saknar foto visar start/slut-bilderna ovan. */
+const EX_PHOTO=new Set(['back_squat','barbell_row','bench_press','deadlift','face_pull','front_squat','hip_thrust','lat_pulldown','leg_curl','ohp','pullup','rdl','walking_lunge']);
+const EX_THUMB=k=>EX_PHOTO.has(k)?'images/foto/'+k+'.jpg':EX_IMG[k];
 const EX_STEPS={
   back_squat:['Stång på övre trapezius, fötter ca axelbrett','Andas in, böj höft och knä till minst parallellt','Knän följer tårna, bröst upp','Pressa genom hela foten tillbaka upp'],
   front_squat:['Stång på framsida axlar, armbågar högt','Håll bålen hård, sjunk djupt','Pressa upp utan att tappa armbågarna'],

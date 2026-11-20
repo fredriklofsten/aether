@@ -51,7 +51,7 @@ function refresh(){
     const prev=S.prev[e.id];let sug='';
     if(prev){const prog=sugW(prev.w,prev.reps,prev.rpe,e.reps[1],rpe,liftHist(S.logs,e.id));const e1=e1rm(prev.w,prev.reps);
       sug=`<div class="ex-meta">Föreslagen <b>${prog.weight??'—'} kg</b> · e1RM ≈ ${e1}${prog.action==='reset'?' · <span class="badge mid">reset</span>':prog.action==='up'?' · ↑':''}</div><div class="ex-meta">${prog.detail}</div>`;}
-    const thumb=EX_IMG[e.id]?`<img class="ex-thumb" src="${EX_IMG[e.id]}" alt="" loading="lazy"/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
+    const thumb=EX_IMG[e.id]?`<img class="ex-thumb" src="${EX_THUMB(e.id)}" alt="" loading="lazy"/>`:`<div class="ex-thumb ph">${ic('dumbbell')}</div>`;
     const sw=e.swapReason?`<div class="swapnote">↻ ${e.swapReason}</div>`:'';
     return `<div class="ex" onclick="openEx('${e.id}',${sets},'${e.reps[0]}-${e.reps[1]}',${rpe},'${e.orig||e.id}')"><div class="ex-row">${thumb}<div class="ex-body"><div class="ex-name">${ex.name}</div>${sw}
       <div class="ex-meta">${sets} × ${e.reps[0]}-${e.reps[1]} @ RPE ${rpe}</div>${sug}
@@ -95,8 +95,11 @@ function openEx(id,sets,reps,rpe,orig){
   mTags.innerHTML=(ex.m||[]).map(m=>`<span class="tag hot">${m}</span>`).join('')+(ex.sec||[]).map(m=>`<span class="tag">${m}</span>`).join('');
   const img=EX_IMG[id];
   const imgEl=document.getElementById('mImg'),demo=document.getElementById('mDemo');
+  const ph=document.getElementById('mPhoto');
+  if(EX_PHOTO.has(id)){ph.src='images/foto/'+id+'.jpg';ph.style.display='block';}else ph.style.display='none';
+  demo.classList.toggle('small',EX_PHOTO.has(id));
   if(img){imgEl.src=img;document.getElementById('mImg2').src=EX_IMG2(id);demo.style.display='block';document.getElementById('mPh').style.display='none';}
-  else{demo.style.display='none';document.getElementById('mPh').style.display='flex';document.getElementById('mPh').textContent='Ingen demo-bild · följ stegen';}
+  else{demo.style.display='none';if(EX_PHOTO.has(id)){document.getElementById('mPh').style.display='none';}else document.getElementById('mPh').style.display='flex';document.getElementById('mPh').textContent='Ingen demo-bild · följ stegen';}
   const steps=EX_STEPS[id]||(ex.cue?[ex.cue]:['Kontrollerad teknik genom hela rörelsen']);
   document.getElementById('mSteps').innerHTML=steps.map((t,i)=>`<div class="step"><div class="n">${i+1}</div><div class="t">${t}</div></div>`).join('');
   mCue.textContent='';mCoach.innerHTML=`<strong>Coach:</strong> ${ex.coach||'Kvalitet före kvantitet.'}`;

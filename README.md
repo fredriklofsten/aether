@@ -20,7 +20,8 @@ js/backup.js          automatiska kopior och backup-fil
 js/tema.js            hemskärmens mätare
 js/program.js, hem.js, profil.js, maltider.js, kunskap.js, hjalp.js, ikoner.js
 js/app.js             startar appen
-images/ex/            två bilder per övning (start- och slutläge)
+images/foto/          egna fotorealistiska huvudbilder (13 övningar)
+images/ex/            två bilder per övning (start- och slutläge), visas som "rörelsen"
 ```
 Vanliga `<script>`-taggar (inte moduler), så appen fungerar även när `index.html` öppnas direkt från datorn.
 
@@ -79,6 +80,7 @@ Alla `?`-knappar förklarar begrepp på enkel svenska.
 ## Källor för data och bilder
 - Livsmedel: Livsmedelsverkets livsmedelsdatabas (dataportal.livsmedelsverket.se)
 - Streckkoder: Open Food Facts (ODbL)
-- Övningsbilder: Free Exercise DB (public domain, github.com/yuhonas/free-exercise-db)
+- Övningsfoton i images/foto/: Aethers egna bildpaket
+- Start/slut-bilder: Free Exercise DB (public domain, github.com/yuhonas/free-exercise-db)
 
 Appen ersätter inte råd från vården.

@@ -90,3 +90,9 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,v
 /* Matdagbok: veckostaplar */
 .wkbars{margin-top:12px;height:96px}
 .wkbars .goal::after{content:"mål";position:absolute;left:0;top:-14px;font-size:9.5px;color:var(--p);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+/* Övningsfoton */
+.exphoto{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 35%;border-radius:18px;margin:8px 0 10px;background:var(--sf2);display:block}
+.exdemo.small{aspect-ratio:auto;height:120px;margin-top:0}
+.exdemo.small .exdemo-lbl::after{content:" · rörelsen"}
+.ex-thumb{object-position:center 30%}
