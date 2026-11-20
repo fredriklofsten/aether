@@ -250,12 +250,9 @@ function renderKost(){
   const tot=m.protein*4+m.carbs*4+m.fat*9;
   pb.style.width=(m.protein*4/tot*100)+'%';cb.style.width=(m.carbs*4/tot*100)+'%';fb.style.width=(m.fat*9/tot*100)+'%';
   coachKost.innerHTML=`<strong>Kostcoach:</strong> ${coach.tips[0].t} ${srcTag(coach.tips[0].s)}`;
-  const today=new Date().toLocaleDateString('sv-SE');
-  if(S.mealDate!==today){S.meals=[];S.loggedKcal=0;S.mealDate=today;save();}
-  const lp=S.meals.reduce((s,x)=>s+(x.p||0),0);
-  loggedK.textContent=S.loggedKcal+' kcal · '+lp+' g protein';kb.style.width=Math.min(100,S.loggedKcal/m.cal*100)+'%';
   renderMeals();
-  meals.innerHTML=S.meals.map((x,i)=>`<div class="row between" style="padding:6px 0;font-size:13px"><span>${x.d}</span><span>${x.k} kcal${x.p?' · '+x.p+' g':''} <button class="btn g sm" onclick="delMeal(${i})">✕</button></span></div>`).join('');
+  renderDagbok(m);
+  if(!foodQ.value)renderFoodRecent();
   // Fasta
   const st=fastState();
   fastStatus.innerHTML=`<div class="row between"><div><div class="muted" style="font-size:11px;text-transform:uppercase;letter-spacing:.5px">Just nu</div><div style="font-size:18px;font-weight:700;margin-top:2px;color:${st.open===false?'var(--a)':'var(--p)'}">${st.txt}</div><div class="muted">${st.sub}</div></div><div class="badge ok">${f.label}</div></div>`;
@@ -300,6 +297,3 @@ function renderKost(){
     <div class="tip">Fett minst ${String(m.fatKg).replace('.',',')} g/kg och 20–35 % av energin; resten blir kolhydrater (${(m.carbs/S.bw).toFixed(1)} g/kg).</div>
     <div class="tip">Fibrer ≈ 14 g per 1000 kcal, minst 25 g. ${srcTag(['nnr'])}</div>`;
 }
-function quickMeal(i){const x=MEALS[i];S.meals.push({d:x.d,k:x.k,p:x.p});S.loggedKcal+=x.k;save();renderKost();refresh();toast('+'+x.k+' kcal');}
-function addMeal(){const d=mealD.value||'Måltid',k=+mealK.value||0,p=+mealP.value||0;if(!k){toast('Ange kcal');return;}S.meals.push({d,k,p});S.loggedKcal+=k;mealD.value='';mealK.value='';mealP.value='';save();renderKost();refresh();toast('+'+k+' kcal');}
-function delMeal(i){const x=S.meals[i];S.loggedKcal=Math.max(0,S.loggedKcal-x.k);S.meals.splice(i,1);save();renderKost();refresh();}

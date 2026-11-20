@@ -76,7 +76,6 @@ function nextDish(when){const l=slotMeals(when);if(l.length<2)return;const cur=s
 function dayMenu(){return daySlots().map(w=>({w,m:slotPick(w),n:slotMeals(w).length}));}
 function swapMeal(id,dir){const t=MEAL_T.find(x=>x.id===id),m=buildMeal(t);if(!m||m.opts.length<2)return;const i=(m.opts.indexOf(m.pid)+(dir||1)+m.opts.length)%m.opts.length;S.mealPick=S.mealPick||{};S.mealPick[id]=m.opts[i];save();renderKost();}
 function pickMealProt(id,pid){S.mealPick=S.mealPick||{};S.mealPick[id]=pid;save();renderKost();}
-function logMeal(id){const m=buildMeal(MEAL_T.find(x=>x.id===id));if(!m)return;S.meals.push({d:m.d,k:m.k,p:m.p});S.loggedKcal+=m.k;save();renderKost();refresh();toast('+'+m.k+' kcal · '+m.p+' g protein');}
 const GLYPH={kyckling:'🍗',kött:'🥩',fisk:'🐟',skaldjur:'🦐',ägg:'🥚',mejeri:'🥛',växt:'🌱'};
 function renderMeals(){
   const fl=[['alla','Alla'],['kyckling','Kyckling'],['kött','Kött'],['fisk','Fisk'],['veg','Vegetariskt']].filter(([k])=>k==='alla'||(k==='veg'?true:!((DIET_BLOCK[(S.prof||{}).diet]||[]).includes(k)||((S.prof||{}).noProt||[]).includes(k))));

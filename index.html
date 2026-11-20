@@ -271,19 +271,29 @@
           <div class="bar"><div class="fill" id="fb" style="width:55%;background:#f472b6"></div></div>
           <div class="macro"><span>Fibrer</span><span id="fibG">0 g</span></div>
           <div class="macro"><span>Protein per måltid</span><span id="protMeal">—</span></div>
-          <div class="row between" style="margin-top:8px;font-size:13px"><span class="muted">Loggat idag</span><b id="loggedK">0 kcal</b></div>
-          <div class="bar"><div class="fill" id="kb" style="width:0;background:var(--w)"></div></div>
           <div class="coach" id="coachKost" style="margin-top:8px"></div>
         </div>
         <div class="card">
-          <h4>Logga måltid</h4>
-          <input id="mealD" placeholder="Vad åt du?"/>
-          <div class="row" style="margin-top:8px;gap:8px">
-            <input type="number" id="mealK" placeholder="kcal" style="flex:1"/>
-            <input type="number" id="mealP" placeholder="protein g" style="flex:1"/>
-            <button class="btn p sm" onclick="addMeal()">Lägg till</button>
+          <div class="row between"><h4 style="margin:0">Logga mat</h4><span class="muted" style="font-size:11px">Livsmedelsverket · Open Food Facts</span></div>
+          <div class="searchbox" style="margin-top:10px"><span data-ic="search"></span><input id="foodQ" type="search" placeholder="Sök livsmedel, t.ex. havregryn" oninput="foodSearch()" autocomplete="off"/></div>
+          <div class="row" style="gap:8px;margin-top:8px">
+            <button class="btn o" style="flex:1" onclick="openScan()"><span data-ic="scan"></span> Skanna streckkod</button>
+            <button class="btn o" style="flex:1" onclick="openEgen(foodQ.value)"><span data-ic="plus"></span> Eget livsmedel</button>
           </div>
-          <div id="meals" style="margin-top:8px"></div>
+          <div id="foodRes"></div>
+          <details class="acc mini" style="margin-top:8px"><summary>Snabbregistrera bara kcal och protein</summary><div class="acc-body">
+            <input id="mealD" placeholder="Vad åt du?"/>
+            <div class="row" style="margin-top:8px;gap:8px">
+              <input type="number" id="mealK" placeholder="kcal" style="flex:1" inputmode="numeric"/>
+              <input type="number" id="mealP" placeholder="protein g" style="flex:1" inputmode="numeric"/>
+              <button class="btn p sm" onclick="addMeal()">Lägg till</button>
+            </div></div></details>
+        </div>
+        <div class="card">
+          <div class="row between"><h4 style="margin:0">Dagbok</h4><span class="muted" style="font-size:12px">idag</span></div>
+          <div id="dbSum"></div>
+          <div id="meals" style="margin-top:6px"></div>
+          <div id="weekFood" style="margin-top:14px"></div>
         </div>
         <div class="card"><div class="row between"><h4 style="margin:0">Måltidsförslag</h4><button class="btn o sm" onclick="openProf('diet')">Allergier & val</button></div>
           <p class="muted" style="font-size:12px;margin:6px 0 8px">En meny för dagen. Byt rätt eller tryck på ett protein för att byta.</p>
@@ -520,12 +530,52 @@
 </section>
 </div>
 
+<div class="modal" id="foodModal" onclick="if(event.target===this)closeFood()">
+  <div class="modal-c">
+    <h3 id="fmTitle"></h3>
+    <p class="muted" id="fmSrc" style="margin:4px 0 12px;font-size:12px"></p>
+    <label class="flbl">Mängd</label>
+    <div class="row" style="gap:8px;align-items:center"><input type="number" id="fmG" inputmode="decimal" oninput="renderFoodModal()" style="flex:1"/><span class="muted">gram</span></div>
+    <div class="chips" id="fmChips" style="margin-top:8px"></div>
+    <label class="flbl">Måltid</label>
+    <div class="chips" id="fmMt"></div>
+    <div class="fmtot" id="fmTot"></div>
+    <button class="btn p full" onclick="addFood()">Lägg till</button>
+    <button class="btn g full" onclick="closeFood()">Avbryt</button>
+  </div>
+</div>
+
+<div class="modal" id="scanModal" onclick="if(event.target===this)closeScan()">
+  <div class="modal-c">
+    <h3>Skanna streckkod</h3>
+    <div class="scanbox"><video id="scanVid" playsinline muted></video><div class="scanline"></div></div>
+    <p class="muted" id="scanMsg" style="margin:8px 0;font-size:13px"></p>
+    <div class="row" style="gap:8px"><input id="scanEan" inputmode="numeric" placeholder="eller skriv siffrorna, t.ex. 7310865004703" style="flex:1"/><button class="btn p sm" onclick="lookupEan()">Sök</button></div>
+    <p class="fh" style="margin-top:8px">Produktdata från Open Food Facts (öppen databas, ODbL). Kontrollera mot förpackningen.</p>
+    <button class="btn g full" onclick="closeScan()">Stäng</button>
+  </div>
+</div>
+
+<div class="modal" id="egModal" onclick="if(event.target===this)this.classList.remove('on')">
+  <div class="modal-c">
+    <h3>Eget livsmedel</h3>
+    <p class="muted" id="egHint" style="margin:4px 0 10px;font-size:12.5px"></p>
+    <input id="egName" placeholder="Namn, t.ex. Proteinbar choklad"/>
+    <label class="flbl">Per 100 g</label>
+    <div class="g2"><input type="number" id="egK" placeholder="kcal" inputmode="decimal"/><input type="number" id="egP" placeholder="Protein g" inputmode="decimal"/><input type="number" id="egC" placeholder="Kolhydrater g" inputmode="decimal"/><input type="number" id="egF" placeholder="Fett g" inputmode="decimal"/></div>
+    <input type="number" id="egServ" placeholder="Portionsstorlek i gram (valfritt)" inputmode="decimal" style="margin-top:8px"/>
+    <input type="hidden" id="egEan"/>
+    <button class="btn p full" style="margin-top:10px" onclick="saveEgen()">Spara och välj mängd</button>
+    <button class="btn g full" onclick="egModal.classList.remove('on')">Avbryt</button>
+  </div>
+</div>
+
 <div class="modal" id="exModal" onclick="if(event.target===this)closeM()">
   <div class="modal-c">
     <h3 id="mTitle"></h3>
     <p class="muted" id="mMeta" style="margin:4px 0 8px"></p>
     <div class="tags" id="mTags" style="margin-bottom:4px"></div>
-    <img id="mImg" class="modal-img" alt="Övningsdemo" style="display:none"/>
+    <div id="mDemo" class="exdemo" style="display:none"><img id="mImg" alt="Övningsdemo – startläge"/><img id="mImg2" class="b" alt="Övningsdemo – slutläge"/><span class="exdemo-lbl"><i></i>Start → slut</span></div>
     <div id="mPh" class="vis-ph" style="display:none">Ingen demo-bild</div>
     <h4 style="font-size:10.5px;color:var(--m);text-transform:uppercase;margin-bottom:4px">Så gör du</h4>
     <div class="steps" id="mSteps"></div>
@@ -558,6 +608,7 @@
 <script src="js/hem.js"></script>
 <script src="js/profil.js"></script>
 <script src="js/maltider.js"></script>
+<script src="js/mat.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
