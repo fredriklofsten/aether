@@ -18,6 +18,7 @@ js/kost.js            kost- och fastemotor
 js/mat.js             matdagbok, sök, streckkod, eget livsmedel
 js/backup.js          automatiska kopior och backup-fil
 js/tema.js            hemskärmens mätare
+js/meny.js            menyknappen (☰) med alla funktioner, Framsteg-översikt, Kunskap-flikar
 js/program.js, hem.js, profil.js, maltider.js, kunskap.js, hjalp.js, ikoner.js
 js/app.js             startar appen
 images/foto/          egna fotorealistiska huvudbilder (13 övningar)

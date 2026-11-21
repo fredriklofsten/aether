@@ -29,6 +29,7 @@
   <header class="hdr">
     <div class="hl">
       <button class="iconbtn" id="backBtn" onclick="goBack()" style="display:none" aria-label="Tillbaka"></button>
+      <button class="iconbtn menubtn" id="menuBtn" onclick="openDrawer()" aria-label="Meny"><span></span><span></span><span></span></button>
       <div><div class="ptitle" id="pTitle">Idag</div><div class="psub" id="pSub"></div></div>
     </div>
     <div class="hr">
@@ -250,9 +251,10 @@
   <!-- ================= KOST ================= -->
   <div id="t-kost" class="tp" style="display:none">
     <div class="seg" data-g="kost">
-      <button data-s="idag" onclick="sub('kost','idag')">Idag</button>
+      <button data-s="idag" onclick="sub('kost','idag')">Dagbok</button>
+      <button data-s="maltid" onclick="sub('kost','maltid')">Måltider</button>
       <button data-s="fasta" onclick="sub('kost','fasta')">Fasta</button>
-      <button data-s="kropp" onclick="sub('kost','kropp')">Kropp & mål</button>
+      <button data-s="kropp" onclick="sub('kost','kropp')">Kropp</button>
       <button data-s="rad" onclick="sub('kost','rad')">Råd</button>
     </div>
     <div class="pad">
@@ -300,6 +302,10 @@
           <div id="meals" style="margin-top:6px"></div>
           <div id="weekFood" style="margin-top:14px"></div>
         </div>
+      </div>
+
+      <!-- Måltider -->
+      <div class="sp" data-g="kost" data-s="maltid">
         <div class="card"><div class="row between"><h4 style="margin:0">Måltidsförslag</h4><button class="btn o sm" onclick="openProf('diet')">Allergier & val</button></div>
           <p class="muted" style="font-size:12px;margin:6px 0 8px">En meny för dagen. Byt rätt eller tryck på ett protein för att byta.</p>
           <div class="chips" id="mealFilt" style="margin-bottom:8px"></div>
@@ -427,8 +433,15 @@
 
   <!-- ================= FRAMSTEG ================= -->
   <div id="t-hist" class="tp" style="display:none">
+    <div class="seg" data-g="hist">
+      <button data-s="over" onclick="sub('hist','over')">Översikt</button>
+      <button data-s="kropp" onclick="sub('hist','kropp')">Kropp</button>
+      <button data-s="styrka" onclick="sub('hist','styrka')">Styrka</button>
+      <button data-s="logg" onclick="sub('hist','logg')">Passlogg</button>
+    </div>
     <div class="pad">
-      
+      <div class="sp" data-g="hist" data-s="over"><div id="overBox"></div></div>
+      <div class="sp" data-g="hist" data-s="kropp">
       <div class="card">
         <h4>Kroppsvikt</h4>
         <div class="row" style="gap:8px">
@@ -438,6 +451,8 @@
         <div class="spark b" id="sparkBw"></div>
         <p class="muted" id="bwNote" style="margin-top:6px"></p>
       </div>
+      </div>
+      <div class="sp" data-g="hist" data-s="styrka">
       <div class="card" id="prCard" style="display:none"><h4>Personliga rekord 🏆</h4><div id="prList"></div></div>
       <div class="card">
         <h4>Beräknad max (1 rep) <button class="q" onclick="help('e1rm')">?</button></h4>
@@ -455,13 +470,15 @@
         <div class="coach" id="coachProgress" style="margin-top:8px"></div>
       </div>
       <div class="card"><h4>Set per pass</h4><div class="spark v" id="sparkVol"></div><p class="muted" id="volNote" style="margin-top:6px"></p></div>
+      </div>
+      <div class="sp" data-g="hist" data-s="logg">
       <div class="card"><h4>Dagsform</h4><div class="spark r" id="sparkReady"></div><p class="muted" id="readyNote" style="margin-top:6px"></p></div>
       <div class="card"><h4>Passlogg</h4><div id="histList"></div></div>
       <div class="card"><h4>Din feedback på coachen</h4><div id="fbStats" class="muted"></div></div>
+      </div>
     </div>
   </div>
 
-  <!-- ================= MENY ================= -->
   <div id="t-menu" class="tp" style="display:none">
     <div class="pad"><div id="profHub"></div></div>
   </div>
@@ -512,16 +529,24 @@
     </div>
   </div>
 
-  <div id="t-m-guide" class="tp" style="display:none"><div class="pad"><div id="guideBox"></div></div></div>
-  <div id="t-m-ord" class="tp" style="display:none"><div class="pad"><div class="card" id="ordBox"></div></div></div>
-  <div id="t-m-src" class="tp" style="display:none"><div class="pad"><div class="card" id="srcBox"></div></div></div>
 
   <div id="t-learn" class="tp" style="display:none">
+    <div class="seg" data-g="learn">
+      <button data-s="art" onclick="sub('learn','art')">Artiklar</button>
+      <button data-s="guide" onclick="sub('learn','guide')">Så funkar appen</button>
+      <button data-s="ord" onclick="sub('learn','ord')">Ordlista</button>
+      <button data-s="src" onclick="sub('learn','src')">Källor</button>
+    </div>
     <div class="pad">
+      <div class="sp" data-g="learn" data-s="art">
       <div class="searchbox"><span data-ic="search"></span><input id="learnQ" placeholder="Sök, t.ex. protein, 16:8, sömn…" oninput="renderLearn()"/></div>
       <div class="chips" id="learnCats" style="margin:10px 0 12px"></div>
       <div id="learnList"></div>
       <div class="card" style="margin-top:12px"><h4>Om evidensnivåerna</h4><div id="evLegend" class="muted" style="font-size:12.5px;line-height:1.7"></div></div>
+      </div>
+      <div class="sp" data-g="learn" data-s="guide"><div id="guideBox"></div></div>
+      <div class="sp" data-g="learn" data-s="ord"><div class="card" id="ordBox"></div></div>
+      <div class="sp" data-g="learn" data-s="src"><div class="card" id="srcBox"></div></div>
     </div>
   </div>
   <div id="t-sheet" class="tp" style="display:none"><div class="pad" id="sheetBox"></div></div>
@@ -535,6 +560,10 @@
     <button class="ni" data-t="learn" data-ic="book" onclick="tab('learn')"><span>Kunskap</span></button>
   </nav>
 </section>
+</div>
+
+<div class="modal drawer" id="drawer" onclick="if(event.target===this)closeDrawer()">
+  <nav class="dpanel" aria-label="Meny"><div id="drawerBox"></div></nav>
 </div>
 
 <div class="modal" id="foodModal" onclick="if(event.target===this)closeFood()">
@@ -619,6 +648,7 @@
 <script src="js/mat.js"></script>
 <script src="js/backup.js"></script>
 <script src="js/tema.js"></script>
+<script src="js/meny.js"></script>
 <script src="js/bakat.js"></script>
 <script src="js/app.js"></script>
 </body>

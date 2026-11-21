@@ -127,3 +127,39 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb,v
 .pfoot .btn.o{font-size:12.5px;padding:11px 8px}
 .pdone{margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
 .pdone .ico{width:18px;height:18px}
+
+/* ===== Menyknapp och sidomeny ===== */
+.menubtn{flex-direction:column;justify-content:center;align-items:center;gap:4px;margin-right:2px}
+.menubtn span{display:block;width:18px;height:2px;border-radius:2px;background:var(--t);transition:transform .2s}
+.menubtn span:nth-child(2){width:13px;align-self:center}
+.modal.drawer{align-items:stretch;justify-content:flex-start;background:rgba(0,0,0,.55);backdrop-filter:blur(3px)}
+.dpanel{width:86%;max-width:340px;height:100%;overflow-y:auto;background:var(--bg);border-right:1px solid var(--line);padding:max(14px,env(safe-area-inset-top)) 12px 24px;box-shadow:20px 0 50px rgba(0,0,0,.45)}
+.modal.drawer.on .dpanel{animation:dslide .26s var(--ease)}
+@keyframes dslide{from{transform:translateX(-100%)}to{transform:none}}
+.dhead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 4px 14px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.dhead b{font-size:16px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dgrp{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--m);margin:16px 8px 6px}
+.ditem{display:flex;align-items:center;gap:12px;width:100%;padding:10px 10px;border:none;background:transparent;color:var(--t);font:inherit;font-size:14.5px;font-weight:600;border-radius:14px;cursor:pointer;text-align:left}
+.ditem:active{background:var(--sf2)}
+.ditem.on{background:color-mix(in srgb,var(--p) 14%,transparent);color:var(--p)}
+.dic{width:34px;height:34px;border-radius:11px;background:var(--sf);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ditem.on .dic{border-color:color-mix(in srgb,var(--p) 40%,transparent)}
+.dic .ico{width:17px;height:17px}
+.dquick{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 2px}
+.dquick button{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:12px;border-radius:16px;border:1px solid var(--line);background:var(--sf);color:var(--t);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;text-align:left}
+.dquick button span{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--p) 16%,transparent);color:var(--p)}
+.dquick button .ico{width:16px;height:16px}
+.dquick button:active{transform:scale(.97)}
+
+/* ===== Framsteg: översikt ===== */
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.otile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:14px;border-radius:18px;border:1px solid var(--line);background:var(--sf);color:var(--t);font:inherit;cursor:pointer;text-align:left}
+.otile b{font-size:24px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.otile span{font-size:12px;color:var(--t2)}
+.otile em{font-style:normal;font-size:11px;color:var(--p);font-weight:700;margin-top:2px}
+.otile:active{transform:scale(.97)}
+.obar{height:10px;border-radius:6px;background:var(--sf2);overflow:hidden;margin-top:8px}
+.obar div{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--p),var(--p2));transition:width .6s var(--ease)}
+.ofun{display:flex;gap:12px;align-items:center}
+.ofun>.ico{width:28px;height:28px;color:var(--w);flex-shrink:0}
+.seg button{min-width:max-content}
